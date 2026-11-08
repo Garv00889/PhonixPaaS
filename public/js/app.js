@@ -1,16 +1,26 @@
 let activeProjectIdForLogs = null;
 let activeProjectIdForEnv = null;
 let logsInterval = null;
+let allProjectsCache = [];
 
 // On DOM Loaded
 document.addEventListener('DOMContentLoaded', () => {
   fetchTelemetry();
   fetchProjects();
 
-  // Polling telemetry every 3 seconds
+  // Polling telemetry & status every 3 seconds
   setInterval(fetchTelemetry, 3000);
+  setInterval(fetchProjects, 3000);
 
-  // Setup event listeners
+  // Setup tab switcher
+  setupTabs();
+
+  // Search filter
+  document.getElementById('serviceSearchInput').addEventListener('input', (e) => {
+    filterProjects(e.target.value);
+  });
+
+  // Setup modals
   document.getElementById('btnOpenNewProjectModal').addEventListener('click', () => {
     openModal('newProjectModal');
   });
@@ -19,6 +29,23 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnMasterSleep').addEventListener('click', handleMasterSleep);
   document.getElementById('tunnelPill').addEventListener('click', toggleTunnel);
 });
+
+// ----------------------------------------------------
+// TAB NAVIGATION (RENDER STYLE)
+// ----------------------------------------------------
+function setupTabs() {
+  const tabs = document.querySelectorAll('.rd-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const targetTab = tab.getAttribute('data-tab');
+      document.querySelectorAll('.rd-tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById(`tab-${targetTab}`).classList.add('active');
+    });
+  });
+}
 
 // ----------------------------------------------------
 // TELEMETRY
@@ -32,22 +59,16 @@ async function fetchTelemetry() {
     const data = json.data;
 
     // Platform badge
-    document.getElementById('platformBadge').innerText = data.platform;
+    document.getElementById('platformBreadcrumb').innerText = data.platform;
 
-    // Battery
+    // Top Navbar Telemetry
     const batt = data.battery;
     document.getElementById('batteryPercent').innerText = batt.percentage;
-    document.getElementById('batteryStatus').innerText = batt.status === 'CHARGING' ? '⚡ Charging' : 'Unplugged';
+    document.getElementById('batteryStatus').innerText = batt.status === 'CHARGING' ? 'Charging' : 'Unplugged';
     document.getElementById('batteryTemp').innerText = batt.temperature;
-    document.getElementById('batteryIcon').innerText = batt.status === 'CHARGING' ? '🔋' : '🪫';
-
-    // RAM
+    
+    // RAM & CPU
     document.getElementById('memUsed').innerText = data.memory.used;
-    document.getElementById('memTotal').innerText = data.memory.total;
-    document.getElementById('memPercent').innerText = data.memory.percentage;
-
-    // CPU
-    document.getElementById('cpuCores').innerText = data.cpu.cores;
     document.getElementById('cpuLoad').innerText = (data.cpu.loadAvg[0] || 0).toFixed(2);
 
     // Tunnel
@@ -57,18 +78,37 @@ async function fetchTelemetry() {
 
     if (tunnel.active && tunnel.url) {
       tunnelPill.classList.add('active');
-      tunnelText.innerHTML = `<a href="${tunnel.url}" target="_blank" style="color:inherit;text-decoration:none;">Live: ${tunnel.url.replace('https://', '')}</a>`;
+      tunnelText.innerHTML = `<a href="${tunnel.url}" target="_blank" style="color:inherit;text-decoration:none;">${tunnel.url.replace('https://', '')}</a>`;
     } else {
       tunnelPill.classList.remove('active');
-      tunnelText.innerText = 'Local Only (Click to Tunnel)';
+      tunnelText.innerText = 'Local Only';
     }
+
+    // Detailed Metrics Tab updates
+    document.getElementById('metricsBattHealth').innerText = batt.health || 'Good';
+    document.getElementById('metricsBattLevel').innerText = `${batt.percentage}%`;
+    document.getElementById('metricsBattState').innerText = batt.status === 'CHARGING' ? '⚡ Charging' : 'Unplugged';
+    document.getElementById('metricsBattProgress').style.width = `${batt.percentage}%`;
+    document.getElementById('metricsBattTemp').innerText = `${batt.temperature} °C`;
+    document.getElementById('metricsPowerSource').innerText = batt.plugged || 'Battery';
+
+    document.getElementById('metricsMemPercent').innerText = `${data.memory.percentage}% Used`;
+    document.getElementById('metricsMemUsed').innerText = `${data.memory.used} MB`;
+    document.getElementById('metricsMemTotal').innerText = data.memory.total;
+    document.getElementById('metricsMemProgress').style.width = `${data.memory.percentage}%`;
+    document.getElementById('metricsMemFree').innerText = `${data.memory.free} MB`;
+
+    document.getElementById('metricsCpuCores').innerText = `${data.cpu.cores} Cores`;
+    document.getElementById('metricsCpuLoadHero').innerText = (data.cpu.loadAvg[0] || 0).toFixed(2);
+    document.getElementById('metricsCpuModel').innerText = data.cpu.model;
+    document.getElementById('metricsUptime').innerText = `${(data.uptime / 3600).toFixed(1)} hrs`;
   } catch (err) {
     console.error('Failed to fetch telemetry:', err);
   }
 }
 
 // ----------------------------------------------------
-// PROJECTS
+// PROJECTS LIST & RENDER SERVICES TABLE
 // ----------------------------------------------------
 async function fetchProjects() {
   try {
@@ -76,22 +116,36 @@ async function fetchProjects() {
     const json = await res.json();
     if (!json.success) return;
 
-    renderProjects(json.data);
+    allProjectsCache = json.data;
+    document.getElementById('servicesCount').innerText = allProjectsCache.length;
+    renderProjects(allProjectsCache);
   } catch (err) {
     console.error('Failed to fetch projects:', err);
   }
 }
 
+function filterProjects(keyword) {
+  if (!keyword || !keyword.trim()) {
+    renderProjects(allProjectsCache);
+    return;
+  }
+  const filtered = allProjectsCache.filter(p => 
+    p.name.toLowerCase().includes(keyword.toLowerCase()) ||
+    (p.gitUrl && p.gitUrl.toLowerCase().includes(keyword.toLowerCase()))
+  );
+  renderProjects(filtered);
+}
+
 function renderProjects(projects) {
-  const grid = document.getElementById('projectsGrid');
+  const container = document.getElementById('projectsGrid');
   if (!projects || projects.length === 0) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📱✨</div>
-        <h3 style="font-size: 1.2rem; color: #fff; margin-bottom: 0.5rem;">No Projects Hosted Yet</h3>
-        <p>Deploy your first portfolio, API, or website directly onto this device.</p>
-        <button class="btn btn-primary" style="margin-top: 1rem;" onclick="openModal('newProjectModal')">
-          + Deploy First Project
+    container.innerHTML = `
+      <div class="rd-empty-state">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+        <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.35rem;">No services deployed yet</h3>
+        <p class="rd-text-sub">Create your first web service from a Git repository or empty template.</p>
+        <button class="rd-btn rd-btn-primary" style="margin-top: 1rem;" onclick="openModal('newProjectModal')">
+          + New Web Service
         </button>
       </div>
     `;
@@ -100,72 +154,86 @@ function renderProjects(projects) {
 
   const hostname = window.location.hostname || 'localhost';
 
-  grid.innerHTML = projects.map(p => {
-    let badgeClass = 'badge-standby';
-    let badgeText = 'Standby';
+  container.innerHTML = projects.map(p => {
+    let badgeHtml = '<span class="rd-badge rd-badge-sub">○ Suspended</span>';
 
     if (p.status === 'RUNNING') {
-      badgeClass = 'badge-live';
-      badgeText = 'Live';
+      badgeHtml = '<span class="rd-badge rd-badge-green"><span class="rd-status-dot rd-dot-pulse"></span>Live</span>';
     } else if (p.status === 'BUILDING') {
-      badgeClass = 'badge-building';
-      badgeText = 'Building...';
+      badgeHtml = '<span class="rd-badge rd-badge-yellow"><span class="rd-spinner" style="width:10px;height:10px;border-width:2px;display:inline-block;margin:0;"></span>Building</span>';
     } else if (p.status === 'ERROR') {
-      badgeClass = 'badge-error';
-      badgeText = 'Failed';
+      badgeHtml = '<span class="rd-badge rd-badge-red">● Failed</span>';
     }
 
     const localUrl = `http://${hostname}:${p.port}`;
-    const gitSource = p.gitUrl ? p.gitUrl.replace('https://github.com/', '') : 'Local Starter';
-    const commitMsg = p.commit ? p.commit.message : 'Clean template';
+    const gitBranch = p.branch || 'main';
+    const commitMsg = p.commit ? p.commit.message : 'Initial release';
+    const gitSource = p.gitUrl ? p.gitUrl.replace('https://github.com/', '') : 'Local Project';
 
     return `
-      <div class="project-card" id="card-${p.id}">
-        <div class="card-top">
-          <div class="card-title">
-            <h3>${p.name}</h3>
-            <div class="card-git">
-              <span>📦 ${gitSource}</span>
+      <div class="rd-service-row" id="service-${p.id}">
+        <!-- Service Name & Type -->
+        <div class="rd-service-info">
+          <div class="rd-service-icon">🌐</div>
+          <div class="rd-service-title">
+            <h4>${p.name}</h4>
+            <div class="rd-service-type">
+              <span>Web Service</span>
+              <span>•</span>
+              <span>Node / ARM</span>
             </div>
           </div>
-          <span class="badge ${badgeClass}">${badgeText}</span>
         </div>
 
-        <div class="card-details">
-          <div class="detail-row">
-            <span class="label">Local Port</span>
-            <span class="value"><a href="${localUrl}" target="_blank">:${p.port} ↗</a></span>
+        <!-- Git & Commit Info -->
+        <div class="rd-service-git">
+          <div class="rd-git-branch-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="6" y1="3" x2="6" y2="15"></line>
+              <circle cx="18" cy="6" r="3"></circle>
+              <circle cx="6" cy="18" r="3"></circle>
+              <path d="M18 9a9 9 0 0 1-9 9"></path>
+            </svg>
+            ${gitBranch}
           </div>
-          <div class="detail-row">
-            <span class="label">Last Commit</span>
-            <span class="value" title="${commitMsg}">${commitMsg.length > 25 ? commitMsg.substring(0, 22) + '...' : commitMsg}</span>
+          <div class="rd-git-commit-msg" title="${commitMsg}">
+            ${commitMsg}
           </div>
-          <div class="detail-row">
-            <span class="label">Start Command</span>
-            <span class="value">${p.startCmd}</span>
+          <div class="rd-git-timestamp">
+            ${gitSource}
           </div>
         </div>
 
-        <div class="card-actions">
-          <div class="action-buttons">
-            <button class="btn btn-sm btn-secondary" onclick="openLogsModal('${p.id}', '${p.name}')" title="View Console Logs">
-              📋 Logs
-            </button>
-            <button class="btn btn-sm btn-secondary" onclick="openEnvModal('${p.id}', '${p.name}')" title="Configure Environment">
-              ⚙️ .env
-            </button>
-            <button class="btn btn-sm btn-secondary" onclick="redeployProject('${p.id}')" title="Pull latest code and restart">
-              🔄 Deploy
-            </button>
-            <button class="btn btn-sm btn-danger" onclick="deleteProject('${p.id}', '${p.name}')" title="Delete Project">
-              🗑️
-            </button>
-          </div>
+        <!-- Port & Ingress Link -->
+        <div class="rd-service-url">
+          <span class="rd-service-port-label">Local Ingress</span>
+          <a href="${localUrl}" target="_blank">:${p.port} ↗</a>
+        </div>
 
-          <!-- Power Toggle -->
-          <label class="toggle-switch" title="Toggle project ON (Live) or OFF (Standby to save battery)">
+        <!-- Status -->
+        <div>
+          ${badgeHtml}
+        </div>
+
+        <!-- Controls & Actions -->
+        <div class="rd-service-actions">
+          <button class="rd-btn rd-btn-secondary rd-btn-sm" onclick="openLogsModal('${p.id}', '${p.name}')" title="Live Deploy & Runtime Logs">
+            Logs
+          </button>
+          <button class="rd-btn rd-btn-secondary rd-btn-sm" onclick="openEnvModal('${p.id}', '${p.name}')" title="Configure .env Environment Variables">
+            Env
+          </button>
+          <button class="rd-btn rd-btn-ghost rd-btn-sm" onclick="redeployProject('${p.id}')" title="Pull latest Git commit & restart">
+            🔄
+          </button>
+          <button class="rd-btn rd-btn-ghost rd-btn-sm" onclick="deleteProject('${p.id}', '${p.name}')" title="Delete Service">
+            🗑️
+          </button>
+
+          <!-- Render Power Toggle -->
+          <label class="rd-toggle" title="Scale to zero (turn OFF) to save battery">
             <input type="checkbox" ${p.isRunning ? 'checked' : ''} onchange="toggleProjectPower('${p.id}', this.checked)">
-            <span class="toggle-slider"></span>
+            <span class="rd-toggle-slider"></span>
           </label>
         </div>
       </div>
@@ -174,7 +242,7 @@ function renderProjects(projects) {
 }
 
 // ----------------------------------------------------
-// PROJECT ACTIONS
+// ACTIONS
 // ----------------------------------------------------
 async function toggleProjectPower(projectId, shouldStart) {
   const endpoint = shouldStart ? `/api/projects/${projectId}/start` : `/api/projects/${projectId}/stop`;
@@ -187,29 +255,29 @@ async function toggleProjectPower(projectId, shouldStart) {
     await fetchProjects();
     await fetchTelemetry();
   } catch (err) {
-    alert(`Failed to toggle project: ${err.message}`);
+    alert(`Failed to toggle service: ${err.message}`);
     await fetchProjects();
   }
 }
 
 async function redeployProject(projectId) {
-  if (!confirm('Re-pull latest code from Git and rebuild?')) return;
+  if (!confirm('Pull latest Git commit and rebuild service?')) return;
   try {
     const res = await fetch(`/api/projects/${projectId}/redeploy`, { method: 'POST' });
     const json = await res.json();
     if (!json.success) {
-      alert(`Redeploy failed: ${json.error}`);
+      alert(`Deploy failed: ${json.error}`);
     } else {
       openLogsModal(projectId, projectId);
     }
     await fetchProjects();
   } catch (err) {
-    alert(`Redeploy failed: ${err.message}`);
+    alert(`Deploy failed: ${err.message}`);
   }
 }
 
 async function deleteProject(projectId, name) {
-  if (!confirm(`Are you sure you want to completely delete "${name}" and all its local files?`)) return;
+  if (!confirm(`Are you sure you want to permanently delete service "${name}" and all local files?`)) return;
   try {
     const res = await fetch(`/api/projects/${projectId}`, { method: 'DELETE' });
     const json = await res.json();
@@ -223,7 +291,7 @@ async function deleteProject(projectId, name) {
 }
 
 async function handleMasterSleep() {
-  if (!confirm('Put ALL running projects into deep sleep? This frees RAM and lets the phone rest.')) return;
+  if (!confirm('Put ALL running services into deep sleep? This drops CPU to 0% and saves battery health.')) return;
   try {
     const res = await fetch('/api/actions/sleep-all', { method: 'POST' });
     const json = await res.json();
@@ -231,7 +299,7 @@ async function handleMasterSleep() {
     await fetchProjects();
     await fetchTelemetry();
   } catch (err) {
-    alert(`Master sleep failed: ${err.message}`);
+    alert(`Sleep all failed: ${err.message}`);
   }
 }
 
@@ -244,7 +312,7 @@ async function toggleTunnel() {
     const res = await fetch(endpoint, { method: 'POST' });
     const json = await res.json();
     if (json.data && json.data.error) {
-      alert(`Cloudflare Tunnel notice: ${json.data.error}`);
+      alert(`Tunnel status: ${json.data.error}`);
     }
     await fetchTelemetry();
   } catch (err) {
@@ -253,7 +321,7 @@ async function toggleTunnel() {
 }
 
 // ----------------------------------------------------
-// NEW PROJECT FORM
+// CREATE WEB SERVICE FORM
 // ----------------------------------------------------
 async function handleNewProjectSubmit(e) {
   e.preventDefault();
@@ -261,7 +329,7 @@ async function handleNewProjectSubmit(e) {
   const originalText = btn.innerText;
 
   btn.disabled = true;
-  btn.innerText = 'Cloning & Setting Up...';
+  btn.innerText = 'Provisioning Service...';
 
   const name = document.getElementById('projectName').value.trim();
   const gitUrl = document.getElementById('gitUrl').value.trim();
@@ -279,7 +347,7 @@ async function handleNewProjectSubmit(e) {
 
     const json = await res.json();
     if (!json.success) {
-      alert(`Failed to create project: ${json.error}`);
+      alert(`Failed to create service: ${json.error}`);
     } else {
       closeModal('newProjectModal');
       document.getElementById('newProjectForm').reset();
@@ -294,12 +362,12 @@ async function handleNewProjectSubmit(e) {
 }
 
 // ----------------------------------------------------
-// LOGS MODAL
+// RENDER-STYLE LOGS VIEWER
 // ----------------------------------------------------
 function openLogsModal(projectId, projectName) {
   activeProjectIdForLogs = projectId;
-  document.getElementById('logsModalTitle').innerText = `Logs: ${projectName}`;
-  document.getElementById('terminalOutput').innerText = 'Loading logs...';
+  document.getElementById('logsModalTitle').innerText = `${projectName} — Logs`;
+  document.getElementById('terminalOutput').innerText = 'Streaming logs from process stdout/stderr...';
   openModal('logsModal');
 
   refreshCurrentLogs();
@@ -315,7 +383,7 @@ async function refreshCurrentLogs() {
     const json = await res.json();
     if (json.success) {
       const output = document.getElementById('terminalOutput');
-      output.innerText = json.data.length > 0 ? json.data.join('\n') : 'No output yet. Start the project to see logs.';
+      output.innerText = json.data.length > 0 ? json.data.join('\n') : 'No output recorded yet. Toggle service Live to view stream.';
       output.scrollTop = output.scrollHeight;
     }
   } catch (err) {
@@ -324,13 +392,13 @@ async function refreshCurrentLogs() {
 }
 
 // ----------------------------------------------------
-// ENV VARIABLES MODAL
+// ENVIRONMENT VARIABLES MODAL
 // ----------------------------------------------------
 async function openEnvModal(projectId, projectName) {
   activeProjectIdForEnv = projectId;
-  document.getElementById('envModalTitle').innerText = `Environment: ${projectName}`;
+  document.getElementById('envModalTitle').innerText = `${projectName} — Environment`;
   const container = document.getElementById('envRowsContainer');
-  container.innerHTML = 'Loading variables...';
+  container.innerHTML = '<p class="rd-text-sub">Loading secrets...</p>';
 
   openModal('envModal');
 
@@ -356,18 +424,18 @@ async function openEnvModal(projectId, projectName) {
 function addEnvRow(key = '', val = '') {
   const container = document.getElementById('envRowsContainer');
   const div = document.createElement('div');
-  div.className = 'env-row';
+  div.className = 'rd-env-row';
   div.innerHTML = `
-    <input type="text" placeholder="KEY (e.g. API_KEY)" value="${key}" class="env-key">
+    <input type="text" placeholder="KEY" value="${key}" class="env-key">
     <input type="text" placeholder="VALUE" value="${val}" class="env-val">
-    <button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()">✕</button>
+    <button type="button" class="rd-btn rd-btn-danger rd-btn-sm" onclick="this.parentElement.remove()">✕</button>
   `;
   container.appendChild(div);
 }
 
 async function saveCurrentEnv() {
   if (!activeProjectIdForEnv) return;
-  const rows = document.querySelectorAll('#envRowsContainer .env-row');
+  const rows = document.querySelectorAll('#envRowsContainer .rd-env-row');
   const env = {};
 
   rows.forEach(r => {
@@ -385,7 +453,7 @@ async function saveCurrentEnv() {
     const json = await res.json();
     if (json.success) {
       closeModal('envModal');
-      alert('Environment variables updated! They will take effect on next start/restart.');
+      alert('Environment variables saved! They will take effect on next start or deploy.');
     } else {
       alert(`Failed to save env: ${json.error}`);
     }
