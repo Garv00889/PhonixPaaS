@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhonixPaaS - Battery-Aware Mobile PaaS</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- TOP TELEMETRY NAVBAR -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">🔥</div>
+      <div class="brand-text">
+        <h1>Phonix<span>PaaS</span></h1>
+        <span class="brand-badge" id="platformBadge">Detecting Device...</span>
+      </div>
+    </div>
+
+    <!-- Live Telemetry Badges -->
+    <div class="telemetry-bar">
+      <!-- Battery Status -->
+      <div class="telemetry-item" id="batteryWidget" title="Hardware Battery & Thermal Health">
+        <span class="telemetry-icon" id="batteryIcon">🔋</span>
+        <div class="telemetry-data">
+          <div class="telemetry-value"><span id="batteryPercent">--</span>% <span class="sub-val" id="batteryStatus">Charging</span></div>
+          <div class="telemetry-label">Temp: <span id="batteryTemp">--</span>°C</div>
+        </div>
+      </div>
+
+      <!-- RAM Usage -->
+      <div class="telemetry-item" title="Device Memory Consumption">
+        <span class="telemetry-icon">💾</span>
+        <div class="telemetry-data">
+          <div class="telemetry-value"><span id="memUsed">--</span> / <span id="memTotal">--</span> MB</div>
+          <div class="telemetry-label">RAM: <span id="memPercent">--</span>%</div>
+        </div>
+      </div>
+
+      <!-- CPU Usage -->
+      <div class="telemetry-item" title="CPU Architecture & Load">
+        <span class="telemetry-icon">⚡</span>
+        <div class="telemetry-data">
+          <div class="telemetry-value"><span id="cpuCores">--</span> Cores</div>
+          <div class="telemetry-label">Load: <span id="cpuLoad">--</span></div>
+        </div>
+      </div>
+
+      <!-- Master Sleep Button (Battery Saver) -->
+      <button class="btn btn-warning" id="btnMasterSleep" title="Puts all running projects into deep sleep to preserve battery">
+        <span class="btn-icon">⏸️</span> Sleep All
+      </button>
+
+      <!-- Cloudflare Tunnel Toggle -->
+      <div class="tunnel-pill" id="tunnelPill" title="Cloudflare Public Tunnel">
+        <span class="tunnel-dot"></span>
+        <span id="tunnelText">Local Only</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="container">
+    <!-- Sub-header -->
+    <div class="dashboard-header">
+      <div class="header-titles">
+        <h2>Hosted Projects</h2>
+        <p>Deploy repositories, manage environment variables, and toggle projects on/off to save phone resources.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" id="btnOpenNewProjectModal">
+          <span class="btn-icon">+</span> New Project
+        </button>
+      </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid" id="projectsGrid">
+      <!-- Project cards will be dynamically injected here -->
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading projects...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: NEW PROJECT -->
+  <div class="modal-backdrop" id="newProjectModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Deploy New Project</h3>
+        <button class="modal-close" onclick="closeModal('newProjectModal')">&times;</button>
+      </div>
+      <form id="newProjectForm">
+        <div class="form-group">
+          <label for="projectName">Project Name *</label>
+          <input type="text" id="projectName" placeholder="e.g. portfolio-website" required>
+          <span class="form-hint">Used for folder creation and local routing.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="gitUrl">Git Repository URL (Optional)</label>
+          <input type="url" id="gitUrl" placeholder="https://github.com/username/repo.git">
+          <span class="form-hint">Leave blank to create a clean starter template.</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gitBranch">Git Branch</label>
+            <input type="text" id="gitBranch" value="main">
+          </div>
+          <div class="form-group">
+            <label for="projectPort">Port (Auto-assigned if empty)</label>
+            <input type="number" id="projectPort" placeholder="e.g. 3001">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="buildCmd">Build Command (Optional)</label>
+          <input type="text" id="buildCmd" placeholder="npm install && npm run build">
+        </div>
+
+        <div class="form-group">
+          <label for="startCmd">Start Command</label>
+          <input type="text" id="startCmd" value="npm start" placeholder="npm start or node index.js">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('newProjectModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitProject">Deploy Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: LOGS VIEWER -->
+  <div class="modal-backdrop" id="logsModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 id="logsModalTitle">Project Logs</h3>
+          <span class="sub-val" id="logsModalSubtitle">Streaming output...</span>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn btn-sm btn-secondary" onclick="refreshCurrentLogs()">Refresh</button>
+          <button class="modal-close" onclick="closeModal('logsModal')">&times;</button>
+        </div>
+      </div>
+      <div class="terminal-body" id="terminalOutput">
+        <!-- Terminal lines -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ENV VARIABLES -->
+  <div class="modal-backdrop" id="envModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 id="envModalTitle">Environment Variables</h3>
+          <span class="sub-val">Injected into .env on launch</span>
+        </div>
+        <button class="modal-close" onclick="closeModal('envModal')">&times;</button>
+      </div>
+      <div class="env-editor">
+        <div id="envRowsContainer">
+          <!-- Dynamic key-value inputs -->
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="addEnvRow()">+ Add Variable</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('envModal')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveCurrentEnv()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
