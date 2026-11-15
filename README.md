@@ -7,6 +7,8 @@
 [![Architecture: ARM64](https://img.shields.io/badge/Arch-ARM64%20%7C%20x86__64-orange.svg)](#)
 [![Dockerless](https://img.shields.io/badge/Runtime-Dockerless%20%28%3C35MB%20RAM%29-purple.svg)](#)
 
+> 📖 **Read the Full Step-by-Step Guide**: [PHONE_SERVER_GUIDE.md](PHONE_SERVER_GUIDE.md) — A complete walkthrough on converting any old phone into a personal cloud server.
+
 ---
 
 ## 💡 Why PhonixPaaS?
