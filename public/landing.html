@@ -4,14 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PhonixPaaS — The Fastest Path to Production on Recycled Mobile Hardware</title>
+  <link rel="icon" type="image/png" href="https://media.brand.dev/aabde5a6-1777-4ee0-9ba3-71d36b608de8.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://media.brand.dev" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ==============================================================================
-       RENDER.COM EXACT DESIGN SYSTEM RECREATION
-       Colors: #8a05ff (Purple Climax), #040404 (Armor Wash), #111317 (Card Surface)
+       RENDER.COM OFFICIAL DESIGN SYSTEM & BRAND RETRIEVAL
+       Source: Brand.dev & Context.dev
+       Colors: #8a05ff (Purple Climax), #040404 (Armor Wash), #8d3dd8 (Thick Purple),
+               #d59afc (Plasma Trail), #e2e2ef (Icy Lavender)
        ============================================================================== */
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('https://media.brand.dev/fonts/1a020a0ccc2b29ad091b713864b135d9f7fb6d3114e69620f6d56eeb9abefbcc.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('https://media.brand.dev/fonts/11a1b227a4f432bdc5587a529d34a46abbed7067b6e1fb913db0c489c7175828.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('https://media.brand.dev/fonts/dbe3ffb91c68d5dcda6a66581c481a69e96dabe1abc48c9fc8b80d64793589b1.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+
     :root {
       --rd-bg: #040404;
       --rd-surface: #0e1015;
@@ -21,9 +44,14 @@
       --rd-border-subtle: rgba(255, 255, 255, 0.04);
       --rd-border-hover: rgba(255, 255, 255, 0.16);
       
-      --rd-purple: #8a05ff;
+      /* OFFICIAL BRAND RETRIEVAL PALETTE */
+      --rd-purple: #8a05ff;              /* Purple Climax */
       --rd-purple-light: #9d3bff;
-      --rd-purple-glow: rgba(138, 5, 255, 0.25);
+      --rd-purple-glow: rgba(138, 5, 255, 0.35);
+      --rd-thick-purple: #8d3dd8;        /* Thick Purple */
+      --rd-plasma-trail: #d59afc;        /* Plasma Trail */
+      --rd-icy-lavender: #e2e2ef;        /* Icy Lavender */
+      --rd-armor-wash: #040404;          /* Armor Wash */
       
       --rd-green: #30a46c;
       --rd-green-bg: rgba(48, 164, 108, 0.12);
@@ -32,7 +60,7 @@
       --rd-text-muted: #9aa5b5;
       --rd-text-sub: #5f6876;
 
-      --rd-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rd-font-sans: 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --rd-font-mono: 'JetBrains Mono', monospace;
     }
 
@@ -180,12 +208,15 @@
 
     .rd-hero-glow {
       position: absolute;
-      top: -120px;
+      top: -140px;
       left: 50%;
       transform: translateX(-50%);
-      width: 600px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(138, 5, 255, 0.18) 0%, rgba(4, 4, 4, 0) 70%);
+      width: 1000px;
+      height: 560px;
+      background: radial-gradient(circle at 50% 30%, rgba(138, 5, 255, 0.45) 0%, rgba(141, 61, 216, 0.25) 35%, rgba(4, 4, 4, 0.95) 75%), url('https://media.brand.dev/97c59fc1-914b-4b29-b6eb-e02abce26118.png') no-repeat center top;
+      background-size: cover;
+      opacity: 0.65;
+      filter: blur(14px);
       pointer-events: none;
       z-index: 0;
     }
@@ -447,7 +478,7 @@
 
   <!-- TOP BANNER -->
   <div class="rd-banner">
-    <span>✨ Introducing PhonixPaaS: The battery-aware personal PaaS for recycled mobile hardware.</span>
+    <span>✨ Build and run apps with free Cloudflare SSL, global tunneling, and automatic Git deploys on your recycled phone.</span>
     <a href="/index.html">Launch Dashboard →</a>
   </div>
 
@@ -455,12 +486,8 @@
   <header class="rd-nav">
     <div class="rd-nav-left">
       <a href="/landing.html" class="rd-brand">
-        <div class="rd-logo-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M7 16V8L12 12L17 8V16" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span>Phonix</span>
+        <img src="https://media.brand.dev/aabde5a6-1777-4ee0-9ba3-71d36b608de8.png" width="28" height="28" alt="Render Logo" style="border-radius: 6px;">
+        <span>Phonix<span style="color: var(--rd-purple);">PaaS</span></span>
       </a>
 
       <ul class="rd-nav-links">
@@ -639,11 +666,15 @@
 
   <!-- FOOTER -->
   <footer class="rd-footer">
-    <p>PhonixPaaS — Open-source mobile PaaS. Inspired by the Render.com design language.</p>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+      <img src="https://media.brand.dev/98f8abd7-0c0e-41ae-b404-022ab420e7f2.svg" alt="Render" style="height: 18px; filter: brightness(0) invert(1); opacity: 0.85;">
+      <span style="color: var(--rd-text-sub); font-size: 13px;">Design Language & Brand Retrieval</span>
+    </div>
+    <p>PhonixPaaS — Open-source mobile PaaS. Built with Render.com design language & Context.dev brand extraction.</p>
     <div style="margin-top: 14px;">
       <a href="/index.html">Dashboard</a>
       <a href="/PHONE_SERVER_GUIDE.md">Documentation</a>
-      <a href="https://github.com">GitHub Repository</a>
+      <a href="https://x.com/render" target="_blank" rel="noopener">@render on X</a>
     </div>
   </footer>
 
