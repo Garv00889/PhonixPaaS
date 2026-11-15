@@ -4,17 +4,112 @@ const path = require('path');
 const fs = require('fs');
 
 const db = require('./lib/db');
+const auth = require('./lib/auth');
 const telemetry = require('./lib/telemetry');
 const git = require('./lib/git');
 const processManager = require('./lib/process-manager');
 const tunnel = require('./lib/tunnel');
+
+// Ensure default administrator account is seeded
+auth.ensureDefaultAdmin();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
+
+// ----------------------------------------------------
+// CORE PAGE ROUTES (REGISTERED BEFORE STATIC FILE SERVING)
+// ----------------------------------------------------
+app.get(['/', '/index.html'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get(['/landing', '/landing.html'], (req, res) => res.redirect('/'));
+
+app.get('/login', (req, res) => {
+  const token = auth.extractToken(req);
+  const session = auth.verifySessionToken(token);
+  if (session && !req.query.force && !req.query.redirect) {
+    return res.redirect('/dashboard');
+  }
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get(['/dashboard', '/dashboard.html'], auth.requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
+// Static assets
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ----------------------------------------------------
+// AUTHENTICATION API ENDPOINTS
+// ----------------------------------------------------
+app.post('/api/auth/login', (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Email and password are required.' });
+    }
+    const user = auth.authenticate(email, password);
+    if (!user) {
+      return res.status(401).json({ success: false, error: 'Invalid email or password.' });
+    }
+    const token = auth.createSessionToken(user);
+    res.setHeader('Set-Cookie', `phonix_token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 3600}`);
+    res.json({ success: true, token, user });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/auth/register', (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Email and password are required.' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ success: false, error: 'Password must be at least 6 characters long.' });
+    }
+    const user = auth.createUser({ name, email, password });
+    const token = auth.createSessionToken(user);
+    res.setHeader('Set-Cookie', `phonix_token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 3600}`);
+    res.json({ success: true, token, user });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/api/auth/me', (req, res) => {
+  const token = auth.extractToken(req);
+  const session = auth.verifySessionToken(token);
+  if (!session) {
+    return res.status(401).json({ success: false, error: 'Not authenticated' });
+  }
+  res.json({ success: true, user: session });
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  res.setHeader('Set-Cookie', 'phonix_token=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0');
+  res.json({ success: true, message: 'Logged out successfully.' });
+});
+
+app.post('/api/auth/forgot-password', (req, res) => {
+  const { email } = req.body;
+  db.logActivity({
+    type: 'SYSTEM',
+    title: 'Password Reset Requested',
+    message: `Password reset request received for ${email || 'unknown'} on node.`,
+    status: 'WARN'
+  });
+  res.json({
+    success: true,
+    message: 'Reset authorization logged on edge node. You can also sign in using the demo admin account.'
+  });
+});
 
 // Optional API Key protection middleware for admin write actions
 app.use((req, res, next) => {
@@ -101,7 +196,7 @@ app.get('/api/projects', (req, res) => {
   }
 });
 
-app.post('/api/projects', async (req, res) => {
+app.post('/api/projects', auth.requireAuth, async (req, res) => {
   try {
     const { 
       name, 
@@ -199,7 +294,7 @@ app.post('/api/projects', async (req, res) => {
   }
 });
 
-app.post('/api/projects/:id/start', async (req, res) => {
+app.post('/api/projects/:id/start', auth.requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await processManager.startProject(id);
@@ -209,7 +304,7 @@ app.post('/api/projects/:id/start', async (req, res) => {
   }
 });
 
-app.post('/api/projects/:id/stop', async (req, res) => {
+app.post('/api/projects/:id/stop', auth.requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await processManager.stopProject(id);
@@ -219,7 +314,7 @@ app.post('/api/projects/:id/stop', async (req, res) => {
   }
 });
 
-app.post('/api/projects/:id/redeploy', async (req, res) => {
+app.post('/api/projects/:id/redeploy', auth.requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const project = db.getProjectById(id);
@@ -240,7 +335,7 @@ app.post('/api/projects/:id/redeploy', async (req, res) => {
   }
 });
 
-app.post('/api/projects/:id/rollback', async (req, res) => {
+app.post('/api/projects/:id/rollback', auth.requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { deploymentId } = req.body;
@@ -285,7 +380,7 @@ app.put('/api/projects/:id/env', (req, res) => {
   }
 });
 
-app.delete('/api/projects/:id', async (req, res) => {
+app.delete('/api/projects/:id', auth.requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     await processManager.stopProject(id);

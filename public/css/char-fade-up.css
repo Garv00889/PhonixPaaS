@@ -1,0 +1,116 @@
+/* ==============================================================================
+   PHONIXPAAS — WORD-BY-WORD FADE-UP ANIMATION SYSTEM
+   "Smooth, not too fast, best looking"
+   Staggered Word Reveal Engine throughout the platform
+   ============================================================================== */
+
+/* 1. KEYFRAME ANIMATIONS */
+
+/* Standard smooth word fade up */
+@keyframes phonixWordFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) translateZ(0);
+    filter: blur(3px);
+  }
+  65% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+    filter: blur(0px);
+  }
+}
+
+/* Gradient-safe word fade (preserves continuous gradient without layer detachment) */
+@keyframes phonixGradWordFade {
+  0% {
+    opacity: 0;
+    filter: blur(3px);
+  }
+  65% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* 2. STRUCTURAL CLASSES */
+
+/* Parent container prepared for word reveal */
+[data-char-split="true"] {
+  text-rendering: optimizeLegibility;
+}
+
+/* Word wrapper: animating block for each word */
+.char-fade-word {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+  opacity: 0;
+  transform: translateY(16px) translateZ(0);
+  filter: blur(3px);
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Space wrapper: ensures spacing is faithful across all browser engines */
+.char-fade-space {
+  display: inline;
+  white-space: pre;
+}
+
+/* 3. REVEAL TRIGGER (ACTIVATED VIA INTERSECTION OBSERVER OR DIRECT LOAD) */
+
+.char-revealed .char-fade-word,
+.char-revealed.char-fade-word {
+  animation: phonixWordFadeUp 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--word-delay, 0s);
+}
+
+/* Keep fully visible and clean after animation completes */
+.char-animated .char-fade-word,
+.char-revealed.char-done .char-fade-word {
+  opacity: 1;
+  transform: translateY(0) translateZ(0);
+  filter: none;
+  animation: none;
+}
+
+/* 4. GRADIENT TEXT HANDLING */
+/* Elements with background-clip: text must retain continuous gradient.
+   In Blink, children inside -webkit-background-clip: text MUST be display: inline
+   to prevent atomic inline-block box layer detachments. */
+.rd-gradient-text .char-fade-word,
+[data-is-gradient="true"] .char-fade-word {
+  display: inline !important;
+  transform: none !important;
+  color: inherit;
+  -webkit-text-fill-color: inherit;
+  animation: phonixGradWordFade 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  animation-delay: var(--word-delay, 0s) !important;
+}
+
+.rd-gradient-text {
+  display: inline-block;
+}
+
+/* 5. INTERACTIVE & SELECTION ENHANCEMENT */
+::selection {
+  background: rgba(138, 5, 255, 0.4);
+  color: #ffffff;
+}
+
+/* 6. REDUCED MOTION PREFERENCE (A11Y) */
+@media (prefers-reduced-motion: reduce) {
+  .char-fade-word {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+  }
+}

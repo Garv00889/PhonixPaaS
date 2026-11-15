@@ -4,4 +4,6 @@ data/projects.json
 *.log
 .env
 .agents/
-
+.cursor/
+.chrome-test-profile*
+*.png

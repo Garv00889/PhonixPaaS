@@ -1,940 +1,1344 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhonixPaaS Dashboard — Self-Hosted Mobile PaaS</title>
-  <link rel="icon" type="image/png" href="https://media.brand.dev/aabde5a6-1777-4ee0-9ba3-71d36b608de8.png">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://media.brand.dev" crossorigin>
-  <!-- Neue Montreal Font Preloads (Render Official Typography) -->
-  <link rel="preload" href="https://media.brand.dev/fonts/1a020a0ccc2b29ad091b713864b135d9f7fb6d3114e69620f6d56eeb9abefbcc.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://media.brand.dev/fonts/11a1b227a4f432bdc5587a529d34a46abbed7067b6e1fb913db0c489c7175828.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://media.brand.dev/fonts/dbe3ffb91c68d5dcda6a66581c481a69e96dabe1abc48c9fc8b80d64793589b1.woff2" as="font" type="font/woff2" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-</head>
-<body class="render-app">
-  <!-- FULL WEBSITE BACKGROUND ANIMATION (ThreeUI Signal Particles @ 0.20s) -->
-  <div id="website-animation-bg" class="shader-frame" style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden;">
-    <iframe id="globalBgShaderIframe" src="/scene/?mode=light&speed=0.20" style="width: 100%; height: 100%; border: 0; display: block;" title="ThreeUI Signal Particles Background"></iframe>
-  </div>
-
-  <div class="render-layout" style="position: relative; z-index: 1;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhonixPaaS | The Battery-Aware, Self-Hosted Mobile PaaS</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef233c'><path d='M12 2c1.1 0 2 .9 2 2 0 .7-.4 1.4-1 1.7V8h4c1.1 0 2 .9 2 2v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2h-4v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2s-2-.9-2-2c0-.7.4-1.4 1-1.7V18H8c-1.1 0-2-.9-2-2v-2.3c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2h4V5.7c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2z'/></svg>">
     
-    <!-- LEFT SIDEBAR -->
-    <aside class="rd-sidebar" id="appSidebar">
-      <!-- Top Workspace Selector -->
-      <div class="rd-sidebar-header">
-        <div class="rd-logo" title="Render Design Language">
-          <!-- Official Render organic glyph (brand.dev extraction) -->
-          <svg width="22" height="22" viewBox="0 0 21 21" fill="currentColor">
-            <path d="M15.6491 0.00582604C12.9679 -0.120371 10.7133 1.81847 10.3286 4.373C10.3134 4.49154 10.2905 4.60627 10.2715 4.72099C9.67356 7.90268 6.88955 10.3119 3.5457 10.3119C2.35364 10.3119 1.23395 10.006 0.258977 9.47058C0.140914 9.40557 0 9.4897 0 9.62354V10.3081V20.6218H10.2677V12.8894C10.2677 11.4668 11.4178 10.3119 12.8346 10.3119H15.4015C18.3074 10.3119 20.6458 7.89121 20.5315 4.94662C20.4287 2.29649 18.2884 0.132023 15.6491 0.00582604Z"/>
-          </svg>
-        </div>
-        <div class="rd-workspace-selector" id="workspaceDropdown" onclick="switchView('settings')">
-          <div class="rd-avatar-circle" id="workspaceAvatar">M</div>
-          <span class="rd-workspace-name" id="workspaceTitle">My Workspace</span>
-          <svg class="rd-chevron-updown" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
-          </svg>
-        </div>
-      </div>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              noir: {
+                950: '#030303',
+                900: '#070707',
+                850: '#0c0c0c',
+                800: '#121212',
+                750: '#181818',
+                700: '#202020',
+              },
+              brand: {
+                red: '#ef233c',
+                redhover: '#d90429',
+                reddark: '#8d0801',
+              }
+            }
+          }
+        }
+      }
+    </script>
 
-      <!-- Navigation Links -->
-      <nav class="rd-sidebar-nav">
-        <!-- Section: OVERVIEW -->
-        <div class="rd-nav-group">
-          <a href="#dashboard" class="rd-nav-item active" data-view="dashboard">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-            <span>Dashboard & Health</span>
-          </a>
+    <!-- Iconify CDN -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
-          <a href="#projects" class="rd-nav-item" data-view="projects">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="5" r="3"></circle>
-              <circle cx="5" cy="19" r="3"></circle>
-              <circle cx="19" cy="19" r="3"></circle>
-              <line x1="12" y1="8" x2="5" y2="16"></line>
-              <line x1="12" y1="8" x2="19" y2="16"></line>
-            </svg>
-            <span>Projects & Services</span>
-          </a>
-        </div>
+    <!-- Google Fonts: Manrope, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        <!-- Section: DEPLOYMENTS -->
-        <div class="rd-nav-section-title">DEPLOYMENTS & GIT</div>
-        <div class="rd-nav-group">
-          <a href="#deployments" class="rd-nav-item" data-view="deployments">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
-            </svg>
-            <span>Deployments & Releases</span>
-          </a>
-        </div>
+    <style>
+        :root {
+            --accent-red: #ef233c;
+            --accent-red-hover: #d90429;
+            --accent-red-glow: rgba(239, 35, 60, 0.45);
+            --noir-bg: #000000;
+        }
 
-        <!-- Section: NETWORKING -->
-        <div class="rd-nav-section-title">NETWORKING</div>
-        <div class="rd-nav-group">
-          <a href="#networking" class="rd-nav-item" data-view="networking">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-            <span>Tunnels, Domains & Ports</span>
-          </a>
-        </div>
+        /* -------------------------------------------------------------
+           FLUID, SMOOTH, RELAXING ANIMATIONS & TIMINGS
+           ------------------------------------------------------------- */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(22px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        <!-- Section: MONITORING -->
-        <div class="rd-nav-section-title">MONITORING</div>
-        <div class="rd-nav-group">
-          <a href="#monitoring" class="rd-nav-item" data-view="monitoring">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-            </svg>
-            <span>Hardware, Battery & Logs</span>
-          </a>
-        </div>
+        @keyframes border-spin {
+            from { --gradient-angle: 0deg; }
+            to { --gradient-angle: 360deg; }
+        }
 
-        <!-- Section: DEVELOPER TOOLS -->
-        <div class="rd-nav-section-title">DEVELOPER TOOLS</div>
-        <div class="rd-nav-group">
-          <a href="#devtools" class="rd-nav-item" data-view="devtools">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="4 17 10 11 4 5"></polyline>
-              <line x1="12" y1="19" x2="20" y2="19"></line>
-            </svg>
-            <span>Console, Webhooks & Env</span>
-          </a>
-        </div>
+        @keyframes animStar {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-2000px); }
+        }
 
-        <!-- Section: INFRASTRUCTURE -->
-        <div class="rd-nav-section-title">INFRASTRUCTURE</div>
-        <div class="rd-nav-group">
-          <a href="#infrastructure" class="rd-nav-item" data-view="infrastructure">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-              <line x1="6" y1="6" x2="6.01" y2="6"></line>
-              <line x1="6" y1="18" x2="6.01" y2="18"></line>
-            </svg>
-            <span>Node Specs & Power</span>
-          </a>
-        </div>
+        /* Organic Fluid Mesh Drifts (Relaxing 24s-32s cycles) */
+        @keyframes fluid-drift-1 {
+            0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate3d(90px, -60px, 0) scale(1.16) rotate(35deg); }
+            66% { transform: translate3d(-70px, 50px, 0) scale(0.92) rotate(-25deg); }
+            100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        }
 
-        <!-- Section: INTEGRATIONS -->
-        <div class="rd-nav-section-title">INTEGRATIONS</div>
-        <div class="rd-nav-group">
-          <a href="#integrations" class="rd-nav-item" data-view="integrations">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.2z"></path>
-            </svg>
-            <span>Cloudflare, Git & DBs</span>
-          </a>
-        </div>
+        @keyframes fluid-drift-2 {
+            0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+            40% { transform: translate3d(-110px, 80px, 0) scale(1.22) rotate(-45deg); }
+            75% { transform: translate3d(80px, -50px, 0) scale(0.88) rotate(30deg); }
+            100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        }
 
-        <!-- Section: WORKSPACE -->
-        <div class="rd-nav-section-title">SETTINGS</div>
-        <div class="rd-nav-group">
-          <a href="#settings" class="rd-nav-item" data-view="settings">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-            <span>Platform Settings</span>
-          </a>
-        </div>
-      </nav>
+        @keyframes fluid-drift-3 {
+            0% { transform: translate3d(0, 0, 0) scale(1.05); }
+            50% { transform: translate3d(60px, 90px, 0) scale(0.94); }
+            100% { transform: translate3d(0, 0, 0) scale(1.05); }
+        }
 
-      <!-- Sidebar Footer -->
-      <div class="rd-sidebar-footer">
-        <a href="/landing.html" class="rd-footer-item" target="_blank">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-          <span>Landing Page ↗</span>
-        </a>
-        <a href="/PHONE_SERVER_GUIDE.md" class="rd-footer-item" target="_blank">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-          </svg>
-          <span>Termux Guide</span>
-        </a>
-        <a href="#" class="rd-footer-item" id="sidebarSleepBtn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="6" y="4" width="4" height="16"></rect>
-            <rect x="14" y="4" width="4" height="16"></rect>
-          </svg>
-          <span>Master Sleep</span>
-        </a>
-      </div>
-    </aside>
+        @property --gradient-angle { 
+            syntax: "<angle>"; 
+            initial-value: 0deg; 
+            inherits: false; 
+        }
 
-    <!-- MAIN APP CANVAS -->
-    <div class="rd-main-wrapper">
-      
-      <!-- TOP HEADER BAR -->
-      <header class="rd-topbar">
-        <div class="rd-topbar-left">
-          <button class="rd-btn-icon-only rd-mobile-toggle" id="mobileMenuBtn" style="margin-right: 8px;">☰</button>
-          <div class="rd-topbar-breadcrumb">
-            <span id="breadcrumbSection">Overview</span>
-            <span style="opacity: 0.4;">/</span>
-            <span id="breadcrumbPage" style="font-weight: 500; color: var(--rd-text-main);">Dashboard</span>
-          </div>
-        </div>
+        .animate-fade-up {
+            animation: fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
-        <div class="rd-topbar-right">
-          <!-- Global Search box -->
-          <div style="position: relative;">
-            <button class="rd-search-trigger" id="globalSearchBtn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" id="projectSearchInput" placeholder="Search services..." style="background:transparent; border:none; color:inherit; font-size:12px; outline:none; width:120px;">
-              <kbd>^ K</kbd>
-            </button>
-          </div>
+        .font-manrope { font-family: 'Manrope', -apple-system, sans-serif; }
+        .font-inter { font-family: 'Inter', -apple-system, sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-          <!-- Hardware Telemetry Live Pill -->
-          <div class="rd-topbar-pill" id="telemetryPill" title="Device Battery, Voltage & CPU Temperature" onclick="switchView('monitoring')" style="cursor: pointer;">
-            <span class="rd-live-dot" id="telemetryDot"></span>
-            <span id="topbarBattery">--%</span>
-            <span class="rd-pill-sep">|</span>
-            <span id="topbarTemp">--°C</span>
-          </div>
+        /* Fluid Blobs */
+        .fluid-orb {
+            position: absolute;
+            border-radius: 9999px;
+            pointer-events: none;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        .fluid-orb-1 {
+            width: 850px;
+            height: 850px;
+            background: radial-gradient(circle at center, rgba(239, 35, 60, 0.16) 0%, rgba(217, 4, 41, 0.08) 45%, transparent 72%);
+            filter: blur(120px);
+            animation: fluid-drift-1 26s ease-in-out infinite;
+        }
+        .fluid-orb-2 {
+            width: 750px;
+            height: 750px;
+            background: radial-gradient(circle at center, rgba(141, 8, 1, 0.22) 0%, rgba(74, 5, 5, 0.12) 50%, transparent 75%);
+            filter: blur(130px);
+            animation: fluid-drift-2 32s ease-in-out infinite;
+        }
+        .fluid-orb-3 {
+            width: 900px;
+            height: 600px;
+            background: radial-gradient(ellipse at center, rgba(239, 35, 60, 0.1) 0%, rgba(141, 8, 1, 0.05) 55%, transparent 75%);
+            filter: blur(140px);
+            animation: fluid-drift-3 28s ease-in-out infinite;
+        }
 
-          <!-- Theme Toggle (Light / Dark) -->
-          <button class="rd-theme-toggle" id="themeToggleBtn" title="Switch Theme">
-            <span id="themeToggleIcon">☀️</span>
-            <span id="themeToggleText">Light</span>
-          </button>
+        /* Film Grain Noise Texture (Tactile Physical Feel) */
+        .noise-grain-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 25;
+            opacity: 0.045;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
 
-          <!-- + New Button -->
-          <button class="rd-btn-new" id="btnOpenNewProjectModal">
-            + New
-          </button>
+        /* Scroll Progress Bar at the top of the viewport */
+        #scrollProgressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2.5px;
+            background: linear-gradient(90deg, #ef233c, #ff4d6d, #ef233c);
+            transform-origin: 0% 50%;
+            transform: scaleX(0);
+            z-index: 60;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(239, 35, 60, 0.8), 0 0 5px rgba(255, 77, 109, 0.5);
+            transition: transform 0.08s ease-out;
+            will-change: transform;
+        }
 
-          <!-- User Avatar -->
-          <div class="rd-user-avatar" title="Logged in as Admin" onclick="switchView('settings')" style="cursor: pointer;">G</div>
-        </div>
-      </header>
+        /* -------------------------------------------------------------
+           SCROLL-REVEAL REFINED SYSTEM (Smooth, Relaxing, Blur & Scale)
+           ------------------------------------------------------------- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(28px) scale(0.985);
+            filter: blur(6px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform, filter;
+        }
 
-      <!-- CONTENT BODY -->
-      <main class="rd-content-body">
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0px);
+        }
+
+        /* Staggered Delay Helpers */
+        .stagger-1 { transition-delay: 0.06s; }
+        .stagger-2 { transition-delay: 0.14s; }
+        .stagger-3 { transition-delay: 0.22s; }
+        .stagger-4 { transition-delay: 0.30s; }
+        .stagger-5 { transition-delay: 0.38s; }
+        .stagger-6 { transition-delay: 0.46s; }
+
+        /* Shiny CTA Button with Smooth Border Glow */
+        .shiny-cta {
+            --gradient-angle: 0deg;
+            position: relative;
+            overflow: hidden;
+            border-radius: 9999px;
+            padding: 0.95rem 2.4rem;
+            background: linear-gradient(#000000, #000000) padding-box,
+            conic-gradient(from var(--gradient-angle), transparent 0%, #ef233c 6%, #ef233c 16%, #ef233c 30%, transparent 42%, transparent 100%) border-box;
+            border: 2px solid transparent;
+            cursor: pointer;
+            isolation: isolate;
+            animation: border-spin 3s linear infinite;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .shiny-cta:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 35px rgba(239, 35, 60, 0.45);
+        }
+
+        .shiny-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, white 0.6px, transparent 0);
+            background-size: 5px 5px;
+            opacity: 0.12;
+            z-index: 0;
+        }
+
+        /* Parallax Ambient Stars */
+        .stars-1 {
+            box-shadow: 234px 124px #fff, 654px 345px #fff, 876px 12px #fff, 1200px 800px #fff,
+                        400px 1500px #fff, 1800px 200px #fff, 100px 1000px #fff, 900px 1900px #fff,
+                        500px 600px #fff, 1400px 100px #fff, 300px 400px #fff, 1600px 1200px #fff;
+            opacity: 0.7;
+        }
+        .stars-2 {
+            box-shadow: 123px 456px #fff, 789px 234px #fff, 456px 890px #fff, 1100px 300px #fff,
+                        200px 1200px #fff, 1500px 500px #fff, 600px 1700px #fff, 1300px 900px #fff;
+            opacity: 0.5;
+        }
+
+        /* Top & Bottom Depth Masks */
+        .gradient-blur {
+            position: fixed;
+            z-index: 40;
+            inset: 0 0 auto 0;
+            height: 120px;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.88), transparent);
+            backdrop-filter: blur(12px);
+            mask-image: linear-gradient(to bottom, black, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+        }
+
+        .selection-red::selection {
+            background: #ef233c;
+            color: #ffffff;
+        }
+
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.14);
+            color: transparent;
+        }
+
+        /* Smooth Glass Card Styling */
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 20, 20, 0.6) 0%, rgba(6, 6, 6, 0.75) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(239, 35, 60, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(239, 35, 60, 0.12);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020202;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f1f1f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef233c;
+        }
+
+        /* Modal Backdrop */
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-container {
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.open .modal-container {
+            transform: scale(1) translateY(0);
+        }
+    </style>
+</head>
+<body class="selection-red bg-black text-white font-inter relative overflow-x-hidden antialiased">
+
+    <!-- Top Glowing Scroll Progress Indicator -->
+    <div id="scrollProgressBar"></div>
+
+    <!-- Film Grain / Gradient Noise Texture (Tactile Physical Feel) -->
+    <div class="noise-grain-overlay"></div>
+
+    <!-- Interactive Fluid Cursor Ambient Spotlight -->
+    <div id="fluidMouseGlow" class="fixed pointer-events-none rounded-full w-[650px] h-[650px] bg-red-600/[0.07] blur-[130px] z-10 -translate-x-1/2 -translate-y-1/2 opacity-0 md:opacity-100 will-change-transform"></div>
+
+    <!-- Global Background Elements (Fluid Organic Aurora & Starfield with Parallax) -->
+    <div id="backgroundContainer" class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <!-- Deep Noir Radial Vignette -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#1b0505] via-[#090202] to-black"></div>
         
-        <!-- ==============================================================================
-             VIEW 1: DASHBOARD & SYSTEM HEALTH
-             ============================================================================== -->
-        <div class="rd-view active" id="view-dashboard">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Workspace Dashboard</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Real-time system telemetry and production overview on mobile node.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="rd-mini-btn" onclick="handleMasterSleep()">⏸ Master Sleep</button>
-              <button class="rd-btn-new" onclick="openModal('newProjectModal')">+ Create Service</button>
-            </div>
-          </div>
+        <!-- Fluid Breathing Orbs (Organic Aurora Mesh) -->
+        <div class="fluid-orb fluid-orb-1 top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="fluid-orb fluid-orb-2 top-3/4 left-1/3 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="fluid-orb fluid-orb-3 top-2/3 right-1/4 -translate-y-1/2"></div>
 
-          <!-- 4 Stats Cards Grid -->
-          <div class="rd-stats-grid">
-            <!-- Stat 1: Active Services -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>Active Services</span>
-                <span class="rd-badge rd-badge-success">Live</span>
-              </div>
-              <div class="rd-stat-val" id="statActiveServices">-- / --</div>
-              <div class="rd-stat-sub">
-                <span>Total registered projects on node</span>
-              </div>
-            </div>
+        <!-- Parallax Animated Stars -->
+        <div class="absolute top-0 left-0 w-[1px] h-[1px] bg-transparent stars-1 animate-[animStar_60s_linear_infinite]"></div>
+        <div class="absolute top-0 left-0 w-[2px] h-[2px] bg-transparent stars-2 animate-[animStar_90s_linear_infinite]"></div>
 
-            <!-- Stat 2: Phone Battery & Power -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>Battery & Power</span>
-                <span class="rd-badge rd-badge-success" id="statBatteryStatusBadge">Charging</span>
-              </div>
-              <div class="rd-stat-val" id="statBatteryVal">--%</div>
-              <div class="rd-stat-sub" id="statBatterySub">
-                <span>Temp: --°C · Voltage: --</span>
-              </div>
-              <div class="rd-progress-bar">
-                <div class="rd-progress-fill green" id="statBatteryBar" style="width: 50%;"></div>
-              </div>
-            </div>
+        <!-- 40px Microgrid Pattern with Radial Contrast Fade -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)]"></div>
+    </div>
 
-            <!-- Stat 3: Memory Utilization -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>RAM Utilization</span>
-                <span id="statRamPercent">--%</span>
-              </div>
-              <div class="rd-stat-val" id="statRamVal">-- MB</div>
-              <div class="rd-stat-sub" id="statRamSub">
-                <span>Free: -- MB of -- MB</span>
-              </div>
-              <div class="rd-progress-bar">
-                <div class="rd-progress-fill" id="statRamBar" style="width: 50%;"></div>
-              </div>
-            </div>
+    <!-- Top Gradient Blur Header Mask -->
+    <div class="gradient-blur"></div>
 
-            <!-- Stat 4: Flash Storage Free -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>Storage Space</span>
-                <span id="statStoragePercent">--%</span>
-              </div>
-              <div class="rd-stat-val" id="statStorageVal">-- GB</div>
-              <div class="rd-stat-sub" id="statStorageSub">
-                <span>Free: -- GB of -- GB</span>
-              </div>
-              <div class="rd-progress-bar">
-                <div class="rd-progress-fill green" id="statStorageBar" style="width: 50%;"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Actions & Ingress Summary -->
-          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--rd-space-sm); margin-bottom: var(--rd-space-md);">
-            <div class="rd-settings-card" style="margin-bottom: 0;">
-              <h3 class="rd-settings-card-title">Cloudflare Public Ingress</h3>
-              <p class="rd-settings-card-desc">Zero-config encrypted tunnel allowing external HTTPS traffic to your phone without router port-forwarding.</p>
-              <div style="display: flex; align-items: center; justify-content: space-between; background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px 16px;">
-                <div>
-                  <div style="font-size: 11px; text-transform: uppercase; color: var(--rd-text-sub); font-weight: 600;">Edge Ingress URL</div>
-                  <div id="dashTunnelUrl" style="font-family: var(--rd-font-mono); font-size: 13px; font-weight: 500; color: var(--rd-brand-purple); margin-top: 2px;">
-                    Tunnel is Standby
-                  </div>
+    <!-- Floating Pill Navbar -->
+    <header class="fixed top-0 left-0 w-full z-50 pt-5 px-4">
+        <nav class="max-w-6xl mx-auto flex items-center justify-between bg-black/65 backdrop-blur-2xl border border-white/10 rounded-full px-6 py-3 shadow-[0_10px_35px_rgba(0,0,0,0.6)]">
+            <!-- Brand Logo -->
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-6 h-6 bg-[#ef233c] rounded-sm rotate-45 flex items-center justify-center shadow-[0_0_18px_rgba(239,35,60,0.7)] group-hover:rotate-90 transition-transform duration-500 ease-out">
+                    <iconify-icon icon="lucide:flame" class="-rotate-45 group-hover:-rotate-90 transition-transform duration-500 text-black text-xs font-bold"></iconify-icon>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                  <button class="rd-mini-btn" id="dashTunnelCopyBtn" onclick="copyDashTunnelUrl()">Copy URL</button>
-                  <button class="rd-mini-btn" id="dashTunnelToggleBtn" onclick="toggleTunnelAction()">Start Tunnel</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="rd-settings-card" style="margin-bottom: 0;">
-              <h3 class="rd-settings-card-title">Thermal Safety Guard</h3>
-              <p class="rd-settings-card-desc">Automatic scale-to-zero when device exceeds 43°C to safeguard Lithium-ion battery.</p>
-              <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
-                <span class="rd-badge rd-badge-success" id="thermalGuardStatus">Safety Active</span>
-                <span style="font-size: 12px; color: var(--rd-text-muted);">Threshold: 43°C</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recent Activity Log Section -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-              <h3 class="rd-settings-card-title" style="margin-bottom: 0;">Recent Platform Activity</h3>
-              <button class="rd-mini-btn" onclick="fetchActivity()">Refresh Log</button>
-            </div>
-            <div class="rd-activity-list" id="dashboardActivityList">
-              <p style="color: var(--rd-text-sub); font-size: 12px;">Loading recent events...</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 2: PROJECTS & SERVICES MANAGEMENT
-             ============================================================================== -->
-        <div class="rd-view" id="view-projects">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Projects & Services</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Native ARM64 processes running isolated in user space.</p>
-            </div>
-            <button class="rd-btn-new" onclick="openModal('newProjectModal')">+ New Service</button>
-          </div>
-
-          <!-- Tabs for Filtering Projects -->
-          <div class="rd-tabs-row" id="projectFilterTabs">
-            <button class="rd-tab-pill active" data-filter="all">All Services (<span id="countAll">0</span>)</button>
-            <button class="rd-tab-pill" data-filter="running">Running (<span id="countRunning">0</span>)</button>
-            <button class="rd-tab-pill" data-filter="stopped">Standby (<span id="countStopped">0</span>)</button>
-            <button class="rd-tab-pill" data-filter="web-service">Web Services</button>
-            <button class="rd-tab-pill" data-filter="static-site">Static Sites</button>
-            <button class="rd-tab-pill" data-filter="api">APIs</button>
-          </div>
-
-          <!-- Projects Grid -->
-          <div class="rd-projects-grid" id="projectsGrid">
-            <div class="rd-loading-card">
-              <div class="rd-spinner"></div>
-              <p>Connecting to Phone Node...</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 3: DEPLOYMENTS & RELEASES
-             ============================================================================== -->
-        <div class="rd-view" id="view-deployments">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Deployments & Releases</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Audit trail of git commits, build outputs, and 1-click rollback releases.</p>
-            </div>
-            <button class="rd-mini-btn" onclick="fetchDeployments()">Refresh History</button>
-          </div>
-
-          <!-- Deployments Table -->
-          <div class="rd-table-container">
-            <table class="rd-table">
-              <thead>
-                <tr>
-                  <th class="rd-th">Version</th>
-                  <th class="rd-th">Service</th>
-                  <th class="rd-th">Commit / Message</th>
-                  <th class="rd-th">Status</th>
-                  <th class="rd-th">Duration</th>
-                  <th class="rd-th">Deployed At</th>
-                  <th class="rd-th" style="text-align: right;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="deploymentsTableBody">
-                <tr><td colspan="7" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading deployment history...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 4: NETWORKING, DOMAINS & PORTS
-             ============================================================================== -->
-        <div class="rd-view" id="view-networking">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Tunnels, Domains & Ports</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Public Cloudflare ingress, dedicated TCP/HTTP ports, and custom domains.</p>
-            </div>
-          </div>
-
-          <!-- Tunnel Manager Card -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-              <div>
-                <h3 class="rd-settings-card-title">Cloudflare Tunnel Service</h3>
-                <p class="rd-settings-card-desc">Expose local services securely over the global Cloudflare Anycast edge.</p>
-              </div>
-              <span class="rd-badge rd-badge-neutral" id="netTunnelBadge">Disconnected</span>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-top: 14px;">
-              <div>
-                <label>Tunnel Mode</label>
-                <div style="display: flex; gap: 10px; margin-top: 6px;">
-                  <button class="rd-mini-btn active" id="btnTunnelQuickMode" onclick="selectTunnelMode('quick')">Quick Ingress (trycloudflare)</button>
-                  <button class="rd-mini-btn" id="btnTunnelTokenMode" onclick="selectTunnelMode('token')">Named Tunnel Token</button>
-                </div>
-                <div id="tunnelTokenInputWrap" style="display: none; margin-top: 10px;">
-                  <label for="tunnelTokenInput">Cloudflare Tunnel Token</label>
-                  <input type="password" id="tunnelTokenInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." style="margin-top: 4px;">
-                </div>
-              </div>
-              <div style="display: flex; flex-direction: column; justify-content: flex-end; gap: 6px;">
-                <button class="rd-btn-new" id="btnStartTunnelNet" onclick="toggleTunnelAction()">Start Cloudflare Tunnel</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Dedicated Ports Registry Table -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Dedicated Port Registry</h3>
-            <p class="rd-settings-card-desc">Port allocation table mapped to native ARM64 processes on this node.</p>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">Port</th>
-                    <th class="rd-th">Service Name</th>
-                    <th class="rd-th">Protocol</th>
-                    <th class="rd-th">Status</th>
-                    <th class="rd-th">Local Link</th>
-                  </tr>
-                </thead>
-                <tbody id="portsTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading port allocations...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Custom Domains Manager -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <h3 class="rd-settings-card-title">Custom Domains & Subdomains</h3>
-                <p class="rd-settings-card-desc">Bind your own domains to services running on this node.</p>
-              </div>
-              <button class="rd-mini-btn" onclick="openModal('addDomainModal')">+ Add Domain</button>
-            </div>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">Domain Name</th>
-                    <th class="rd-th">Target Service</th>
-                    <th class="rd-th">Port</th>
-                    <th class="rd-th">SSL Status</th>
-                    <th class="rd-th" style="text-align: right;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="domainsTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">No custom domains configured.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 5: MONITORING, OBSERVABILITY & LOGS
-             ============================================================================== -->
-        <div class="rd-view" id="view-monitoring">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Hardware, Battery & Logs</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Hardware metrics, battery diagnostics, active processes, and log stream.</p>
-            </div>
-            <button class="rd-mini-btn" onclick="fetchTelemetry(); fetchProcesses();">Refresh Telemetry</button>
-          </div>
-
-          <!-- Battery & Physical Health Card -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Battery Chemistry & Physical Protection</h3>
-            <p class="rd-settings-card-desc">Lithium-ion degradation prevention via thermal monitoring and cyclic power management.</p>
+                <span class="text-xl font-bold font-manrope tracking-tight text-white flex items-center gap-1.5">
+                    Phonix<span class="text-[#ef233c]">PaaS</span>
+                </span>
+            </a>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 14px;">
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Charge Level</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryPct">--%</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Temperature</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryTemp">--°C</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Cell Voltage</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryVolt">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Power State</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryStatus">--</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Active Processes Table -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Active Process Monitor</h3>
-            <p class="rd-settings-card-desc">Processes spawned directly under the Node control plane in Termux user space.</p>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">PID</th>
-                    <th class="rd-th">Process Name</th>
-                    <th class="rd-th">Port</th>
-                    <th class="rd-th">Uptime</th>
-                    <th class="rd-th">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="processesTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading processes...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 6: DEVELOPER TOOLS (TERMINAL, WEBHOOKS, ENV)
-             ============================================================================== -->
-        <div class="rd-view" id="view-devtools">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Developer Tools</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Interactive command console, continuous Git webhook endpoints, and environment variables studio.</p>
-            </div>
-          </div>
-
-          <!-- Interactive Developer Console -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <h3 class="rd-settings-card-title">Interactive Terminal Console</h3>
-                <p class="rd-settings-card-desc">Run non-interactive diagnostic commands directly on the phone host.</p>
-              </div>
-              <div style="display: flex; gap: 6px;">
-                <button class="rd-mini-btn" onclick="runPresetCommand('node -v')">node -v</button>
-                <button class="rd-mini-btn" onclick="runPresetCommand('uptime')">uptime</button>
-                <button class="rd-mini-btn" onclick="runPresetCommand('free -m')">free -m</button>
-                <button class="rd-mini-btn" onclick="runPresetCommand('git status')">git status</button>
-              </div>
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center gap-7">
+                <a href="#overview" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200">Architecture</a>
+                <a href="#telemetry" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200">Telemetry</a>
+                <a href="#features" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200">Features</a>
+                <a href="#quickstart" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200">Terminal</a>
+                <a href="#comparison" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200">Comparison</a>
+                <a href="#pricing" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200">Tiers</a>
             </div>
 
-            <div class="rd-terminal-box">
-              <div class="rd-terminal-header">
-                <span>sh (Termux User Space)</span>
-                <span id="termExecDuration">Ready</span>
-              </div>
-              <div class="rd-terminal-screen" id="devTerminalOutput">Welcome to PhonixPaaS Interactive Console.
-Type a command below or click a preset above.</div>
-              <form class="rd-terminal-input-row" id="devTerminalForm">
-                <span class="rd-terminal-prompt">$</span>
-                <input type="text" class="rd-terminal-input" id="devTerminalInput" placeholder="e.g. ps, ls -la, git branch..." autocomplete="off">
-                <button type="submit" class="rd-mini-btn" style="border-radius: 0;">Run</button>
-              </form>
+            <!-- Auth & Action CTA -->
+            <div class="flex items-center gap-3" id="navAuthSection">
+                <a href="/login" id="navLoginBtn" class="text-sm font-medium text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Sign In</a>
+                <button onclick="handleDeployClick()" class="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white/5 px-5 py-2 transition-transform active:scale-95 duration-200">
+                    <span class="absolute inset-0 border border-white/10 rounded-full"></span>
+                    <span class="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#ef233c_100%)] opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    <span class="absolute inset-[1px] rounded-full bg-black"></span>
+                    <span class="relative z-10 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white">
+                        Deploy Service <iconify-icon icon="lucide:arrow-right" class="w-3.5 h-3.5 text-[#ef233c] group-hover:translate-x-0.5 transition-transform"></iconify-icon>
+                    </span>
+                </button>
             </div>
-          </div>
+        </nav>
+    </header>
 
-          <!-- Continuous Deployment Webhooks -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Continuous Git Deployment Webhooks</h3>
-            <p class="rd-settings-card-desc">Add these webhook URLs to your GitHub repository settings to trigger automated re-deployment on every git push.</p>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">Service</th>
-                    <th class="rd-th">Payload URL</th>
-                    <th class="rd-th">Content Type</th>
-                    <th class="rd-th">Trigger Event</th>
-                    <th class="rd-th" style="text-align: right;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="webhooksTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading webhooks...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 7: INFRASTRUCTURE & HARDWARE DIAGNOSTICS
-             ============================================================================== -->
-        <div class="rd-view" id="view-infrastructure">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Node Specs & Hardware Power</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Hardware diagnostics, Android WakeLock status, and power-saving thresholds.</p>
-            </div>
-          </div>
-
-          <!-- Hardware Diagnostics Spec Table -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Node Diagnostics</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 14px;">
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Architecture</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraArch">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">CPU Cores & Model</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraCpu">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Operating System</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraOs">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Node Runtime</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraNode">--</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Android WakeLock Card -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <h3 class="rd-settings-card-title">Android CPU WakeLock</h3>
-                <p class="rd-settings-card-desc">Prevents aggressive Android OEM battery savers from putting the CPU into deep sleep when the screen turns off.</p>
-              </div>
-              <label class="rd-switch">
-                <input type="checkbox" id="infraWakeLockToggle" onchange="toggleWakeLockAction(this.checked)">
-                <span class="rd-slider"></span>
-              </label>
-            </div>
-            <div style="font-size: 12px; color: var(--rd-text-sub); margin-top: 10px;">
-              Status: <span id="infraWakeLockText" style="font-weight: 600;">Disabled</span> (Recommended: Keep enabled for 24/7 background hosting).
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 8: INTEGRATIONS & CONNECTORS
-             ============================================================================== -->
-        <div class="rd-view" id="view-integrations">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Integrations & Connectors</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Connect external services, Cloudflare Zero Trust, and external databases.</p>
-            </div>
-          </div>
-
-          <!-- Cloudflare Zero Trust Integration -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Cloudflare Zero Trust & Tunnels</h3>
-            <p class="rd-settings-card-desc">Configure persistent Cloudflare tunnel credentials to attach custom domains with automated SSL renewal.</p>
-            <div class="rd-form-group" style="margin-top: 12px;">
-              <label for="integCloudflareToken">Cloudflare Tunnel Token</label>
-              <input type="password" id="integCloudflareToken" placeholder="Paste Tunnel Token from Cloudflare Zero Trust Dashboard">
-            </div>
-            <button class="rd-btn-new" onclick="saveCloudflareToken()">Save Tunnel Token</button>
-          </div>
-
-          <!-- External Database Connectors -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Database Integrations</h3>
-            <p class="rd-settings-card-desc">PhonixPaaS supports embedded JSON atomic databases, native Termux SQLite, or external remote databases.</p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 12px;">
-              <div style="border: 1px solid var(--rd-border); border-radius: 6px; padding: 14px; background: var(--rd-bg-sidebar);">
-                <div style="font-weight: 600; font-size: 14px;">Atomic JSON Engine</div>
-                <div style="font-size: 12px; color: var(--rd-text-muted); margin-top: 4px;">Zero RAM overhead, safe write-ahead atomic swaps for low-power operation.</div>
-                <span class="rd-badge rd-badge-success" style="margin-top: 8px;">Active Default</span>
-              </div>
-              <div style="border: 1px solid var(--rd-border); border-radius: 6px; padding: 14px; background: var(--rd-bg-sidebar);">
-                <div style="font-weight: 600; font-size: 14px;">SQLite Native Engine</div>
-                <div style="font-size: 12px; color: var(--rd-text-muted); margin-top: 4px;">Full ACID transactional database without background server daemons. Run <code>pkg install sqlite</code>.</div>
-                <span class="rd-badge rd-badge-neutral" style="margin-top: 8px;">Supported</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 9: PLATFORM SETTINGS & DISASTER RECOVERY
-             ============================================================================== -->
-        <div class="rd-view" id="view-settings">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Platform Settings & Security</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Workspace configuration, administrative security, and database backup restoration.</p>
-            </div>
-          </div>
-
-          <!-- General Workspace Settings -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Workspace Preferences</h3>
-            <form id="settingsGeneralForm" onsubmit="handleSaveGeneralSettings(event)">
-              <div class="rd-form-row">
-                <div class="rd-form-group">
-                  <label for="setWorkspaceName">Workspace Name</label>
-                  <input type="text" id="setWorkspaceName" value="My Workspace" required>
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section id="overview" class="min-h-screen flex flex-col items-center justify-center pt-36 pb-20 px-6">
+            <div class="text-center max-w-5xl mx-auto">
+                
+                <!-- Announcement Pill with Smooth Breathing -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 animate-fade-up shadow-[0_0_20px_rgba(239,35,60,0.15)] hover:border-red-500/30 transition-all duration-300" style="animation-delay: 0.1s;">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#ef233c]"></span>
+                    </span>
+                    <span class="text-xs font-semibold text-red-200/90 tracking-wide font-manrope">
+                        PhonixPaaS 2.0 Engine Live • Android Native Edge PaaS
+                    </span>
+                    <iconify-icon icon="lucide:arrow-right" class="w-3.5 h-3.5 text-[#ef233c]"></iconify-icon>
                 </div>
-                <div class="rd-form-group">
-                  <label for="setDashboardPort">Control Plane Port</label>
-                  <input type="number" id="setDashboardPort" value="4000" required>
+
+                <!-- Main Headline -->
+                <h1 class="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter font-manrope leading-[1.08] mb-8 animate-fade-up" style="animation-delay: 0.2s;">
+                    <span class="block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50">Recycled Hardware.</span>
+                    <span class="block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50">
+                        Production Cloud. <span class="text-[#ef233c] inline-block relative">
+                            Zero Docker.
+                            <svg class="absolute w-full h-3 -bottom-2 left-0 text-[#ef233c] opacity-80" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="2.5" fill="none" />
+                            </svg>
+                        </span>
+                    </span>
+                </h1>
+
+                <!-- Subtitle with Relaxed Leading -->
+                <p class="text-lg md:text-2xl text-zinc-400 max-w-3xl mx-auto mb-11 leading-relaxed font-normal animate-fade-up" style="animation-delay: 0.3s;">
+                    The battery-aware, self-hosted Platform-as-a-Service engineered to turn any old Android smartphone into an ultra-quiet, 24/7 personal cloud server. Native process trees, under 35MB RAM, and instant Cloudflare HTTPS.
+                </p>
+
+                <!-- Hero CTA Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-5 animate-fade-up" style="animation-delay: 0.4s;">
+                    <button onclick="handleDeployClick()" class="shiny-cta group w-full sm:w-auto">
+                        <span class="relative z-10 flex items-center justify-center gap-2.5 text-white font-semibold font-manrope text-sm tracking-wide">
+                            Deploy on Your Phone <iconify-icon icon="lucide:arrow-right" class="transition-transform duration-300 group-hover:translate-x-1.5 text-[#ef233c]"></iconify-icon>
+                        </span>
+                    </button>
+                    
+                    <a href="https://github.com/your-username/phonix-paas" target="_blank" class="group px-8 py-3.5 rounded-full bg-zinc-900/80 border border-zinc-800 text-zinc-300 font-medium hover:text-white hover:bg-zinc-800 hover:border-zinc-700 transition-all duration-300 flex items-center justify-center gap-2.5 w-full sm:w-auto shadow-lg hover:shadow-xl">
+                        <iconify-icon icon="lucide:github" class="w-5 h-5 text-zinc-400 group-hover:text-white transition-colors"></iconify-icon>
+                        View on GitHub
+                    </a>
                 </div>
-              </div>
-              <button type="submit" class="rd-btn-new">Save Workspace Settings</button>
-            </form>
-          </div>
 
-          <!-- Admin Security & API Keys -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Administrative Security</h3>
-            <p class="rd-settings-card-desc">Require an API Key for remote administrative actions (POST, PUT, DELETE) when managing your phone over the web.</p>
-            <div class="rd-form-group">
-              <label for="setAdminApiKey">Admin Secret Key (Leave blank to disable auth)</label>
-              <input type="password" id="setAdminApiKey" placeholder="Set a secret token...">
+                <!-- One-Line Terminal Copy Pill -->
+                <div class="mt-9 inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-zinc-950/70 border border-white/10 text-xs font-mono text-zinc-400 backdrop-blur-md animate-fade-up shadow-sm hover:border-white/20 transition-all duration-200" style="animation-delay: 0.5s;">
+                    <span class="text-[#ef233c] font-bold">$</span>
+                    <span class="truncate max-w-xs sm:max-w-md">pkg install -y git && git clone phonix-paas && bash scripts/install.sh</span>
+                    <button onclick="copyInstallCommand()" class="text-zinc-400 hover:text-white p-1 transition-colors flex items-center gap-1">
+                        <iconify-icon icon="lucide:copy" class="w-3.5 h-3.5"></iconify-icon>
+                        <span id="copyLabel" class="text-[10px] uppercase font-bold tracking-wider text-[#ef233c]">Copy</span>
+                    </button>
+                </div>
             </div>
-            <button class="rd-btn-new" onclick="handleSaveSecuritySettings()">Update Security Key</button>
-          </div>
 
-          <!-- Backup & Disaster Recovery -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Backup & Disaster Recovery</h3>
-            <p class="rd-settings-card-desc">Download a snapshot of all services, deployments, and configurations, or reset to factory defaults.</p>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
-              <a href="/api/backup/export" class="rd-btn-new" download style="text-decoration: none;">Export Backup (JSON)</a>
-              <button class="rd-mini-btn" onclick="document.getElementById('importBackupFile').click()">Restore From Backup</button>
-              <input type="file" id="importBackupFile" accept=".json" style="display: none;" onchange="handleImportBackup(event)">
-              <button class="rd-mini-btn" style="color: #ef4444;" onclick="handleFactoryReset()">Factory Reset Database</button>
+            <!-- Real-Time Hardware & Telemetry HUD Card (Scroll Reveal) -->
+            <div id="telemetry" class="scroll-reveal w-full max-w-5xl mx-auto mt-20 border border-white/10 bg-gradient-to-b from-zinc-950/80 to-black/85 rounded-2xl p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(239,35,60,0.08)] relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-60 h-60 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between pb-6 border-b border-white/5 gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold font-manrope text-white flex items-center gap-2">
+                                Termux Edge Node #1 (Snapdragon 865)
+                                <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">ONLINE</span>
+                            </div>
+                            <div class="text-xs text-zinc-500 font-mono">Battery-Aware Telemetry Daemon v2.4 • Port 4000</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="/dashboard" class="text-xs font-semibold font-manrope text-zinc-300 hover:text-white bg-white/5 border border-white/10 hover:border-white/20 px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-sm">
+                            Open Live Console <iconify-icon icon="lucide:external-link" class="w-3.5 h-3.5 text-[#ef233c]"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Telemetry Stats Grid (Staggered Scroll Animation) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                    <!-- Battery -->
+                    <div class="scroll-reveal stagger-1 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-300">
+                        <div class="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:battery-charging" class="text-emerald-400"></iconify-icon> Battery Level</span>
+                            <span class="text-emerald-400 font-mono text-[11px]">88%</span>
+                        </div>
+                        <div class="text-2xl font-bold font-manrope text-white">88% <span class="text-xs font-normal text-zinc-500 font-mono">Charging</span></div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-gradient-to-r from-emerald-500 to-[#ef233c] h-full rounded-full transition-all duration-500" style="width: 88%;"></div>
+                        </div>
+                        <div class="text-[10px] text-zinc-500 font-mono mt-1.5">Safe Cycle: 20% - 80%</div>
+                    </div>
+
+                    <!-- Thermal -->
+                    <div class="scroll-reveal stagger-2 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-300">
+                        <div class="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:thermometer" class="text-[#ef233c]"></iconify-icon> CPU Temperature</span>
+                            <span class="text-[#ef233c] font-mono text-[11px]">Cool</span>
+                        </div>
+                        <div class="text-2xl font-bold font-manrope text-white">32.4°C</div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-[#ef233c] h-full rounded-full transition-all duration-500" style="width: 38%;"></div>
+                        </div>
+                        <div class="text-[10px] text-zinc-500 font-mono mt-1.5">Auto-throttle at 42.0°C</div>
+                    </div>
+
+                    <!-- RAM Footprint -->
+                    <div class="scroll-reveal stagger-3 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-300">
+                        <div class="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:cpu" class="text-blue-400"></iconify-icon> Engine RAM</span>
+                            <span class="text-blue-400 font-mono text-[11px]">0.6%</span>
+                        </div>
+                        <div class="text-2xl font-bold font-manrope text-white">26.8 <span class="text-xs font-normal text-zinc-500 font-mono">MB</span></div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-blue-400 h-full rounded-full transition-all duration-500" style="width: 12%;"></div>
+                        </div>
+                        <div class="text-[10px] text-zinc-500 font-mono mt-1.5">3.97 GB Free for User Apps</div>
+                    </div>
+
+                    <!-- Projects -->
+                    <div class="scroll-reveal stagger-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all duration-300">
+                        <div class="flex items-center justify-between text-xs text-zinc-400 mb-2">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:activity" class="text-yellow-400"></iconify-icon> Hosted Services</span>
+                            <span class="text-yellow-400 font-mono text-[11px]">3 Live</span>
+                        </div>
+                        <div class="text-2xl font-bold font-manrope text-white">3 <span class="text-xs font-normal text-zinc-500 font-mono">Live</span> / 1 <span class="text-xs font-normal text-zinc-500 font-mono">Standby</span></div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-yellow-400 h-full rounded-full transition-all duration-500" style="width: 75%;"></div>
+                        </div>
+                        <div class="text-[10px] text-zinc-500 font-mono mt-1.5">Scale-to-Zero Enabled</div>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <!-- About Card -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">About PhonixPaaS</h3>
-            <p style="font-size: 13px; color: var(--rd-text-muted); line-height: 1.6;">
-              PhonixPaaS transforms recycled smartphones and low-power ARM64 devices into self-hosted cloud hosting nodes.<br>
-              Architecture: Dockerless POSIX user space · Memory footprint: &lt;35MB RAM · Native process isolation.
-            </p>
-          </div>
+            <!-- Architecture Compatibility Strip (Scroll Reveal) -->
+            <div class="scroll-reveal w-full mt-24 border-y border-white/5 bg-white/[0.015] backdrop-blur-md py-8 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-6 md:gap-12">
+                    <p class="text-xs font-bold tracking-widest text-zinc-500 uppercase shrink-0 font-mono">Engineered For:</p>
+                    <div class="flex flex-wrap justify-center gap-8 md:gap-12 items-center w-full text-xs font-semibold font-manrope text-zinc-300">
+                        <div class="flex items-center gap-2"><div class="w-2.5 h-2.5 bg-[#ef233c] rounded-full shadow-[0_0_8px_rgba(239,35,60,0.6)]"></div>Android Termux Native</div>
+                        <div class="flex items-center gap-2"><div class="w-2.5 h-2.5 bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.6)]"></div>Dockerless Architecture</div>
+                        <div class="flex items-center gap-2"><div class="w-2.5 h-2.5 bg-blue-400 rounded-full shadow-[0_0_8px_rgba(96,165,250,0.6)]"></div>ARM64 & x86_64 Support</div>
+                        <div class="flex items-center gap-2"><div class="w-2.5 h-2.5 bg-yellow-400 rounded-full shadow-[0_0_8px_rgba(250,204,21,0.6)]"></div>Cloudflare Zero-Trust Tunnels</div>
+                        <div class="flex items-center gap-2"><div class="w-2.5 h-2.5 bg-purple-400 rounded-full shadow-[0_0_8px_rgba(192,132,252,0.6)]"></div>Zero Root / Stock Android</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Bento Grid (Staggered Scroll Reveals) -->
+        <section id="features" class="py-32 px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="scroll-reveal mb-20 text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight font-manrope mb-6">
+                        The Operating System for <br />
+                        <span class="text-[#ef233c]">Pocket-Sized Edge Servers</span>
+                    </h2>
+                    <p class="text-lg text-zinc-400 font-light leading-relaxed">
+                        Say goodbye to $20/month cloud bills and aggressive cold starts. Convert forgotten mobile hardware into high-performance, whisper-quiet micro-servers.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 h-auto">
+                    <!-- Main Feature Card: Battery Guardian (Scroll Reveal Stagger 1) -->
+                    <div class="scroll-reveal stagger-1 lg:col-span-2 lg:row-span-2 group relative overflow-hidden p-8 rounded-2xl glass-card flex flex-col justify-between">
+                        <div class="relative z-10">
+                            <div class="mb-6 inline-flex p-3 rounded-xl bg-white/5 border border-white/10 text-[#ef233c] shadow-sm group-hover:scale-105 transition-transform duration-300">
+                                <iconify-icon icon="lucide:shield-alert" class="w-7 h-7"></iconify-icon>
+                            </div>
+                            <span class="text-xs font-mono uppercase tracking-widest text-[#ef233c] font-semibold block mb-2">Hardware Protection</span>
+                            <h3 class="text-3xl font-bold text-white font-manrope mb-4 tracking-tight">Battery & Thermal Guardian</h3>
+                            <p class="text-zinc-400 text-base leading-relaxed mb-6">
+                                Traditional PaaS tools like Coolify burn phone batteries and trigger thermal shutdowns. PhonixPaaS integrates continuous battery % telemetry, thermal throttling at 42°C, and a one-click <strong>Scale-to-Zero Standby Mode</strong> that drops CPU utilization to 0% when you aren't showcasing projects.
+                            </p>
+                            
+                            <!-- Telemetry preview widget -->
+                            <div class="p-4 rounded-xl bg-black/60 border border-white/10 font-mono text-xs text-zinc-300 space-y-2 backdrop-blur-md">
+                                <div class="flex justify-between items-center text-zinc-400">
+                                    <span>sysfs: /sys/class/power_supply/battery</span>
+                                    <span class="text-emerald-400">PROTECTION ACTIVE</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span>Charging State:</span>
+                                    <span class="text-white">Smart Trickle (80% Cap)</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span>Core Temperatures:</span>
+                                    <span class="text-emerald-400">31.2°C, 31.8°C, 32.4°C</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 relative z-10">
+                            <span class="text-xs font-mono text-[#ef233c] font-semibold">EXPLORE HARDWARE SPECS</span>
+                            <iconify-icon icon="lucide:arrow-right" class="w-4 h-4 text-[#ef233c]"></iconify-icon>
+                        </div>
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-15 transition-opacity duration-500 pointer-events-none" style="background: radial-gradient(circle at top right, #ef233c, transparent 70%);"></div>
+                    </div>
+
+                    <!-- Feature 2: Dockerless Architecture (Scroll Reveal Stagger 2) -->
+                    <div class="scroll-reveal stagger-2 lg:col-span-2 group relative overflow-hidden p-8 rounded-2xl glass-card">
+                        <div class="relative z-10 flex flex-col h-full">
+                            <div class="mb-4 inline-flex p-3 rounded-xl bg-white/5 border border-white/10 text-blue-400 group-hover:scale-105 transition-transform duration-300">
+                                <iconify-icon icon="lucide:cpu" class="w-6 h-6"></iconify-icon>
+                            </div>
+                            <span class="text-xs font-mono uppercase tracking-widest text-blue-400 font-semibold block mb-2">&lt; 35MB RAM OVERHEAD</span>
+                            <h3 class="text-2xl font-bold text-white font-manrope mb-2">Dockerless Process Trees</h3>
+                            <p class="text-zinc-400 text-sm leading-relaxed">
+                                Android kernel namespaces strictly prohibit Docker without rooting. PhonixPaaS bypasses container bloat entirely, spawning isolated, supervised OS process trees. Leaving 95%+ of RAM available for PostgreSQL, Redis, Node, and Python.
+                            </p>
+                        </div>
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none" style="background: radial-gradient(circle at top right, #3b82f6, transparent 70%);"></div>
+                    </div>
+
+                    <!-- Feature 3: Git Deployments (Scroll Reveal Stagger 3) -->
+                    <div class="scroll-reveal stagger-3 group relative overflow-hidden p-8 rounded-2xl glass-card">
+                        <div class="relative z-10">
+                            <div class="mb-4 inline-flex p-3 rounded-xl bg-white/5 border border-white/10 text-yellow-400 group-hover:scale-105 transition-transform duration-300">
+                                <iconify-icon icon="lucide:git-branch" class="w-6 h-6"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-bold text-white font-manrope mb-2">Git Auto-Deploy</h3>
+                            <p class="text-sm text-zinc-400 leading-relaxed">Clone from GitHub, trigger custom build scripts, and keep background daemons running across phone restarts.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4: Cloudflare Tunnels (Scroll Reveal Stagger 4) -->
+                    <div class="scroll-reveal stagger-4 group relative overflow-hidden p-8 rounded-2xl glass-card">
+                        <div class="relative z-10">
+                            <div class="mb-4 inline-flex p-3 rounded-xl bg-white/5 border border-white/10 text-purple-400 group-hover:scale-105 transition-transform duration-300">
+                                <iconify-icon icon="lucide:globe" class="w-6 h-6"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-bold text-white font-manrope mb-2">Instant Public HTTPS</h3>
+                            <p class="text-sm text-zinc-400 leading-relaxed">Integrated Cloudflare Tunnels expose phone ports to secure, global HTTPS domains without touching router NAT.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 5: Visual Env Manager (Scroll Reveal Stagger 5) -->
+                    <div class="scroll-reveal stagger-5 group relative overflow-hidden p-8 rounded-2xl glass-card">
+                        <div class="relative z-10">
+                            <div class="mb-4 inline-flex p-3 rounded-xl bg-white/5 border border-white/10 text-emerald-400 group-hover:scale-105 transition-transform duration-300">
+                                <iconify-icon icon="lucide:key" class="w-6 h-6"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-bold text-white font-manrope mb-2">Secret & .env Vault</h3>
+                            <p class="text-sm text-zinc-400 leading-relaxed">Inject database URLs, OAuth credentials, and port configurations visually with zero plain-text leaks.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 6: Streaming Logs (Scroll Reveal Stagger 6) -->
+                    <div class="scroll-reveal stagger-6 group relative overflow-hidden p-8 rounded-2xl glass-card">
+                        <div class="relative z-10">
+                            <div class="mb-4 inline-flex p-3 rounded-xl bg-white/5 border border-white/10 text-[#ef233c] group-hover:scale-105 transition-transform duration-300">
+                                <iconify-icon icon="lucide:terminal" class="w-6 h-6"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-bold text-white font-manrope mb-2">Streaming Terminal</h3>
+                            <p class="text-sm text-zinc-400 leading-relaxed">Live WebSocket stdout and stderr streaming to debug builds, inspect crashes, and follow requests in real-time.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Red Noir Testimonial Banner with Scroll Reveal -->
+        <div class="scroll-reveal w-full bg-[#ef233c] py-20 px-6 my-10 relative overflow-hidden shadow-[0_0_50px_rgba(239,35,60,0.3)]">
+            <div class="max-w-5xl mx-auto text-center relative z-10">
+                <div class="flex justify-center gap-1.5 text-black mb-6">
+                    <iconify-icon icon="lucide:star" class="w-6 h-6" fill="currentColor"></iconify-icon>
+                    <iconify-icon icon="lucide:star" class="w-6 h-6" fill="currentColor"></iconify-icon>
+                    <iconify-icon icon="lucide:star" class="w-6 h-6" fill="currentColor"></iconify-icon>
+                    <iconify-icon icon="lucide:star" class="w-6 h-6" fill="currentColor"></iconify-icon>
+                    <iconify-icon icon="lucide:star" class="w-6 h-6" fill="currentColor"></iconify-icon>
+                </div>
+                <h3 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-black font-manrope leading-tight mb-8">
+                    "PhonixPaaS turned three retired Snapdragon phones in my desk drawer into an ultra-low-power edge cluster. My cloud hosting bill is now $0."
+                </h3>
+                <div class="flex items-center justify-center gap-4">
+                    <div class="w-12 h-12 bg-black rounded-full overflow-hidden flex items-center justify-center border border-black/20 shadow-md">
+                        <iconify-icon icon="lucide:terminal" class="text-white w-6 h-6"></iconify-icon>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-black font-bold text-lg font-manrope">Devin Vance</div>
+                        <div class="text-black/80 font-medium text-sm">Principal Edge Architect, CloudZero Labs</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-      </main>
+        <!-- Terminal Quickstart Section (Scroll Reveal) -->
+        <section id="quickstart" class="py-24 px-6 bg-black relative">
+            <div class="max-w-4xl mx-auto">
+                <div class="scroll-reveal text-center mb-12">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ef233c] font-semibold block mb-2">Zero-Config Deployment</span>
+                    <h2 class="text-4xl font-bold font-manrope text-white mb-3">Install on Android in 60 Seconds</h2>
+                    <p class="text-zinc-400 text-sm">No root required. Compatible with any phone running Android 7.0+ and Termux.</p>
+                </div>
 
-      <!-- FLOATING FEEDBACK BUTTON -->
-      <div class="rd-feedback-btn" onclick="switchView('settings')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span>Phonix Node</span>
-      </div>
+                <!-- Interactive Terminal Box with Glass Blur -->
+                <div class="scroll-reveal stagger-1 rounded-2xl border border-white/10 bg-zinc-950/80 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl overflow-hidden font-mono text-sm">
+                    <!-- Top Window Bar -->
+                    <div class="flex items-center justify-between px-4 py-3 bg-zinc-900/80 border-b border-white/5">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                            <span class="text-xs text-zinc-400 ml-2">termux@android: ~/phonix-paas</span>
+                        </div>
+                        <button onclick="copyInstallCommand()" class="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                            <iconify-icon icon="lucide:copy" class="w-3.5 h-3.5"></iconify-icon>
+                            <span>Copy Command</span>
+                        </button>
+                    </div>
 
+                    <!-- Terminal Body -->
+                    <div class="p-6 space-y-4 text-zinc-300 leading-relaxed overflow-x-auto">
+                        <div class="text-zinc-500"># 1. Update Termux packages & install git + nodejs</div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[#ef233c]">$</span>
+                            <span class="text-white">pkg update -y && pkg install -y git nodejs</span>
+                        </div>
+
+                        <div class="text-zinc-500 pt-2"># 2. Clone PhonixPaaS & run the native installer</div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[#ef233c]">$</span>
+                            <span class="text-white">git clone https://github.com/your-username/phonix-paas.git ~/phonix-paas</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[#ef233c]">$</span>
+                            <span class="text-white">cd ~/phonix-paas && bash scripts/install.sh</span>
+                        </div>
+
+                        <div class="text-zinc-500 pt-2"># 3. Open dashboard from any laptop or browser on your Wi-Fi:</div>
+                        <div class="p-3.5 rounded-lg bg-black/70 border border-white/10 text-emerald-400 flex items-center justify-between shadow-inner">
+                            <span>🔥 PhonixPaaS LIVE at http://192.168.1.145:4000</span>
+                            <span class="text-xs text-zinc-500 font-sans">[Ready for Deploys]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Head-to-Head Comparison Matrix (Scroll Reveal) -->
+        <section id="comparison" class="py-28 px-6 border-t border-white/5">
+            <div class="max-w-5xl mx-auto">
+                <div class="scroll-reveal text-center mb-16">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ef233c] font-semibold block mb-2">Architecture Audit</span>
+                    <h2 class="text-4xl font-bold font-manrope text-white mb-4">Why Docker Fails on Mobile</h2>
+                    <p class="text-zinc-400 text-base max-w-2xl mx-auto">Traditional self-hosted PaaS solutions are designed for 32GB cloud servers, not battery-powered phones.</p>
+                </div>
+
+                <div class="scroll-reveal stagger-1 overflow-x-auto">
+                    <table class="w-full text-left border-collapse border border-white/10 rounded-2xl overflow-hidden bg-zinc-950/70 backdrop-blur-xl shadow-xl">
+                        <thead>
+                            <tr class="border-b border-white/10 bg-white/[0.02] text-xs font-mono uppercase tracking-wider text-zinc-400">
+                                <th class="p-5">Capability / Metric</th>
+                                <th class="p-5 text-[#ef233c] font-bold text-sm bg-red-950/25 border-x border-[#ef233c]/30">🔥 PhonixPaaS</th>
+                                <th class="p-5">Coolify / Dokku</th>
+                                <th class="p-5">Render / Vercel Free</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-sm">
+                            <tr class="hover:bg-white/[0.015] transition-colors">
+                                <td class="p-5 font-medium text-white font-manrope">RAM Overhead (PaaS Engine)</td>
+                                <td class="p-5 font-bold font-mono text-emerald-400 bg-red-950/15 border-x border-[#ef233c]/20">&lt; 35 MB (Dockerless)</td>
+                                <td class="p-5 font-mono text-zinc-400">2,048 MB - 4,096 MB+</td>
+                                <td class="p-5 font-mono text-zinc-400">Cloud Hosted</td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.015] transition-colors">
+                                <td class="p-5 font-medium text-white font-manrope">Runs on Stock Android / Termux</td>
+                                <td class="p-5 font-bold text-emerald-400 bg-red-950/15 border-x border-[#ef233c]/20">✅ Yes (Zero Root Needed)</td>
+                                <td class="p-5 text-red-400">❌ Fails (Docker blocked)</td>
+                                <td class="p-5 text-zinc-500">❌ Cloud Only</td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.015] transition-colors">
+                                <td class="p-5 font-medium text-white font-manrope">Battery & Thermal Throttling</td>
+                                <td class="p-5 font-bold text-emerald-400 bg-red-950/15 border-x border-[#ef233c]/20">✅ Hardware Guard & 42°C Halt</td>
+                                <td class="p-5 text-zinc-500">❌ None (Risks swelling)</td>
+                                <td class="p-5 text-zinc-500">❌ N/A</td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.015] transition-colors">
+                                <td class="p-5 font-medium text-white font-manrope">Scale-to-Zero Standby Mode</td>
+                                <td class="p-5 font-bold text-emerald-400 bg-red-950/15 border-x border-[#ef233c]/20">✅ Instant CPU 0% Rest</td>
+                                <td class="p-5 text-zinc-500">❌ Manual Container Stop</td>
+                                <td class="p-5 text-yellow-400">⚠️ Aggressive Cold Starts</td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.015] transition-colors">
+                                <td class="p-5 font-medium text-white font-manrope">Monthly Hosting Cost</td>
+                                <td class="p-5 font-bold text-emerald-400 font-mono text-base bg-red-950/15 border-x border-[#ef233c]/20">$0 Forever</td>
+                                <td class="p-5 font-mono text-zinc-400">$5 - $40/mo VPS</td>
+                                <td class="p-5 font-mono text-zinc-400">$7 - $20+/mo per app</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing / Freedom Tiers (Staggered Scroll Reveal) -->
+        <section id="pricing" class="py-32 px-6 bg-black relative border-t border-white/5">
+            <div class="max-w-7xl mx-auto">
+                <div class="scroll-reveal text-center mb-20">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ef233c] font-semibold block mb-2">Self-Hosted Freedom</span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-white font-manrope mb-4">Simple, Transparent Deployment</h2>
+                    <p class="text-zinc-400">No cloud credits. No surprise overage bills. True software ownership.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Starter (Scroll Reveal Stagger 1) -->
+                    <div class="scroll-reveal stagger-1 p-8 rounded-2xl glass-card flex flex-col">
+                        <h3 class="text-xl font-bold font-manrope mb-2">Single Phone</h3>
+                        <p class="text-zinc-500 text-sm mb-8 h-10">For hobbyists converting one old Android phone into a personal lab.</p>
+                        <div class="mb-8 flex items-baseline gap-1">
+                            <span class="text-zinc-500 font-mono">$</span>
+                            <span class="text-5xl font-bold text-white font-manrope">0</span>
+                            <span class="text-zinc-500 text-sm font-mono">/forever</span>
+                        </div>
+                        <ul class="space-y-4 mb-8 flex-1">
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> 1 Phone Server</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Unlimited Hosted Projects</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Battery & Thermal Guard</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Community Discord Support</li>
+                        </ul>
+                        <button onclick="handleDeployClick()" class="w-full py-3.5 px-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200">Get Started</button>
+                    </div>
+
+                    <!-- Pro (Featured) (Scroll Reveal Stagger 2) -->
+                    <div class="scroll-reveal stagger-2 relative p-8 border border-[#ef233c] bg-zinc-900/60 backdrop-blur-2xl shadow-[0_0_50px_rgba(239,35,60,0.2)] rounded-2xl flex flex-col md:scale-105 z-10">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ef233c] text-white text-[10px] font-bold uppercase tracking-widest px-3.5 py-1 rounded-full shadow-lg">Recommended</div>
+                        <h3 class="text-xl font-bold font-manrope mb-2">Self-Hosted Cluster</h3>
+                        <p class="text-zinc-400 text-sm mb-8 h-10">For full-stack developers running public APIs and web storefronts.</p>
+                        <div class="mb-8 flex items-baseline gap-1">
+                            <span class="text-zinc-500 font-mono">$</span>
+                            <span class="text-5xl font-bold text-white font-manrope">0</span>
+                            <span class="text-zinc-500 text-sm font-mono">/open-source</span>
+                        </div>
+                        <ul class="space-y-4 mb-8 flex-1">
+                            <li class="flex items-center gap-3 text-sm text-zinc-200"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Multi-Project Process Manager</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-200"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Free Cloudflare HTTPS Tunnels</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-200"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Real-Time WebSocket Log Stream</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-200"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Standby Sleep & Thermal Halt</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-200"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Git Auto-Deploy on Commit</li>
+                        </ul>
+                        <button onclick="handleDeployClick()" class="w-full py-3.5 px-4 bg-[#ef233c] hover:bg-[#d90429] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-[0_0_25px_rgba(239,35,60,0.45)]">Launch Console</button>
+                    </div>
+
+                    <!-- Team / Fleet (Scroll Reveal Stagger 3) -->
+                    <div class="scroll-reveal stagger-3 p-8 rounded-2xl glass-card flex flex-col">
+                        <h3 class="text-xl font-bold font-manrope mb-2">Fleet Edge</h3>
+                        <p class="text-zinc-500 text-sm mb-8 h-10">For development studios deploying on distributed hardware racks.</p>
+                        <div class="mb-8 flex items-baseline gap-1">
+                            <span class="text-zinc-500 font-mono">$</span>
+                            <span class="text-5xl font-bold text-white font-manrope">199</span>
+                            <span class="text-zinc-500 text-sm font-mono">/year</span>
+                        </div>
+                        <ul class="space-y-4 mb-8 flex-1">
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Multi-Device Mesh Cluster</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Distributed Load Balancing</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Automated Fleet Health Failover</li>
+                            <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Priority Core Team SLA</li>
+                        </ul>
+                        <a href="/login" class="w-full py-3.5 px-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl text-xs font-bold uppercase tracking-wider text-center transition-all duration-200">Sign In to Console</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Waitlist / Join (Scroll Reveal) -->
+        <section class="py-32 px-6 text-center bg-zinc-950/70 relative border-t border-white/5">
+            <div class="scroll-reveal max-w-3xl mx-auto">
+                <h2 class="text-5xl md:text-7xl font-bold font-manrope mb-8 tracking-tighter">Ready to <span class="text-[#ef233c]">Deploy?</span></h2>
+                <p class="text-xl text-zinc-400 mb-12 leading-relaxed">Turn your unused smartphone into a personal cloud in 60 seconds with PhonixPaaS.</p>
+                
+                <div class="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+                    <input type="email" id="ctaEmailInput" placeholder="Enter your developer email" class="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-white focus:outline-none focus:border-[#ef233c] transition-all text-sm font-mono">
+                    <button onclick="handleCtaJoin()" class="bg-[#ef233c] hover:bg-[#d90429] text-white font-bold rounded-full px-8 py-4 transition-all duration-300 text-sm uppercase tracking-wider shadow-[0_0_30px_rgba(239,35,60,0.55)]">Start Free</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Interactive 1-Click Deploy Modal (Red Noir Styled) -->
+    <div id="deployFlowModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="modal-container w-full max-w-2xl bg-zinc-950 border border-white/15 rounded-2xl shadow-2xl overflow-hidden relative">
+            <div class="p-6 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-4 h-4 bg-[#ef233c] rounded-sm rotate-45"></div>
+                    <h3 class="text-lg font-bold font-manrope text-white">Deploy Service to Phone Server</h3>
+                </div>
+                <button onclick="closeDeployModal()" class="text-zinc-400 hover:text-white p-1">
+                    <iconify-icon icon="lucide:x" class="w-5 h-5"></iconify-icon>
+                </button>
+            </div>
+
+            <!-- Modal Body (Configuration Phase) -->
+            <div id="deployConfigPhase" class="p-6 space-y-6">
+                <!-- Template Selection Chips -->
+                <div>
+                    <label class="text-xs font-mono uppercase tracking-wider text-zinc-400 block mb-3">Choose Service Template</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <button type="button" onclick="selectTemplate('express-api')" id="chip-express-api" class="p-3 rounded-xl border border-white/10 bg-white/5 hover:border-[#ef233c] text-left transition-all">
+                            <iconify-icon icon="lucide:server" class="w-5 h-5 text-[#ef233c] mb-1.5"></iconify-icon>
+                            <div class="text-xs font-bold text-white font-manrope">Express API</div>
+                            <div class="text-[10px] text-zinc-500 font-mono">Node.js</div>
+                        </button>
+                        <button type="button" onclick="selectTemplate('static-site')" id="chip-static-site" class="p-3 rounded-xl border border-white/10 bg-white/5 hover:border-[#ef233c] text-left transition-all">
+                            <iconify-icon icon="lucide:layout" class="w-5 h-5 text-blue-400 mb-1.5"></iconify-icon>
+                            <div class="text-xs font-bold text-white font-manrope">Vite Site</div>
+                            <div class="text-[10px] text-zinc-500 font-mono">React / Vue</div>
+                        </button>
+                        <button type="button" onclick="selectTemplate('python-worker')" id="chip-python-worker" class="p-3 rounded-xl border border-white/10 bg-white/5 hover:border-[#ef233c] text-left transition-all">
+                            <iconify-icon icon="lucide:cpu" class="w-5 h-5 text-yellow-400 mb-1.5"></iconify-icon>
+                            <div class="text-xs font-bold text-white font-manrope">Python App</div>
+                            <div class="text-[10px] text-zinc-500 font-mono">FastAPI / Flask</div>
+                        </button>
+                        <button type="button" onclick="selectTemplate('blank')" id="chip-blank" class="p-3 rounded-xl border border-white/10 bg-white/5 hover:border-[#ef233c] text-left transition-all">
+                            <iconify-icon icon="lucide:code" class="w-5 h-5 text-emerald-400 mb-1.5"></iconify-icon>
+                            <div class="text-xs font-bold text-white font-manrope">Custom App</div>
+                            <div class="text-[10px] text-zinc-500 font-mono">Any Repo</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Form Inputs -->
+                <form id="deployForm" onsubmit="executeDeployment(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-mono text-zinc-400 block mb-1.5">Service Name</label>
+                            <input type="text" id="depServiceName" required class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c]">
+                        </div>
+                        <div>
+                            <label class="text-xs font-mono text-zinc-400 block mb-1.5">Category</label>
+                            <select id="depServiceCategory" class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c]">
+                                <option value="api">Web Service / API</option>
+                                <option value="static-site">Static Frontend</option>
+                                <option value="worker">Background Worker</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-mono text-zinc-400 block mb-1.5">Git Repository URL (GitHub / GitLab)</label>
+                        <input type="url" id="depGitUrl" placeholder="https://github.com/render-examples/express-hello-world" required class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c]">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-xs font-mono text-zinc-400 block mb-1.5">Branch</label>
+                            <input type="text" id="depBranch" value="main" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c]">
+                        </div>
+                        <div>
+                            <label class="text-xs font-mono text-zinc-400 block mb-1.5">Port (Optional)</label>
+                            <input type="number" id="depPort" placeholder="3000" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c]">
+                        </div>
+                        <div>
+                            <label class="text-xs font-mono text-zinc-400 block mb-1.5">Build Command</label>
+                            <input type="text" id="depBuildCmd" value="npm install" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c]">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-mono text-zinc-400 block mb-1.5">Start Command</label>
+                        <input type="text" id="depStartCmd" value="node app.js" required class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c]">
+                    </div>
+
+                    <div class="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+                        <button type="button" onclick="closeDeployModal()" class="px-5 py-2.5 rounded-xl border border-white/10 text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-wider">Cancel</button>
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(239,35,60,0.4)]">Launch Deployment →</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Body (Progress Phase) -->
+            <div id="deployProgressPhase" class="p-6 space-y-6" style="display: none;">
+                <div class="text-center py-4">
+                    <div class="w-12 h-12 bg-[#ef233c]/10 border border-[#ef233c]/30 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
+                        <iconify-icon icon="lucide:loader-2" class="w-6 h-6 text-[#ef233c] animate-spin"></iconify-icon>
+                    </div>
+                    <h4 class="text-lg font-bold font-manrope text-white" id="deployProgressStatusText">Cloning Repository to Edge Phone...</h4>
+                    <p class="text-xs text-zinc-400 font-mono mt-1">Dockerless isolation pipeline executing on native Termux daemon</p>
+                </div>
+
+                <!-- Streaming Log Feed -->
+                <div class="rounded-xl bg-black border border-white/10 p-4 font-mono text-xs text-zinc-300 h-52 overflow-y-auto" id="deployLogContainer">
+                    <div class="text-zinc-500">Connecting to Phone Node: :4000...</div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center justify-between border-t border-white/10 pt-4">
+                    <button type="button" id="btnCancelDeploy" onclick="closeDeployModal()" class="text-xs text-zinc-400 hover:text-white font-mono">Cancel</button>
+                    <div id="deploySuccessActions" class="space-x-3" style="display: none;">
+                        <a id="btnOpenDeployedApp" href="#" target="_blank" class="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-black text-xs font-bold uppercase tracking-wider">Visit App ↗</a>
+                        <a href="/dashboard" class="px-5 py-2 rounded-lg bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider">Open Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- MODAL: CREATE NEW PROJECT -->
-  <div class="rd-modal-backdrop" id="newProjectModal">
-    <div class="rd-modal">
-      <div class="rd-modal-header">
-        <div>
-          <h3>Create a New Service</h3>
-          <p class="rd-modal-subtitle">Deploy a web service or static site directly onto this phone.</p>
-        </div>
-        <button class="rd-modal-close" onclick="closeModal('newProjectModal')">&times;</button>
-      </div>
-
-      <form id="newProjectForm">
-        <div class="rd-form-group">
-          <label for="projectName">Service Name *</label>
-          <input type="text" id="projectName" placeholder="e.g. portfolio-api" required>
-        </div>
-
-        <div class="rd-form-group">
-          <label for="projectCategory">Service Type</label>
-          <select id="projectCategory" style="width: 100%; padding: 8px 10px; background: var(--rd-bg-root); border: 1px solid var(--rd-border); border-radius: var(--rd-btn-radius); color: var(--rd-text-main); font-family: var(--rd-font-body); font-size: 13px;">
-            <option value="web-service">Web Service (Node.js / Express / Fastify)</option>
-            <option value="static-site">Static Site (HTML / CSS / JS)</option>
-            <option value="api">Backend REST / GraphQL API</option>
-            <option value="worker">Background Worker</option>
-          </select>
-        </div>
-
-        <div class="rd-form-group">
-          <label for="gitUrl">Git Repository URL (Optional)</label>
-          <input type="url" id="gitUrl" placeholder="https://github.com/username/project.git">
-          <span class="rd-form-hint">Leave blank to create a clean template.</span>
-        </div>
-
-        <div class="rd-form-row">
-          <div class="rd-form-group">
-            <label for="gitBranch">Branch</label>
-            <input type="text" id="gitBranch" value="main">
-          </div>
-          <div class="rd-form-group">
-            <label for="projectPort">Port (Auto-assigned if empty)</label>
-            <input type="number" id="projectPort" placeholder="e.g. 3001">
-          </div>
+    <!-- Footer -->
+    <footer class="scroll-reveal bg-black border-t border-zinc-900 pt-20 pb-10 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20 relative z-10">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-5 h-5 bg-[#ef233c] rounded-sm rotate-45 flex items-center justify-center"></div>
+                    <span class="text-2xl font-bold font-manrope tracking-tight text-white">
+                        Phonix<span class="text-[#ef233c]">PaaS</span>
+                    </span>
+                </div>
+                <p class="text-zinc-500 max-w-sm leading-relaxed text-sm">
+                    The battery-aware, self-hosted Platform-as-a-Service turning recycled smartphones into energy-efficient, 24/7 personal cloud micro-clusters.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="text-xs font-bold text-[#ef233c] uppercase tracking-widest mb-6 font-mono">Architecture</h4>
+                <ul class="space-y-4 text-zinc-400 text-sm">
+                    <li><a href="#telemetry" class="hover:text-white transition-colors">Battery Telemetry</a></li>
+                    <li><a href="#features" class="hover:text-white transition-colors">Dockerless Engine</a></li>
+                    <li><a href="#quickstart" class="hover:text-white transition-colors">Termux Installer</a></li>
+                    <li><a href="https://github.com/your-username/phonix-paas" target="_blank" class="hover:text-white transition-colors">GitHub Repository</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-xs font-bold text-[#ef233c] uppercase tracking-widest mb-6 font-mono">Resources</h4>
+                <ul class="space-y-4 text-zinc-400 text-sm">
+                    <li><a href="/dashboard" class="hover:text-white transition-colors">Web Console</a></li>
+                    <li><a href="/login" class="hover:text-white transition-colors">Sign In</a></li>
+                    <li><a href="PHONE_SERVER_GUIDE.md" target="_blank" class="hover:text-white transition-colors">Phone Server Guide</a></li>
+                    <li><a href="https://termux.dev" target="_blank" class="hover:text-white transition-colors">Termux Project</a></li>
+                </ul>
+            </div>
         </div>
 
-        <div class="rd-form-group">
-          <label for="buildCmd">Build Command</label>
-          <input type="text" id="buildCmd" placeholder="npm install">
+        <!-- Huge Footer Outline Text Watermark -->
+        <div class="flex justify-center items-center py-6 opacity-15 pointer-events-none select-none">
+            <h1 class="text-[14vw] leading-none font-bold font-manrope tracking-tighter text-stroke">PHONIXPAAS</h1>
         </div>
 
-        <div class="rd-form-group">
-          <label for="startCmd">Start Command</label>
-          <input type="text" id="startCmd" value="npm start">
+        <div class="max-w-7xl mx-auto px-6 border-t border-zinc-900 pt-8 flex flex-col md:flex-row items-center justify-between text-zinc-600 text-[11px] uppercase tracking-wider font-mono">
+            <p>&copy; 2026 PhonixPaaS. Free & Open-Source under the MIT License.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <a href="https://github.com/your-username/phonix-paas" target="_blank" class="hover:text-[#ef233c] transition-colors">GitHub</a>
+                <a href="https://termux.dev" target="_blank" class="hover:text-[#ef233c] transition-colors">Termux</a>
+                <a href="/dashboard" class="hover:text-[#ef233c] transition-colors">Console</a>
+            </div>
         </div>
+    </footer>
 
-        <div class="rd-modal-footer">
-          <button type="button" class="rd-btn-modal-cancel" onclick="closeModal('newProjectModal')">Cancel</button>
-          <button type="submit" class="rd-btn-modal-submit" id="btnSubmitProject">Create Service</button>
-        </div>
-      </form>
-    </div>
-  </div>
+    <!-- Interactive Client JavaScript (Scroll Animation Observer, Mouse Glow & Auth/Deploy) -->
+    <script>
+        // 1. High Performance Scroll Progress Bar & Background Parallax
+        const scrollBar = document.getElementById('scrollProgressBar');
+        const bgContainer = document.getElementById('backgroundContainer');
+        let scrollTicking = false;
 
-  <!-- MODAL: ADD CUSTOM DOMAIN -->
-  <div class="rd-modal-backdrop" id="addDomainModal">
-    <div class="rd-modal">
-      <div class="rd-modal-header">
-        <div>
-          <h3>Add Custom Domain</h3>
-          <p class="rd-modal-subtitle">Route a public hostname to a local port or service.</p>
-        </div>
-        <button class="rd-modal-close" onclick="closeModal('addDomainModal')">&times;</button>
-      </div>
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                window.requestAnimationFrame(() => {
+                    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrolled = height > 0 ? (winScroll / height) : 0;
+                    
+                    if (scrollBar) {
+                        scrollBar.style.transform = `scaleX(${scrolled})`;
+                    }
+                    if (bgContainer) {
+                        bgContainer.style.transform = `translate3d(0, ${winScroll * 0.08}px, 0)`;
+                    }
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        }, { passive: true });
 
-      <form id="addDomainForm" onsubmit="handleAddDomainSubmit(event)">
-        <div class="rd-form-group">
-          <label for="newDomainName">Domain / Subdomain *</label>
-          <input type="text" id="newDomainName" placeholder="e.g. api.mydomain.com" required>
-        </div>
+        // 2. IntersectionObserver for Smooth Scroll-Driven Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-        <div class="rd-form-group">
-          <label for="newDomainService">Target Service *</label>
-          <select id="newDomainService" style="width: 100%; padding: 8px 10px; background: var(--rd-bg-root); border: 1px solid var(--rd-border); border-radius: var(--rd-btn-radius); color: var(--rd-text-main); font-family: var(--rd-font-body); font-size: 13px;" required>
-            <!-- Injected dynamically -->
-          </select>
-        </div>
+            const revealObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
 
-        <div class="rd-modal-footer">
-          <button type="button" class="rd-btn-modal-cancel" onclick="closeModal('addDomainModal')">Cancel</button>
-          <button type="submit" class="rd-btn-modal-submit">Bind Domain</button>
-        </div>
-      </form>
-    </div>
-  </div>
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                revealObserver.observe(el);
+            });
+        });
 
-  <!-- MODAL: LOGS VIEWER -->
-  <div class="rd-modal-backdrop" id="logsModal">
-    <div class="rd-modal rd-modal-lg">
-      <div class="rd-modal-header">
-        <div>
-          <h3 id="logsModalTitle">Service Logs</h3>
-          <p class="rd-modal-subtitle" id="logsModalSubtitle">Streaming standard output...</p>
-        </div>
-        <div class="rd-modal-header-actions" style="display: flex; gap: 8px; align-items: center;">
-          <button class="rd-mini-btn" onclick="copyModalLogs()">Copy Logs</button>
-          <button class="rd-mini-btn" onclick="refreshCurrentLogs()">Refresh</button>
-          <button class="rd-modal-close" onclick="closeModal('logsModal')">&times;</button>
-        </div>
-      </div>
-      <div class="rd-terminal-body" id="terminalOutput">
-        <!-- Terminal lines -->
-      </div>
-    </div>
-  </div>
+        // 3. Smooth Fluid Mouse Follower (LERP)
+        const fluidGlow = document.getElementById('fluidMouseGlow');
+        if (fluidGlow && window.matchMedia('(pointer: fine)').matches) {
+            let targetX = window.innerWidth / 2;
+            let targetY = window.innerHeight / 3;
+            let currentX = targetX;
+            let currentY = targetY;
 
-  <!-- MODAL: ENV VARIABLES -->
-  <div class="rd-modal-backdrop" id="envModal">
-    <div class="rd-modal">
-      <div class="rd-modal-header">
-        <div>
-          <h3 id="envModalTitle">Environment Variables</h3>
-          <p class="rd-modal-subtitle">Variables injected into process.env on boot</p>
-        </div>
-        <button class="rd-modal-close" onclick="closeModal('envModal')">&times;</button>
-      </div>
-      <div class="rd-env-editor">
-        <div id="envRowsContainer">
-          <!-- Dynamic key-values -->
-        </div>
-        <button type="button" class="rd-btn-modal-cancel" style="margin-top: 0.5rem;" onclick="addEnvRow()">
-          + Add Variable
-        </button>
-      </div>
-      <div class="rd-modal-footer">
-        <button type="button" class="rd-btn-modal-cancel" onclick="closeModal('envModal')">Cancel</button>
-        <button type="button" class="rd-btn-modal-submit" onclick="saveCurrentEnv()">Save Variables</button>
-      </div>
-    </div>
-  </div>
+            window.addEventListener('mousemove', (e) => {
+                targetX = e.clientX;
+                targetY = e.clientY;
+            }, { passive: true });
 
-  <script src="js/app.js"></script>
+            function renderFluidGlow() {
+                currentX += (targetX - currentX) * 0.075;
+                currentY += (targetY - currentY) * 0.075;
+                fluidGlow.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+                requestAnimationFrame(renderFluidGlow);
+            }
+            requestAnimationFrame(renderFluidGlow);
+        }
+
+        const TEMPLATES = {
+            'express-api': {
+                name: 'express-rest-api',
+                category: 'api',
+                gitUrl: 'https://github.com/render-examples/express-hello-world',
+                branch: 'main',
+                buildCmd: 'npm install',
+                startCmd: 'node app.js'
+            },
+            'static-site': {
+                name: 'vite-storefront',
+                category: 'static-site',
+                gitUrl: '',
+                branch: 'main',
+                buildCmd: 'npm install && npm run build',
+                startCmd: 'npm start'
+            },
+            'python-worker': {
+                name: 'ai-agent-worker',
+                category: 'worker',
+                gitUrl: '',
+                branch: 'main',
+                buildCmd: '',
+                startCmd: 'python app.py'
+            },
+            'blank': {
+                name: 'my-custom-service',
+                category: 'api',
+                gitUrl: '',
+                branch: 'main',
+                buildCmd: 'npm install',
+                startCmd: 'npm start'
+            }
+        };
+
+        let currentUser = null;
+        let selectedTemplateKey = 'express-api';
+        let activeDeploymentPayload = null;
+
+        function copyInstallCommand() {
+            navigator.clipboard.writeText('pkg install -y git && git clone https://github.com/your-username/phonix-paas.git ~/phonix-paas && cd ~/phonix-paas && bash scripts/install.sh');
+            const label = document.getElementById('copyLabel');
+            label.innerText = 'Copied!';
+            setTimeout(() => label.innerText = 'Copy', 2000);
+        }
+
+        function handleCtaJoin() {
+            const email = document.getElementById('ctaEmailInput').value.trim();
+            if (email) {
+                window.location.href = '/login?email=' + encodeURIComponent(email);
+            } else {
+                handleDeployClick();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAuthStatus();
+
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('deploy') === 'true') {
+                window.history.replaceState({}, '', '/');
+                if (currentUser) {
+                    let savedIntent = null;
+                    try {
+                        savedIntent = JSON.parse(sessionStorage.getItem('phonix_deploy_intent'));
+                        sessionStorage.removeItem('phonix_deploy_intent');
+                    } catch(e) {}
+                    openDeployModal(savedIntent?.template || 'express-api');
+                } else {
+                    window.location.href = '/login?redirect=' + encodeURIComponent('/?deploy=true');
+                }
+            }
+        });
+
+        async function checkAuthStatus() {
+            try {
+                const res = await fetch('/api/auth/me');
+                const json = await res.json();
+                if (json.success && json.user) {
+                    currentUser = json.user;
+                    renderAuthenticatedNav(currentUser);
+                } else {
+                    currentUser = null;
+                    renderUnauthenticatedNav();
+                }
+            } catch (e) {
+                currentUser = null;
+                renderUnauthenticatedNav();
+            }
+        }
+
+        function renderAuthenticatedNav(user) {
+            const navRight = document.getElementById('navAuthSection');
+            const initial = (user.name || user.email || 'U').charAt(0).toUpperCase();
+            navRight.innerHTML = `
+                <a href="/dashboard" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-white/20 transition-all text-xs font-semibold text-zinc-300 hover:text-white">
+                    <span class="w-5 h-5 rounded-full bg-[#ef233c] text-white flex items-center justify-center font-bold text-[10px] shadow-[0_0_8px_rgba(239,35,60,0.6)]">${initial}</span>
+                    <span>${user.name || user.email.split('@')[0]}</span>
+                </a>
+                <a href="/dashboard" class="text-xs font-semibold uppercase tracking-wider text-white bg-white/10 hover:bg-white/15 px-4 py-2 rounded-full transition-all">Console →</a>
+                <button onclick="openDeployModal()" class="px-4 py-2 rounded-full bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(239,35,60,0.4)]">+ Deploy</button>
+            `;
+        }
+
+        function renderUnauthenticatedNav() {
+            const navRight = document.getElementById('navAuthSection');
+            navRight.innerHTML = `
+                <a href="/login" class="text-sm font-medium text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Sign In</a>
+                <button onclick="handleDeployClick()" class="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white/5 px-5 py-2 transition-transform active:scale-95 duration-200">
+                    <span class="absolute inset-0 border border-white/10 rounded-full"></span>
+                    <span class="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#ef233c_100%)] opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    <span class="absolute inset-[1px] rounded-full bg-black"></span>
+                    <span class="relative z-10 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white">
+                        Deploy Service <iconify-icon icon="lucide:arrow-right" class="w-3.5 h-3.5 text-[#ef233c] group-hover:translate-x-0.5 transition-transform"></iconify-icon>
+                    </span>
+                </button>
+            `;
+        }
+
+        async function handleDeployClick(templateKey = null) {
+            const targetTemplate = templateKey || selectedTemplateKey || 'express-api';
+
+            if (!currentUser) {
+                const tpl = TEMPLATES[targetTemplate] || TEMPLATES['blank'];
+                const rndSuffix = Math.floor(Math.random() * 900 + 100);
+                const pendingDeploy = {
+                    name: `${tpl.name}-${rndSuffix}`,
+                    category: tpl.category,
+                    port: tpl.port || '',
+                    gitUrl: tpl.gitUrl || '',
+                    branch: tpl.branch || 'main',
+                    buildCmd: tpl.buildCmd || '',
+                    startCmd: tpl.startCmd || 'npm start'
+                };
+                localStorage.setItem('phonix_pending_deploy', JSON.stringify(pendingDeploy));
+                sessionStorage.setItem('phonix_deploy_intent', JSON.stringify({ template: targetTemplate }));
+                window.location.href = '/login?redirect=' + encodeURIComponent('/?deploy=true');
+                return;
+            }
+
+            openDeployModal(targetTemplate);
+        }
+
+        function openDeployModal(templateKey = 'express-api') {
+            selectTemplate(templateKey);
+            document.getElementById('deployConfigPhase').style.display = 'block';
+            document.getElementById('deployProgressPhase').style.display = 'none';
+            document.getElementById('deployFlowModal').classList.add('open');
+        }
+
+        function closeDeployModal() {
+            document.getElementById('deployFlowModal').classList.remove('open');
+        }
+
+        function selectTemplate(key) {
+            selectedTemplateKey = key;
+            ['express-api', 'static-site', 'python-worker', 'blank'].forEach(k => {
+                const el = document.getElementById(`chip-${k}`);
+                if (el) {
+                    if (k === key) {
+                        el.classList.add('border-[#ef233c]', 'bg-red-950/25');
+                    } else {
+                        el.classList.remove('border-[#ef233c]', 'bg-red-950/25');
+                    }
+                }
+            });
+
+            const tpl = TEMPLATES[key] || TEMPLATES['blank'];
+            const rndSuffix = Math.floor(Math.random() * 900 + 100);
+            document.getElementById('depServiceName').value = `${tpl.name}-${rndSuffix}`;
+            document.getElementById('depServiceCategory').value = tpl.category;
+            document.getElementById('depGitUrl').value = tpl.gitUrl || '';
+            document.getElementById('depBranch').value = tpl.branch || 'main';
+            document.getElementById('depBuildCmd').value = tpl.buildCmd || '';
+            document.getElementById('depStartCmd').value = tpl.startCmd || 'npm start';
+        }
+
+        async function executeDeployment(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('depServiceName').value.trim();
+            const category = document.getElementById('depServiceCategory').value;
+            const gitUrl = document.getElementById('depGitUrl').value.trim();
+            const branch = document.getElementById('depBranch').value.trim();
+            const port = document.getElementById('depPort').value.trim();
+            const buildCmd = document.getElementById('depBuildCmd').value.trim();
+            const startCmd = document.getElementById('depStartCmd').value.trim();
+
+            activeDeploymentPayload = { name, category, gitUrl, branch, port, buildCmd, startCmd };
+
+            document.getElementById('deployConfigPhase').style.display = 'none';
+            document.getElementById('deployProgressPhase').style.display = 'block';
+            const logBox = document.getElementById('deployLogContainer');
+            logBox.innerHTML = '<div class="text-emerald-400">⚡ Initializing deployment pipeline on Termux Node...</div>';
+
+            try {
+                const res = await fetch('/api/projects', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(activeDeploymentPayload)
+                });
+                const data = await res.json();
+
+                if (!data.success) {
+                    logBox.innerHTML += `<div class="text-red-400 mt-2">❌ Deployment error: ${data.error}</div>`;
+                    return;
+                }
+
+                const projectId = data.project.id;
+                logBox.innerHTML += `<div class="text-zinc-400 mt-1">Project created ID: ${projectId}. Polling logs...</div>`;
+
+                // Stream logs
+                const pollInterval = setInterval(async () => {
+                    try {
+                        const logRes = await fetch(`/api/projects/${projectId}/logs`);
+                        const logData = await logRes.json();
+                        if (logData.logs) {
+                            logBox.innerHTML = logData.logs.map(l => `<div>${l}</div>`).join('');
+                            logBox.scrollTop = logBox.scrollHeight;
+                        }
+
+                        // Check project status
+                        const projRes = await fetch(`/api/projects/${projectId}`);
+                        const projData = await projRes.json();
+                        if (projData.project && projData.project.status === 'live') {
+                            clearInterval(pollInterval);
+                            document.getElementById('deployProgressStatusText').innerText = '🎉 Service is LIVE on Phone Server!';
+                            document.getElementById('deploySuccessActions').style.display = 'block';
+                            if (projData.project.url) {
+                                document.getElementById('btnOpenDeployedApp').href = projData.project.url;
+                            } else {
+                                document.getElementById('btnOpenDeployedApp').href = `http://${window.location.hostname}:${projData.project.port}`;
+                            }
+                        }
+                    } catch (err) {}
+                }, 1500);
+
+            } catch (err) {
+                logBox.innerHTML += `<div class="text-red-400 mt-2">❌ Connection failed: ${err.message}</div>`;
+            }
+        }
+    </script>
 </body>
 </html>

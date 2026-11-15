@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | PhonixPaaS</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef233c'><path d='M12 2c1.1 0 2 .9 2 2 0 .7-.4 1.4-1 1.7V8h4c1.1 0 2 .9 2 2v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2h-4v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2s-2-.9-2-2c0-.7.4-1.4 1-1.7V18H8c-1.1 0-2-.9-2-2v-2.3c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2h4V5.7c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2z'/></svg>">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Google Fonts: Manrope, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --accent-red: #ef233c;
+            --accent-red-glow: rgba(239, 35, 60, 0.45);
+        }
+
+        @keyframes animStar {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-2000px); }
+        }
+
+        @keyframes fluid-drift-1 {
+            0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate3d(80px, -50px, 0) scale(1.15) rotate(35deg); }
+            66% { transform: translate3d(-60px, 40px, 0) scale(0.92) rotate(-25deg); }
+            100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        }
+
+        @keyframes fluid-drift-2 {
+            0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+            40% { transform: translate3d(-90px, 70px, 0) scale(1.2) rotate(-45deg); }
+            75% { transform: translate3d(70px, -40px, 0) scale(0.88) rotate(30deg); }
+            100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        }
+
+        .font-manrope { font-family: 'Manrope', -apple-system, sans-serif; }
+        .font-inter { font-family: 'Inter', -apple-system, sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        .fluid-orb {
+            position: absolute;
+            border-radius: 9999px;
+            pointer-events: none;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        .fluid-orb-1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle at center, rgba(239, 35, 60, 0.15) 0%, rgba(217, 4, 41, 0.06) 50%, transparent 72%);
+            filter: blur(120px);
+            animation: fluid-drift-1 25s ease-in-out infinite;
+        }
+        .fluid-orb-2 {
+            width: 650px;
+            height: 650px;
+            background: radial-gradient(circle at center, rgba(141, 8, 1, 0.2) 0%, rgba(74, 5, 5, 0.1) 50%, transparent 75%);
+            filter: blur(130px);
+            animation: fluid-drift-2 30s ease-in-out infinite;
+        }
+
+        .noise-grain-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 25;
+            opacity: 0.045;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .stars-1 {
+            box-shadow: 234px 124px #fff, 654px 345px #fff, 876px 12px #fff, 1200px 800px #fff,
+                        400px 1500px #fff, 1800px 200px #fff, 100px 1000px #fff, 900px 1900px #fff;
+            opacity: 0.6;
+        }
+        .stars-2 {
+            box-shadow: 123px 456px #fff, 789px 234px #fff, 456px 890px #fff, 1100px 300px #fff,
+                        200px 1200px #fff, 1500px 500px #fff, 600px 1700px #fff;
+            opacity: 0.45;
+        }
+
+        .selection-red::selection {
+            background: #ef233c;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="selection-red bg-black text-white font-inter min-h-screen flex flex-col justify-between relative overflow-x-hidden antialiased">
+
+    <!-- Film Grain / Gradient Noise Texture -->
+    <div class="noise-grain-overlay"></div>
+
+    <!-- Global Background Elements (Red Noir Atmosphere) -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#1b0505] via-[#090202] to-black"></div>
+        
+        <!-- Fluid Ambient Orbs -->
+        <div class="fluid-orb fluid-orb-1 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="fluid-orb fluid-orb-2 top-2/3 left-1/3 -translate-x-1/2 -translate-y-1/2"></div>
+
+        <div class="absolute top-0 left-0 w-[1px] h-[1px] bg-transparent stars-1 animate-[animStar_60s_linear_infinite]"></div>
+        <div class="absolute top-0 left-0 w-[2px] h-[2px] bg-transparent stars-2 animate-[animStar_90s_linear_infinite]"></div>
+
+        <!-- 40px Microgrid Pattern -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(circle_at_center,black_40%,transparent_80%)]"></div>
+    </div>
+
+    <!-- Top Bar -->
+    <header class="relative z-10 w-full pt-8 px-6">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-6 h-6 bg-[#ef233c] rounded-sm rotate-45 flex items-center justify-center shadow-[0_0_15px_rgba(239,35,60,0.6)] group-hover:rotate-90 transition-transform duration-300">
+                    <iconify-icon icon="lucide:flame" class="-rotate-45 group-hover:-rotate-90 transition-transform duration-300 text-black text-xs font-bold"></iconify-icon>
+                </div>
+                <span class="text-xl font-bold font-manrope tracking-tight text-white flex items-center gap-1.5">
+                    Phonix<span class="text-[#ef233c]">PaaS</span>
+                </span>
+            </a>
+            <a href="/" class="text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors">
+                <iconify-icon icon="lucide:arrow-left" class="w-3.5 h-3.5"></iconify-icon> Back to Overview
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Auth Container -->
+    <main class="relative z-10 flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md bg-zinc-950/90 border border-white/10 rounded-2xl p-8 backdrop-blur-xl shadow-[0_0_50px_rgba(239,35,60,0.1)] relative">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold font-manrope text-white mb-2" id="authTitle">Sign In to PhonixPaaS</h1>
+                <p class="text-xs text-zinc-400 font-mono" id="authSubtitle">Access your battery-aware mobile cloud cluster</p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="flex items-center p-1 bg-black/60 border border-white/10 rounded-xl mb-6 text-xs font-semibold font-manrope">
+                <button type="button" onclick="setAuthMode('signin')" id="tabSignIn" class="flex-1 py-2 rounded-lg bg-[#ef233c] text-white shadow-sm transition-all text-center">Sign In</button>
+                <button type="button" onclick="setAuthMode('signup')" id="tabSignUp" class="flex-1 py-2 rounded-lg text-zinc-400 hover:text-white transition-all text-center">Create Account</button>
+            </div>
+
+            <!-- Global Alert Box -->
+            <div id="authAlert" class="mb-5 p-3 rounded-xl text-xs font-mono border hidden"></div>
+
+            <!-- SIGN IN FORM -->
+            <form id="formSignIn" onsubmit="handleSignIn(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs font-mono text-zinc-400 block mb-1.5">Email Address</label>
+                    <input type="email" id="signInEmail" required placeholder="admin@phonix.local" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="text-xs font-mono text-zinc-400">Password</label>
+                    </div>
+                    <input type="password" id="signInPassword" required placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                </div>
+
+                <button type="submit" id="btnSignIn" class="w-full py-3 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,35,60,0.4)] mt-2">
+                    <span id="btnSignInText">Sign In to Console →</span>
+                </button>
+
+                <!-- Quick Demo Fill -->
+                <button type="button" onclick="quickFillAdmin()" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
+                    <iconify-icon icon="lucide:key" class="text-[#ef233c]"></iconify-icon> Autofill Demo Admin Credentials
+                </button>
+            </form>
+
+            <!-- SIGN UP FORM -->
+            <form id="formSignUp" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="text-xs font-mono text-zinc-400 block mb-1.5">Developer / Team Name</label>
+                    <input type="text" id="signUpName" placeholder="Alex Morgan" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                </div>
+
+                <div>
+                    <label class="text-xs font-mono text-zinc-400 block mb-1.5">Email Address</label>
+                    <input type="email" id="signUpEmail" required placeholder="developer@domain.com" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                </div>
+
+                <div>
+                    <label class="text-xs font-mono text-zinc-400 block mb-1.5">Password (Min 8 Characters)</label>
+                    <input type="password" id="signUpPassword" required placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                </div>
+
+                <div>
+                    <label class="text-xs font-mono text-zinc-400 block mb-1.5">Confirm Password</label>
+                    <input type="password" id="signUpConfirmPassword" required placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                </div>
+
+                <button type="submit" id="btnSignUp" class="w-full py-3 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,35,60,0.4)] mt-2">
+                    <span id="btnSignUpText">Create Developer Account</span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-6 text-center text-xs text-zinc-600 font-mono">
+        <p>&copy; 2026 PhonixPaaS • Open Source MIT License</p>
+    </footer>
+
+    <!-- Client Script -->
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const rawRedirect = urlParams.get('redirect') || '/dashboard';
+        const redirectUrl = (rawRedirect === 'deploy' || rawRedirect === '/deploy') 
+            ? '/dashboard?action=deploy' 
+            : (rawRedirect.startsWith('/') ? rawRedirect : '/dashboard');
+
+        // Pre-fill email if passed
+        if (urlParams.get('email')) {
+            document.getElementById('signInEmail').value = urlParams.get('email');
+            document.getElementById('signUpEmail').value = urlParams.get('email');
+        }
+
+        function setAuthMode(mode) {
+            const tabIn = document.getElementById('tabSignIn');
+            const tabUp = document.getElementById('tabSignUp');
+            const formIn = document.getElementById('formSignIn');
+            const formUp = document.getElementById('formSignUp');
+            const title = document.getElementById('authTitle');
+            const sub = document.getElementById('authSubtitle');
+
+            if (mode === 'signin') {
+                tabIn.classList.add('bg-[#ef233c]', 'text-white');
+                tabIn.classList.remove('text-zinc-400');
+                tabUp.classList.remove('bg-[#ef233c]', 'text-white');
+                tabUp.classList.add('text-zinc-400');
+                formIn.classList.remove('hidden');
+                formUp.classList.add('hidden');
+                title.innerText = 'Sign In to PhonixPaaS';
+                sub.innerText = 'Access your battery-aware mobile cloud cluster';
+            } else {
+                tabUp.classList.add('bg-[#ef233c]', 'text-white');
+                tabUp.classList.remove('text-zinc-400');
+                tabIn.classList.remove('bg-[#ef233c]', 'text-white');
+                tabIn.classList.add('text-zinc-400');
+                formUp.classList.remove('hidden');
+                formIn.classList.add('hidden');
+                title.innerText = 'Create Developer Account';
+                sub.innerText = 'Deploy limitless edge services on your phone';
+            }
+            hideAlert();
+        }
+
+        function quickFillAdmin() {
+            document.getElementById('signInEmail').value = 'admin@phonix.local';
+            document.getElementById('signInPassword').value = 'phonix123';
+            showAlert('Demo credentials filled. Click Sign In to enter.', 'info');
+        }
+
+        function showAlert(msg, type = 'error') {
+            const el = document.getElementById('authAlert');
+            el.classList.remove('hidden', 'border-red-500/30', 'bg-red-950/40', 'text-red-400', 'border-emerald-500/30', 'bg-emerald-950/40', 'text-emerald-400', 'border-blue-500/30', 'bg-blue-950/40', 'text-blue-400');
+            
+            if (type === 'success') {
+                el.classList.add('border-emerald-500/30', 'bg-emerald-950/40', 'text-emerald-400');
+            } else if (type === 'info') {
+                el.classList.add('border-blue-500/30', 'bg-blue-950/40', 'text-blue-400');
+            } else {
+                el.classList.add('border-red-500/30', 'bg-red-950/40', 'text-red-400');
+            }
+            el.innerText = msg;
+        }
+
+        function hideAlert() {
+            document.getElementById('authAlert').classList.add('hidden');
+        }
+
+        async function handleSignIn(e) {
+            e.preventDefault();
+            hideAlert();
+
+            const email = document.getElementById('signInEmail').value.trim();
+            const password = document.getElementById('signInPassword').value;
+            const btn = document.getElementById('btnSignIn');
+            const btnText = document.getElementById('btnSignInText');
+
+            btn.disabled = true;
+            btnText.innerText = 'Authenticating...';
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const json = await res.json();
+
+                if (!json.success) {
+                    showAlert(json.error || 'Invalid credentials');
+                    btn.disabled = false;
+                    btnText.innerText = 'Sign In to Console →';
+                    return;
+                }
+
+                localStorage.setItem('phonix_user', JSON.stringify(json.user));
+                if (json.token) localStorage.setItem('phonix_token', json.token);
+
+                showAlert('Success! Redirecting to console...', 'success');
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 400);
+
+            } catch (err) {
+                showAlert(`Connection error: ${err.message}`);
+                btn.disabled = false;
+                btnText.innerText = 'Sign In to Console →';
+            }
+        }
+
+        async function handleSignUp(e) {
+            e.preventDefault();
+            hideAlert();
+
+            const name = document.getElementById('signUpName').value.trim();
+            const email = document.getElementById('signUpEmail').value.trim();
+            const password = document.getElementById('signUpPassword').value;
+            const confirm = document.getElementById('signUpConfirmPassword').value;
+            const btn = document.getElementById('btnSignUp');
+            const btnText = document.getElementById('btnSignUpText');
+
+            if (password !== confirm) {
+                showAlert('Passwords do not match');
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.innerText = 'Creating account...';
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const json = await res.json();
+
+                if (!json.success) {
+                    showAlert(json.error || 'Failed to create account');
+                    btn.disabled = false;
+                    btnText.innerText = 'Create Developer Account';
+                    return;
+                }
+
+                localStorage.setItem('phonix_user', JSON.stringify(json.user));
+                if (json.token) localStorage.setItem('phonix_token', json.token);
+
+                showAlert('Account created! Entering console...', 'success');
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 400);
+
+            } catch (err) {
+                showAlert(`Connection error: ${err.message}`);
+                btn.disabled = false;
+                btnText.innerText = 'Create Developer Account';
+            }
+        }
+    </script>
+</body>
+</html>
