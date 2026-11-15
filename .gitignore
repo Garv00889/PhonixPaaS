@@ -3,3 +3,5 @@ projects/
 data/projects.json
 *.log
 .env
+.agents/
+

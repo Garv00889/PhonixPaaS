@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://media.brand.dev" crossorigin>
+  <!-- Neue Montreal Font Preloads (Render Official Typography) -->
+  <link rel="preload" href="https://media.brand.dev/fonts/1a020a0ccc2b29ad091b713864b135d9f7fb6d3114e69620f6d56eeb9abefbcc.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://media.brand.dev/fonts/11a1b227a4f432bdc5587a529d34a46abbed7067b6e1fb913db0c489c7175828.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://media.brand.dev/fonts/dbe3ffb91c68d5dcda6a66581c481a69e96dabe1abc48c9fc8b80d64793589b1.woff2" as="font" type="font/woff2" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 </head>
 <body class="render-app">
   <div class="render-layout">
@@ -204,6 +209,12 @@
             <span class="rd-pill-sep">|</span>
             <span id="topbarTemp">--°C</span>
           </div>
+
+          <!-- Theme Toggle (Light / Dark) -->
+          <button class="rd-theme-toggle" id="themeToggleBtn" title="Switch Theme (Light Mode per Context.dev Styleguide / Dark Mode per Screenshot)">
+            <span id="themeToggleIcon">☀️</span>
+            <span id="themeToggleText">Light</span>
+          </button>
 
           <!-- + New Button (Render style) -->
           <button class="rd-btn-new" id="btnOpenNewProjectModal">

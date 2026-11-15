@@ -1,36 +1,110 @@
 /* ==============================================================================
-   RENDER EXACT DESIGN CLONE (PhonixPaaS)
-   Pixel-accurate reproduction of the Render dashboard layout and styling
+   RENDER.COM OFFICIAL DESIGN SYSTEM
+   Source: dashboard.render.com Styleguide (Context.dev Extraction)
+   Fonts: Neue Montreal (400, 500, 600), ui-sans-serif headings
    ============================================================================== */
 
+/* 1. OFFICIAL FONT-FACE: NEUE MONTREAL */
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('https://media.brand.dev/fonts/1a020a0ccc2b29ad091b713864b135d9f7fb6d3114e69620f6d56eeb9abefbcc.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('https://media.brand.dev/fonts/11a1b227a4f432bdc5587a529d34a46abbed7067b6e1fb913db0c489c7175828.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('https://media.brand.dev/fonts/dbe3ffb91c68d5dcda6a66581c481a69e96dabe1abc48c9fc8b80d64793589b1.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* 2. DESIGN SYSTEM TOKENS (LIGHT MODE DEFAULT) */
 :root {
-  --rd-bg-root: #0a0b0d;
-  --rd-bg-sidebar: #0e1015;
-  --rd-bg-topbar: #0a0b0d;
-  --rd-bg-card: #12151b;
-  --rd-bg-card-hover: #161a22;
+  --rd-mode: "light";
+  --rd-bg-root: #ffffff;
+  --rd-bg-sidebar: #fafafa;
+  --rd-bg-topbar: #ffffff;
+  --rd-bg-card: #ffffff;
+  --rd-bg-card-hover: #f9fafb;
   
+  --rd-text-main: #141414;
+  --rd-text-muted: #525252;
+  --rd-text-sub: #737373;
+  --rd-accent: #000000;
+  --rd-btn-primary-bg: #0d0d0d;
+  --rd-btn-primary-text: #ffffff;
+
+  --rd-border: #e5e7eb;
+  --rd-border-subtle: #f3f4f6;
+  --rd-border-card: #e5e7eb;
+  --rd-border-dashed: #d1d5db;
+
+  --rd-nav-active-bg: #0d0d0d;
+  --rd-nav-active-text: #ffffff;
+
+  --rd-green: #30a46c;
+  --rd-green-bg: rgba(48, 164, 108, 0.1);
+  --rd-green-border: rgba(48, 164, 108, 0.25);
+
+  /* TYPOGRAPHY TOKENS FROM STYLEGUIDE */
+  --rd-font-headings: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --rd-font-body: 'Neue Montreal', sans-serif;
+  --rd-font-mono: 'JetBrains Mono', monospace;
+
+  /* SPACING SCALE FROM STYLEGUIDE */
+  --rd-space-xs: 6px;
+  --rd-space-sm: 16px;
+  --rd-space-md: 24px;
+  --rd-space-lg: 32px;
+  --rd-space-xl: 64px;
+
+  /* SHADOWS FROM STYLEGUIDE */
+  --rd-shadow-sm: rgb(204, 204, 204) 0px 0px 2px 2px;
+  --rd-shadow-none: none;
+
+  /* COMPONENT TOKENS FROM STYLEGUIDE */
+  --rd-card-radius: 8px;
+  --rd-card-padding: 16px;
+  --rd-btn-radius: 0px;
+  --rd-btn-padding: 12px 16px;
+}
+
+/* DARK MODE SUPPORT (TOGGLEABLE) */
+:root[data-theme="dark"], body[data-theme="dark"], [data-theme="dark"] {
+  --rd-mode: "dark";
+  --rd-bg-root: #040404;
+  --rd-bg-sidebar: #0e1015;
+  --rd-bg-topbar: #0e1015;
+  --rd-bg-card: #12151b;
+  --rd-bg-card-hover: #171b23;
+  
+  --rd-text-main: #ffffff;
+  --rd-text-muted: #959fae;
+  --rd-text-sub: #5f6876;
+  --rd-accent: #ffffff;
+  --rd-btn-primary-bg: #4a1782;
+  --rd-btn-primary-text: #ffffff;
+
   --rd-border: #1e222b;
   --rd-border-subtle: #181b22;
   --rd-border-card: #222631;
   --rd-border-dashed: #2a2f3d;
 
-  --rd-purple-active: #4a1782;
-  --rd-purple-hover: #3b1468;
-  --rd-purple-accent: #6e56cf;
-
-  --rd-text-main: #ffffff;
-  --rd-text-muted: #959fae;
-  --rd-text-sub: #5f6876;
+  --rd-nav-active-bg: #4a1782;
+  --rd-nav-active-text: #ffffff;
 
   --rd-green: #30a46c;
   --rd-green-bg: rgba(48, 164, 108, 0.12);
   --rd-green-border: rgba(48, 164, 108, 0.28);
-
-  --rd-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --rd-font-mono: 'JetBrains Mono', monospace;
 }
 
+/* BASE STYLES */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -40,13 +114,64 @@
 body.render-app {
   background-color: var(--rd-bg-root);
   color: var(--rd-text-main);
-  font-family: var(--rd-font-sans);
+  font-family: var(--rd-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
   height: 100vh;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* APP SHELL: SIDEBAR + MAIN */
+/* TYPOGRAPHY HIERARCHY (EXACT FROM STYLEGUIDE) */
+h1 {
+  font-family: var(--rd-font-headings);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: var(--rd-text-main);
+}
+
+h2 {
+  font-family: var(--rd-font-headings);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: var(--rd-text-main);
+}
+
+h3 {
+  font-family: var(--rd-font-headings);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0px;
+  color: var(--rd-text-main);
+}
+
+h4 {
+  font-family: var(--rd-font-headings);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0px;
+  color: var(--rd-text-main);
+}
+
+p {
+  font-family: var(--rd-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  color: var(--rd-text-muted);
+}
+
+/* APP SHELL */
 .render-layout {
   display: flex;
   height: 100vh;
@@ -54,7 +179,7 @@ body.render-app {
 }
 
 /* ==============================================================================
-   SIDEBAR (Render Exact Layout)
+   SIDEBAR (Render Exact Layout with Styleguide Tokens)
    ============================================================================== */
 .rd-sidebar {
   width: 240px;
@@ -91,6 +216,9 @@ body.render-app {
 }
 
 .rd-workspace-selector:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+[data-theme="dark"] .rd-workspace-selector:hover {
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -109,7 +237,7 @@ body.render-app {
 
 .rd-workspace-name {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--rd-text-main);
   flex: 1;
   white-space: nowrap;
@@ -121,7 +249,7 @@ body.render-app {
   color: var(--rd-text-sub);
 }
 
-/* Sidebar Navigation Items */
+/* Sidebar Nav Items */
 .rd-sidebar-nav {
   flex: 1;
   overflow-y: auto;
@@ -143,20 +271,22 @@ body.render-app {
   color: var(--rd-text-muted);
   text-decoration: none;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   transition: all 0.12s ease;
 }
 
 .rd-nav-item:hover {
   color: var(--rd-text-main);
+  background: rgba(0, 0, 0, 0.04);
+}
+[data-theme="dark"] .rd-nav-item:hover {
   background: rgba(255, 255, 255, 0.04);
 }
 
-/* Active Project Highlight in Render Signature Purple */
 .rd-nav-item.active {
-  background: var(--rd-purple-active);
-  color: #ffffff;
-  font-weight: 600;
+  background: var(--rd-nav-active-bg);
+  color: var(--rd-nav-active-text);
+  font-weight: 500;
 }
 
 .rd-nav-icon {
@@ -170,7 +300,7 @@ body.render-app {
 
 .rd-nav-section-title {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--rd-text-sub);
   padding: 18px 12px 6px 12px;
@@ -194,11 +324,14 @@ body.render-app {
   color: var(--rd-text-sub);
   text-decoration: none;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .rd-footer-item:hover {
   color: var(--rd-text-main);
+  background: rgba(0, 0, 0, 0.04);
+}
+[data-theme="dark"] .rd-footer-item:hover {
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -212,9 +345,9 @@ body.render-app {
   height: 100%;
   overflow-y: auto;
   position: relative;
+  background-color: var(--rd-bg-root);
 }
 
-/* Topbar */
 .rd-topbar {
   height: 52px;
   background: var(--rd-bg-topbar);
@@ -231,7 +364,7 @@ body.render-app {
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--rd-text-muted);
 }
 
@@ -241,9 +374,8 @@ body.render-app {
   gap: 10px;
 }
 
-/* Search trigger */
 .rd-search-trigger {
-  background: #12151b;
+  background: var(--rd-bg-card);
   border: 1px solid var(--rd-border);
   border-radius: 4px;
   padding: 5px 10px;
@@ -258,10 +390,10 @@ body.render-app {
 
 .rd-search-trigger kbd {
   font-size: 10px;
-  background: #1b1f28;
+  background: var(--rd-border-subtle);
   padding: 1px 4px;
   border-radius: 3px;
-  border: 1px solid #282e3b;
+  border: 1px solid var(--rd-border);
   font-family: var(--rd-font-mono);
   color: var(--rd-text-muted);
 }
@@ -271,12 +403,12 @@ body.render-app {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #12151b;
+  background: var(--rd-bg-card);
   border: 1px solid var(--rd-border);
   border-radius: 4px;
   padding: 5px 9px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   font-family: var(--rd-font-mono);
   color: var(--rd-text-muted);
 }
@@ -293,22 +425,45 @@ body.render-app {
   color: var(--rd-border);
 }
 
-/* Render Buttons */
-.rd-btn-new {
-  background: #12151b;
+/* Theme Toggle Button (Light / Dark) */
+.rd-theme-toggle {
+  background: transparent;
   border: 1px solid var(--rd-border);
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 5px 12px;
   border-radius: 4px;
+  color: var(--rd-text-muted);
+  font-size: 12px;
+  padding: 5px 9px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  font-family: var(--rd-font-body);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rd-theme-toggle:hover {
+  color: var(--rd-text-main);
+  border-color: var(--rd-text-muted);
+}
+
+/* Render Buttons (Exact from Styleguide) */
+.rd-btn-new {
+  box-sizing: border-box;
+  display: inline-block;
+  background-color: var(--rd-btn-primary-bg);
+  color: var(--rd-btn-primary-text);
+  border: 0px solid #e5e7eb;
+  border-radius: var(--rd-btn-radius);
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--rd-font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
 }
 
 .rd-btn-new:hover {
-  background: #181c24;
-  border-color: #2c3240;
+  opacity: 0.9;
 }
 
 .rd-btn-upgrade {
@@ -316,7 +471,7 @@ body.render-app {
   border: none;
   color: var(--rd-text-muted);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -325,7 +480,7 @@ body.render-app {
 }
 
 .rd-btn-upgrade:hover {
-  color: #ffffff;
+  color: var(--rd-text-main);
 }
 
 .rd-btn-icon-only {
@@ -337,11 +492,6 @@ body.render-app {
   padding: 4px 8px;
 }
 
-.rd-btn-icon-only:hover {
-  color: #ffffff;
-}
-
-/* Render Green Avatar */
 .rd-user-avatar {
   width: 26px;
   height: 26px;
@@ -359,7 +509,7 @@ body.render-app {
    PAGE CONTENT (OVERVIEW & PROJECTS)
    ============================================================================== */
 .rd-content-body {
-  padding: 36px 44px;
+  padding: var(--rd-space-lg) 44px;
   max-width: 1400px;
   width: 100%;
 }
@@ -368,64 +518,75 @@ body.render-app {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: var(--rd-space-md);
 }
 
 .rd-page-title {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #ffffff;
+  font-family: var(--rd-font-headings);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: var(--rd-text-main);
 }
 
 .rd-invite-link {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #b7a9e6;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
+  color: var(--rd-text-muted);
+  text-decoration: underline;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--rd-font-headings);
   transition: color 0.15s ease;
 }
 
 .rd-invite-link:hover {
-  color: #ffffff;
+  color: var(--rd-text-main);
 }
 
-/* Section Title */
 .rd-section-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 16px;
+  font-family: var(--rd-font-headings);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0px;
+  color: var(--rd-text-main);
+  margin-bottom: var(--rd-space-sm);
 }
 
 /* ==============================================================================
-   PROJECTS GRID (MATCHING SCREENSHOT)
+   PROJECTS GRID & CARDS (EXACT STYLEGUIDE SPECIFICATION)
    ============================================================================== */
 .rd-projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 18px;
+  gap: var(--rd-space-sm);
 }
 
-/* Active Project Card */
+/* Styleguide Card Component */
 .rd-project-card {
-  background: var(--rd-bg-card);
+  box-sizing: border-box;
+  background-color: var(--rd-bg-card);
+  color: var(--rd-text-main);
   border: 1px solid var(--rd-border-card);
-  border-radius: 6px;
-  padding: 22px 24px;
-  min-height: 138px;
+  border-radius: var(--rd-card-radius);
+  padding: var(--rd-card-padding);
+  min-height: 140px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  box-shadow: none;
+  transition: border-color 0.15s ease;
   position: relative;
 }
 
 .rd-project-card:hover {
-  border-color: #333948;
+  border-color: #9ca3af;
+}
+[data-theme="dark"] .rd-project-card:hover {
+  border-color: #3b4252;
 }
 
 .rd-card-header-row {
@@ -435,10 +596,12 @@ body.render-app {
 }
 
 .rd-card-project-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #ffffff;
-  letter-spacing: -0.01em;
+  font-family: var(--rd-font-headings);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0px;
+  color: var(--rd-text-main);
 }
 
 .rd-card-menu-btn {
@@ -449,7 +612,7 @@ body.render-app {
   font-size: 16px;
 }
 
-/* Green Status Badge (Exact like screenshot) */
+/* Green Status Banner */
 .rd-status-banner {
   display: inline-flex;
   align-items: center;
@@ -458,7 +621,7 @@ body.render-app {
   border: 1px solid var(--rd-green-border);
   color: var(--rd-green);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
   padding: 4px 10px;
   border-radius: 4px;
   width: fit-content;
@@ -471,60 +634,59 @@ body.render-app {
 }
 
 .rd-status-banner.error {
-  background: rgba(229, 72, 77, 0.12);
-  border-color: rgba(229, 72, 77, 0.28);
+  background: rgba(229, 72, 77, 0.1);
+  border-color: rgba(229, 72, 77, 0.25);
   color: #e5484d;
 }
 
-/* Quick Card Footer with Links & Power Toggle */
 .rd-card-footer-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--rd-border-subtle);
 }
 
 .rd-card-port-link {
   font-family: var(--rd-font-mono);
   font-size: 12px;
-  color: #a78bfa;
-  text-decoration: none;
-}
-
-.rd-card-port-link:hover {
+  color: #6366f1;
   text-decoration: underline;
 }
 
 .rd-card-actions-mini {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
+/* Mini Buttons (Styleguide Secondary Button Pattern) */
 .rd-mini-btn {
   background: transparent;
   border: 1px solid var(--rd-border);
+  border-radius: var(--rd-btn-radius);
   color: var(--rd-text-muted);
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 12px;
+  font-family: var(--rd-font-body);
+  font-weight: 400;
   padding: 3px 8px;
-  border-radius: 4px;
   cursor: pointer;
+  transition: all 0.12s ease;
 }
 
 .rd-mini-btn:hover {
-  color: #ffffff;
-  border-color: #2e3442;
+  color: var(--rd-text-main);
+  border-color: var(--rd-text-muted);
 }
 
-/* The "+ Create new project" Card from Screenshot */
+/* The "+ Create new project" Card */
 .rd-create-project-card {
+  box-sizing: border-box;
   border: 1px dashed var(--rd-border-dashed);
-  border-radius: 6px;
+  border-radius: var(--rd-card-radius);
   background: transparent;
-  min-height: 138px;
+  min-height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -532,57 +694,57 @@ body.render-app {
   transition: all 0.15s ease;
   color: var(--rd-text-muted);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
+  font-family: var(--rd-font-body);
   user-select: none;
 }
 
 .rd-create-project-card:hover {
-  border-color: #4b5366;
+  border-color: #6b7280;
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--rd-text-main);
+}
+[data-theme="dark"] .rd-create-project-card:hover {
   background: rgba(255, 255, 255, 0.02);
-  color: #ffffff;
 }
 
-/* ==============================================================================
-   FLOATING SHARE FEEDBACK BUTTON
-   ============================================================================== */
+/* Floating Share Feedback Button */
 .rd-feedback-btn {
   position: fixed;
   bottom: 24px;
   right: 28px;
-  background: #ffffff;
-  color: #0b0d10;
-  padding: 7px 14px;
+  background: #0d0d0d;
+  color: #ffffff;
+  padding: 8px 14px;
   border-radius: 4px;
   font-size: 12px;
-  font-weight: 600;
+  font-family: var(--rd-font-body);
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-  transition: transform 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 50;
 }
 
-.rd-feedback-btn:hover {
-  transform: translateY(-1px);
+[data-theme="dark"] .rd-feedback-btn {
+  background: #ffffff;
+  color: #0b0d10;
 }
 
-/* ==============================================================================
-   MODALS & DRAWERS
-   ============================================================================== */
+/* MODALS */
 .rd-modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.6);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 200;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(2px);
 }
 
 .rd-modal-backdrop.open {
@@ -590,13 +752,14 @@ body.render-app {
 }
 
 .rd-modal {
-  background: #11141a;
+  background: var(--rd-bg-card);
+  color: var(--rd-text-main);
   border: 1px solid var(--rd-border);
-  border-radius: 6px;
+  border-radius: var(--rd-card-radius);
   width: 100%;
   max-width: 520px;
   padding: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .rd-modal-lg {
@@ -607,15 +770,16 @@ body.render-app {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
-  padding-bottom: 14px;
+  margin-bottom: var(--rd-space-sm);
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--rd-border-subtle);
 }
 
 .rd-modal-header h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #ffffff;
+  font-family: var(--rd-font-headings);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--rd-text-main);
 }
 
 .rd-modal-subtitle {
@@ -633,7 +797,7 @@ body.render-app {
 }
 
 .rd-modal-close:hover {
-  color: #ffffff;
+  color: var(--rd-text-main);
 }
 
 .rd-form-group {
@@ -649,9 +813,10 @@ body.render-app {
 label {
   display: block;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--rd-text-muted);
   margin-bottom: 6px;
+  font-family: var(--rd-font-body);
 }
 
 input[type="text"],
@@ -659,17 +824,20 @@ input[type="url"],
 input[type="number"] {
   width: 100%;
   padding: 8px 10px;
-  background: #090a0d;
+  background: var(--rd-bg-root);
   border: 1px solid var(--rd-border);
-  border-radius: 4px;
-  color: #ffffff;
-  font-family: var(--rd-font-sans);
+  border-radius: var(--rd-btn-radius);
+  color: var(--rd-text-main);
+  font-family: var(--rd-font-body);
   font-size: 13px;
   outline: none;
 }
 
 input:focus {
-  border-color: var(--rd-purple-accent);
+  border-color: #0d0d0d;
+}
+[data-theme="dark"] input:focus {
+  border-color: #6e56cf;
 }
 
 .rd-form-hint {
@@ -683,40 +851,50 @@ input:focus {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: var(--rd-space-md);
   padding-top: 14px;
   border-top: 1px solid var(--rd-border-subtle);
 }
 
+/* Secondary Button from Styleguide */
 .rd-btn-modal-cancel {
-  background: transparent;
-  border: 1px solid var(--rd-border);
-  color: var(--rd-text-muted);
-  font-size: 13px;
-  font-weight: 500;
-  padding: 7px 14px;
-  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: #272727;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--rd-btn-radius);
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--rd-font-body);
   cursor: pointer;
 }
+[data-theme="dark"] .rd-btn-modal-cancel {
+  color: var(--rd-text-muted);
+  border-color: var(--rd-border);
+}
 
+/* Primary Button from Styleguide */
 .rd-btn-modal-submit {
-  background: var(--rd-purple-accent);
-  border: none;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 7px 16px;
-  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: var(--rd-btn-primary-bg);
+  color: var(--rd-btn-primary-text);
+  border: 0px solid #e5e7eb;
+  border-radius: var(--rd-btn-radius);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--rd-font-body);
   cursor: pointer;
 }
 
 .rd-btn-modal-submit:hover {
-  background: #7c66dc;
+  opacity: 0.9;
 }
 
-/* Terminal Body */
+/* Terminal Console Body */
 .rd-terminal-body {
-  background: #06070a;
+  background: #0d0f14;
   border: 1px solid var(--rd-border);
   border-radius: 4px;
   padding: 14px;
@@ -730,22 +908,26 @@ input:focus {
   word-break: break-all;
 }
 
-/* Loading Spinner */
+/* Loading Card */
 .rd-loading-card {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 40px;
+  padding: var(--rd-space-lg);
   color: var(--rd-text-sub);
 }
 
 .rd-spinner {
   width: 24px;
   height: 24px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--rd-purple-accent);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #0d0d0d;
   border-radius: 50%;
   animation: rd-spin 0.8s linear infinite;
   margin: 0 auto 10px auto;
+}
+[data-theme="dark"] .rd-spinner {
+  border-color: rgba(255, 255, 255, 0.1);
+  border-top-color: #ffffff;
 }
 
 @keyframes rd-spin {

@@ -4,6 +4,7 @@ let logsInterval = null;
 
 // On DOM Loaded
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   fetchTelemetry();
   fetchProjects();
 
@@ -19,6 +20,40 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('newProjectForm').addEventListener('submit', handleNewProjectSubmit);
   document.getElementById('sidebarSleepBtn').addEventListener('click', handleMasterSleep);
 });
+
+// ----------------------------------------------------
+// THEME SWITCHER (Styleguide Light Default / Dark Toggle)
+// ----------------------------------------------------
+function initTheme() {
+  const savedTheme = localStorage.getItem('phonix_theme') || 'light';
+  applyTheme(savedTheme);
+
+  const toggleBtn = document.getElementById('themeToggleBtn');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      const nextTheme = isDark ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      localStorage.setItem('phonix_theme', nextTheme);
+    });
+  }
+}
+
+function applyTheme(theme) {
+  const icon = document.getElementById('themeToggleIcon');
+  const text = document.getElementById('themeToggleText');
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.body.setAttribute('data-theme', 'dark');
+    if (icon) icon.innerText = '🌙';
+    if (text) text.innerText = 'Dark';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    document.body.removeAttribute('data-theme');
+    if (icon) icon.innerText = '☀️';
+    if (text) text.innerText = 'Light';
+  }
+}
 
 // ----------------------------------------------------
 // TELEMETRY UPDATE
