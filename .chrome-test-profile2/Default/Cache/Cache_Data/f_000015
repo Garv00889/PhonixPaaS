@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhonixPaaS — The Fastest Path to Production on Recycled Mobile Hardware</title>
+  <link rel="icon" type="image/png" href="https://media.brand.dev/aabde5a6-1777-4ee0-9ba3-71d36b608de8.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://media.brand.dev" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ==============================================================================
+       RENDER.COM OFFICIAL DESIGN SYSTEM & BRAND RETRIEVAL
+       Source: Brand.dev & Context.dev
+       Colors: #8a05ff (Purple Climax), #040404 (Armor Wash), #8d3dd8 (Thick Purple),
+               #d59afc (Plasma Trail), #e2e2ef (Icy Lavender)
+       ============================================================================== */
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('https://media.brand.dev/fonts/1a020a0ccc2b29ad091b713864b135d9f7fb6d3114e69620f6d56eeb9abefbcc.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('https://media.brand.dev/fonts/11a1b227a4f432bdc5587a529d34a46abbed7067b6e1fb913db0c489c7175828.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Neue Montreal';
+      src: url('https://media.brand.dev/fonts/dbe3ffb91c68d5dcda6a66581c481a69e96dabe1abc48c9fc8b80d64793589b1.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    :root {
+      --rd-bg: #040404;
+      --rd-surface: #0e1015;
+      --rd-card: #12151b;
+      --rd-card-hover: #171b23;
+      --rd-border: rgba(255, 255, 255, 0.08);
+      --rd-border-subtle: rgba(255, 255, 255, 0.04);
+      --rd-border-hover: rgba(255, 255, 255, 0.16);
+      
+      /* OFFICIAL BRAND RETRIEVAL PALETTE */
+      --rd-purple: #8a05ff;              /* Purple Climax */
+      --rd-purple-light: #9d3bff;
+      --rd-purple-glow: rgba(138, 5, 255, 0.35);
+      --rd-thick-purple: #8d3dd8;        /* Thick Purple */
+      --rd-plasma-trail: #d59afc;        /* Plasma Trail */
+      --rd-icy-lavender: #e2e2ef;        /* Icy Lavender */
+      --rd-armor-wash: #040404;          /* Armor Wash */
+      
+      --rd-green: #30a46c;
+      --rd-green-bg: rgba(48, 164, 108, 0.12);
+      
+      --rd-text-main: #ffffff;
+      --rd-text-muted: #9aa5b5;
+      --rd-text-sub: #5f6876;
+
+      --rd-font-sans: 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --rd-font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--rd-bg);
+      color: var(--rd-text-main);
+      font-family: var(--rd-font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* TOP ANNOUNCEMENT BANNER */
+    .rd-banner {
+      background: linear-gradient(90deg, #2b0b52 0%, #150930 100%);
+      border-bottom: 1px solid rgba(138, 5, 255, 0.3);
+      padding: 9px 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #e9d5ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .rd-banner a {
+      color: #ffffff;
+      text-decoration: underline;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* STICKY NAVBAR */
+    .rd-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(4, 4, 4, 0.85);
+      border-bottom: 1px solid var(--rd-border);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .rd-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .rd-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .rd-logo-icon {
+      width: 26px;
+      height: 26px;
+      background: var(--rd-purple);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rd-nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .rd-nav-link {
+      color: var(--rd-text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .rd-nav-link:hover { color: #fff; }
+
+    .rd-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--rd-purple);
+      color: #fff;
+      box-shadow: 0 0 20px var(--rd-purple-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--rd-purple-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--rd-border);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--rd-border-hover);
+    }
+
+    /* HERO SECTION */
+    .rd-hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px 60px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .rd-hero-glow {
+      position: absolute;
+      top: -140px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1100px;
+      height: 600px;
+      background: radial-gradient(circle at 50% 30%, rgba(138, 5, 255, 0.35) 0%, rgba(141, 61, 216, 0.15) 40%, rgba(4, 4, 4, 0) 75%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .rd-hero-shader-bg {
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      max-width: 1400px;
+      height: 650px;
+      z-index: 1;
+      pointer-events: none;
+      border-radius: 20px;
+      overflow: hidden;
+      opacity: 0.95;
+      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 85%);
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 85%);
+    }
+
+    .rd-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .rd-hero-title {
+      font-size: 58px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      margin-bottom: 24px;
+    }
+
+    .rd-gradient-text {
+      background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f97316 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .rd-hero-subtitle {
+      font-size: 20px;
+      color: var(--rd-text-muted);
+      line-height: 1.6;
+      margin-bottom: 36px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* CTA BUTTON GROUP */
+    .rd-hero-ctas {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    /* CONNECT AGENT SHELL COMMAND WIDGET (Exact Render Style) */
+    .rd-command-pill {
+      display: inline-flex;
+      align-items: center;
+      background: #0e1118;
+      border: 1px solid var(--rd-border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-family: var(--rd-font-mono);
+      font-size: 13px;
+      color: #c4b5fd;
+      gap: 10px;
+      margin-bottom: 60px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .rd-command-pill:hover {
+      border-color: rgba(138, 5, 255, 0.5);
+      background: #131722;
+    }
+
+    .rd-copy-btn {
+      color: var(--rd-text-sub);
+      font-size: 12px;
+    }
+
+    /* INTERACTIVE PRODUCT VISUALIZER (Render-Style Production Cards) */
+    .rd-product-preview {
+      background: #0d0f14;
+      border: 1px solid var(--rd-border);
+      border-radius: 12px;
+      padding: 28px;
+      text-align: left;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(138, 5, 255, 0.08);
+      position: relative;
+    }
+
+    .rd-preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--rd-border-subtle);
+      padding-bottom: 16px;
+    }
+
+    .rd-preview-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .rd-env-badge {
+      background: rgba(48, 164, 108, 0.15);
+      color: var(--rd-green);
+      border: 1px solid rgba(48, 164, 108, 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+
+    .rd-hardware-tag {
+      font-size: 12px;
+      color: var(--rd-text-sub);
+      font-family: var(--rd-font-mono);
+    }
+
+    /* GRID OF TILES */
+    .rd-services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .rd-tile {
+      background: #13161d;
+      border: 1px solid var(--rd-border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+
+    .rd-tile:hover {
+      border-color: var(--rd-border-hover);
+      background: #171b24;
+    }
+
+    .rd-tile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rd-tile-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .rd-tile-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--rd-green);
+    }
+
+    .rd-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--rd-green);
+      box-shadow: 0 0 6px var(--rd-green);
+    }
+
+    .rd-tile-type {
+      font-size: 12px;
+      color: var(--rd-text-sub);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* CORE FEATURES SECTION */
+    .rd-features {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 24px;
+    }
+
+    .rd-section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .rd-section-title {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .rd-section-subtitle {
+      color: var(--rd-text-muted);
+      font-size: 17px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .rd-feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .rd-feature-card {
+      background: var(--rd-surface);
+      border: 1px solid var(--rd-border);
+      border-radius: 10px;
+      padding: 32px;
+      transition: all 0.2s ease;
+    }
+
+    .rd-feature-card:hover {
+      border-color: rgba(138, 5, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .rd-feature-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .rd-feature-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .rd-feature-desc {
+      color: var(--rd-text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    .rd-footer {
+      border-top: 1px solid var(--rd-border);
+      padding: 48px 32px;
+      text-align: center;
+      color: var(--rd-text-sub);
+      font-size: 13px;
+    }
+
+    .rd-footer a { color: var(--rd-text-muted); text-decoration: none; margin: 0 10px; }
+    .rd-footer a:hover { color: #fff; }
+
+    @media (max-width: 768px) {
+      .rd-hero-title { font-size: 38px; }
+      .rd-nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- FULL WEBSITE BACKGROUND ANIMATION (ThreeUI Signal Particles @ 0.20s) -->
+  <div id="website-animation-bg" class="shader-frame" style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0.85;">
+    <iframe src="/scene/?mode=dark&speed=0.20" style="width: 100%; height: 100%; border: 0; display: block;" title="ThreeUI Signal Particles Background"></iframe>
+  </div>
+
+  <!-- TOP BANNER -->
+  <div class="rd-banner">
+    <span>✨ Build and run apps with free Cloudflare SSL, global tunneling, and automatic Git deploys on your recycled phone.</span>
+    <a href="/index.html">Launch Dashboard →</a>
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="rd-nav">
+    <div class="rd-nav-left">
+      <a href="/landing.html" class="rd-brand">
+        <img src="https://media.brand.dev/aabde5a6-1777-4ee0-9ba3-71d36b608de8.png" width="28" height="28" alt="Render Logo" style="border-radius: 6px;">
+        <span>Phonix<span style="color: var(--rd-purple);">PaaS</span></span>
+      </a>
+
+      <ul class="rd-nav-links">
+        <li><a href="#features" class="rd-nav-link">Product</a></li>
+        <li><a href="#architecture" class="rd-nav-link">Architecture</a></li>
+        <li><a href="/PHONE_SERVER_GUIDE.md" class="rd-nav-link">Documentation</a></li>
+        <li><a href="#pricing" class="rd-nav-link">Free Tier</a></li>
+      </ul>
+    </div>
+
+    <div class="rd-nav-right">
+      <a href="/index.html" class="btn btn-secondary">Admin Login</a>
+      <a href="/index.html" class="btn btn-primary">Open Console</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="rd-hero">
+    <div class="rd-hero-glow"></div>
+
+    <div class="rd-hero-content">
+      <h1 class="rd-hero-title">
+        Your fastest path to production on <br>
+        <span class="rd-gradient-text" id="cyclingText">recycled hardware</span>
+      </h1>
+
+      <p class="rd-hero-subtitle">
+        Deploy, manage, and scale full-stack web applications, APIs, and agents directly from your old smartphone. Zero cloud bills, zero cold-starts, 100% private.
+      </p>
+
+      <div class="rd-hero-ctas">
+        <a href="/index.html" class="btn btn-primary" style="padding: 12px 28px; font-size: 15px;">
+          Deploy Your First Project
+        </a>
+        <a href="/PHONE_SERVER_GUIDE.md" class="btn btn-secondary" style="padding: 12px 24px; font-size: 15px;">
+          Read Engineering Guide
+        </a>
+      </div>
+
+      <!-- One-Click Quick Command Widget -->
+      <div class="rd-command-pill" onclick="copyInstallCommand()" title="Click to copy install command for Android Termux">
+        <span>$ pkg install git && git clone phonix-paas && bash install.sh</span>
+        <span class="rd-copy-btn" id="copyLabel">Copy</span>
+      </div>
+
+      <!-- INTERACTIVE PREVIEW CARD (RENDER SCREENSHOT EXACT STYLE) -->
+      <div class="rd-product-preview">
+        <div class="rd-preview-header">
+          <div class="rd-preview-title">
+            <span>Mobile-Node-01</span>
+            <span class="rd-env-badge">Production</span>
+          </div>
+          <div class="rd-hardware-tag">
+            <span>ARM64 • Termux POSIX • 🔋 85% Charging • 31°C</span>
+          </div>
+        </div>
+
+        <div class="rd-services-grid">
+          <!-- Service 1 -->
+          <div class="rd-tile">
+            <div class="rd-tile-top">
+              <span class="rd-tile-name">Storefront App</span>
+              <span class="rd-tile-status"><span class="rd-dot"></span> Live</span>
+            </div>
+            <div class="rd-tile-type">
+              <span>Static Site / Vite</span>
+              <span style="font-family: var(--rd-font-mono);">:3001 ↗</span>
+            </div>
+          </div>
+
+          <!-- Service 2 -->
+          <div class="rd-tile">
+            <div class="rd-tile-top">
+              <span class="rd-tile-name">REST Backend API</span>
+              <span class="rd-tile-status"><span class="rd-dot"></span> Live</span>
+            </div>
+            <div class="rd-tile-type">
+              <span>Node.js / Express</span>
+              <span style="font-family: var(--rd-font-mono);">:3002 ↗</span>
+            </div>
+          </div>
+
+          <!-- Service 3 -->
+          <div class="rd-tile">
+            <div class="rd-tile-top">
+              <span class="rd-tile-name">AI Agent Worker</span>
+              <span class="rd-tile-status"><span class="rd-dot"></span> Live</span>
+            </div>
+            <div class="rd-tile-type">
+              <span>Python / FastAPI</span>
+              <span style="font-family: var(--rd-font-mono);">:3003 ↗</span>
+            </div>
+          </div>
+
+          <!-- Service 4 -->
+          <div class="rd-tile">
+            <div class="rd-tile-top">
+              <span class="rd-tile-name">Secure Tunnel</span>
+              <span class="rd-tile-status"><span class="rd-dot"></span> Encrypted</span>
+            </div>
+            <div class="rd-tile-type">
+              <span>Cloudflare Ingress</span>
+              <span style="color:#a855f7;">HTTPS SSL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="rd-features" id="features">
+    <div class="rd-section-header">
+      <h2 class="rd-section-title">Built for Edge & Mobile Hardware</h2>
+      <p class="rd-section-subtitle">
+        Everything you expect from Render, engineered from the ground up to respect battery health and mobile system constraints.
+      </p>
+    </div>
+
+    <div class="rd-feature-cards">
+      <!-- Card 1 -->
+      <div class="rd-feature-card">
+        <div class="rd-feature-icon">⚡</div>
+        <h3 class="rd-feature-title">Dockerless Process Engine</h3>
+        <p class="rd-feature-desc">
+          No heavy container daemons or systemd overhead. The entire control plane operates in under 35MB of RAM, leaving 95%+ of memory free for your apps.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="rd-feature-card">
+        <div class="rd-feature-icon">🔋</div>
+        <h3 class="rd-feature-title">Battery & Thermal Guard</h3>
+        <p class="rd-feature-desc">
+          Scale-to-zero technology lets you put web services into deep sleep with one click. Real-time telemetry watches cell temperature to prevent swelling.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="rd-feature-card">
+        <div class="rd-feature-icon">🌐</div>
+        <h3 class="rd-feature-title">Zero-Config Global Ingress</h3>
+        <p class="rd-feature-desc">
+          Encrypted Cloudflare Tunnels create an outbound bridge from your phone to Cloudflare's Anycast edge. Free HTTPS URLs with zero router port-forwarding.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="rd-feature-card">
+        <div class="rd-feature-icon">🔄</div>
+        <h3 class="rd-feature-title">Continuous Git Deployment</h3>
+        <p class="rd-feature-desc">
+          Connect your GitHub repository webhooks. Whenever you run <code>git push origin main</code>, your phone pulls, builds, and redeploys your app in seconds.
+        </p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="rd-feature-card">
+        <div class="rd-feature-icon">⚙️</div>
+        <h3 class="rd-feature-title">Visual Environment Manager</h3>
+        <p class="rd-feature-desc">
+          Manage database connection strings, JWT secrets, and API keys through a clean Render-inspired table that encrypts and writes <code>.env</code> files on launch.
+        </p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="rd-feature-card">
+        <div class="rd-feature-icon">📋</div>
+        <h3 class="rd-feature-title">Real-Time Log Streaming</h3>
+        <p class="rd-feature-desc">
+          Never touch the phone's physical screen. Monitor build steps, stdout, and stderr outputs in real-time right from your desktop web browser.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="rd-footer">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+      <img src="https://media.brand.dev/98f8abd7-0c0e-41ae-b404-022ab420e7f2.svg" alt="Render" style="height: 18px; filter: brightness(0) invert(1); opacity: 0.85;">
+      <span style="color: var(--rd-text-sub); font-size: 13px;">Design Language & Brand Retrieval</span>
+    </div>
+    <p>PhonixPaaS — Open-source mobile PaaS. Built with Render.com design language & Context.dev brand extraction.</p>
+    <div style="margin-top: 14px;">
+      <a href="/index.html">Dashboard</a>
+      <a href="/PHONE_SERVER_GUIDE.md">Documentation</a>
+      <a href="https://x.com/render" target="_blank" rel="noopener">@render on X</a>
+    </div>
+  </footer>
+
+  <script>
+    // Cycling headline text
+    const words = ["recycled hardware", "your old smartphone", "zero cloud bills", "AI agents & APIs"];
+    let index = 0;
+    const el = document.getElementById('cyclingText');
+    setInterval(() => {
+      index = (index + 1) % words.length;
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.innerText = words[index];
+        el.style.opacity = '1';
+      }, 200);
+    }, 2800);
+
+    function copyInstallCommand() {
+      navigator.clipboard.writeText('pkg install -y git && git clone https://github.com/your-username/phonix-paas.git ~/phonix-paas && cd ~/phonix-paas && bash scripts/install.sh');
+      const label = document.getElementById('copyLabel');
+      label.innerText = 'Copied!';
+      setTimeout(() => label.innerText = 'Copy', 2000);
+    }
+  </script>
+</body>
+</html>

@@ -204,16 +204,19 @@ function initTheme() {
 function applyTheme(theme) {
   const icon = document.getElementById('themeToggleIcon');
   const text = document.getElementById('themeToggleText');
+  const globalBg = document.getElementById('globalBgShaderIframe');
   if (theme === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
     document.body.setAttribute('data-theme', 'dark');
     if (icon) icon.innerText = '🌙';
     if (text) text.innerText = 'Dark';
+    if (globalBg) globalBg.src = '/scene/?mode=dark&speed=0.20';
   } else {
     document.documentElement.removeAttribute('data-theme');
     document.body.removeAttribute('data-theme');
     if (icon) icon.innerText = '☀️';
     if (text) text.innerText = 'Light';
+    if (globalBg) globalBg.src = '/scene/?mode=light&speed=0.20';
   }
 }
 

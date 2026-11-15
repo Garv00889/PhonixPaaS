@@ -211,19 +211,33 @@
       top: -140px;
       left: 50%;
       transform: translateX(-50%);
-      width: 1000px;
-      height: 560px;
-      background: radial-gradient(circle at 50% 30%, rgba(138, 5, 255, 0.45) 0%, rgba(141, 61, 216, 0.25) 35%, rgba(4, 4, 4, 0.95) 75%), url('https://media.brand.dev/97c59fc1-914b-4b29-b6eb-e02abce26118.png') no-repeat center top;
-      background-size: cover;
-      opacity: 0.65;
-      filter: blur(14px);
+      width: 1100px;
+      height: 600px;
+      background: radial-gradient(circle at 50% 30%, rgba(138, 5, 255, 0.35) 0%, rgba(141, 61, 216, 0.15) 40%, rgba(4, 4, 4, 0) 75%);
       pointer-events: none;
       z-index: 0;
     }
 
+    .rd-hero-shader-bg {
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      max-width: 1400px;
+      height: 650px;
+      z-index: 1;
+      pointer-events: none;
+      border-radius: 20px;
+      overflow: hidden;
+      opacity: 0.95;
+      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 85%);
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 85%);
+    }
+
     .rd-hero-content {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       max-width: 860px;
       margin: 0 auto;
     }
@@ -475,6 +489,10 @@
   </style>
 </head>
 <body>
+  <!-- FULL WEBSITE BACKGROUND ANIMATION (ThreeUI Signal Particles @ 0.20s) -->
+  <div id="website-animation-bg" class="shader-frame" style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0.85;">
+    <iframe src="/scene/?mode=dark&speed=0.20" style="width: 100%; height: 100%; border: 0; display: block;" title="ThreeUI Signal Particles Background"></iframe>
+  </div>
 
   <!-- TOP BANNER -->
   <div class="rd-banner">

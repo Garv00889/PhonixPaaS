@@ -16,7 +16,12 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
 </head>
 <body class="render-app">
-  <div class="render-layout">
+  <!-- FULL WEBSITE BACKGROUND ANIMATION (ThreeUI Signal Particles @ 0.20s) -->
+  <div id="website-animation-bg" class="shader-frame" style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden;">
+    <iframe id="globalBgShaderIframe" src="/scene/?mode=light&speed=0.20" style="width: 100%; height: 100%; border: 0; display: block;" title="ThreeUI Signal Particles Background"></iframe>
+  </div>
+
+  <div class="render-layout" style="position: relative; z-index: 1;">
     
     <!-- LEFT SIDEBAR -->
     <aside class="rd-sidebar" id="appSidebar">
