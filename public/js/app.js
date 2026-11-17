@@ -519,8 +519,21 @@ function renderProjects(projects) {
             ${statusText}
           </div>
 
+          <!-- Public Shareable Link Row -->
+          <div style="margin: 8px 0; padding: 6px 10px; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden;">
+              <span style="font-size: 11px;">🌐</span>
+              <a href="${p.publicUrl || localUrl}" target="_blank" style="font-size: 11px; font-family: var(--rd-font-mono); color: var(--rd-brand-plasma-trail); text-decoration: underline; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${p.publicUrl || localUrl}">
+                ${p.publicUrl ? p.publicUrl.replace(/^https?:\/\//, '') : `localhost:${p.port}`}
+              </a>
+            </div>
+            <button class="rd-mini-btn" style="padding: 2px 8px; font-size: 10px; background: var(--rd-brand-purple); color: #ffffff; white-space: nowrap;" onclick="copyPublicShareLink('${p.publicUrl || localUrl}')">
+              Copy Link
+            </button>
+          </div>
+
           <div class="rd-card-footer-row">
-            <a href="${localUrl}" target="_blank" class="rd-card-port-link">:${p.port} ↗</a>
+            <a href="${p.publicUrl || localUrl}" target="_blank" class="rd-card-port-link">${p.publicUrl ? 'Live Ingress ↗' : `:${p.port} ↗`}</a>
             <div class="rd-card-actions-mini">
               <button class="rd-mini-btn" onclick="openLogsModal('${p.id}', '${p.name}')">Logs</button>
               <button class="rd-mini-btn" onclick="openEnvModal('${p.id}', '${p.name}')">Env</button>
@@ -1460,14 +1473,20 @@ async function executeLiveDeployPipeline(payload) {
     setStepState('health', 'done');
 
     // Pipeline Success
+    const publicLink = project.publicUrl || `http://${hostname}:${project.port}`;
     appendOverlayLog(`\n============================================================`);
-    appendOverlayLog(`🎉 DEPLOYMENT COMPLETE: ${project.name} is LIVE on :${project.port}`);
+    appendOverlayLog(`🎉 DEPLOYMENT COMPLETE: ${project.name} is LIVE!`);
+    if (project.publicUrl) {
+      appendOverlayLog(`🌐 Public Shareable Link (Anyone Can Open): ${project.publicUrl}`);
+    } else {
+      appendOverlayLog(`🌐 Local Ingress: http://${hostname}:${project.port}`);
+    }
     appendOverlayLog(`============================================================`);
 
     document.getElementById('overlayDeployBadge').className = 'rd-badge rd-badge-success';
     document.getElementById('overlayDeployBadge').innerText = 'LIVE & HEALTHY';
     document.getElementById('overlayDeploySpinner').style.display = 'none';
-    document.getElementById('overlayDeployStatusText').innerText = `Service "${project.name}" deployed and running!`;
+    document.getElementById('overlayDeployStatusText').innerHTML = `Service "${project.name}" is live! <br><span style="font-size:12px; font-family:monospace; color:var(--rd-brand-plasma-trail);">Public Link: <a href="${publicLink}" target="_blank" style="color:inherit; text-decoration:underline;">${publicLink}</a></span>`;
     document.getElementById('btnOverlaySuccess').style.display = 'inline-block';
     
     // Clear pending deploy from storage
@@ -1531,5 +1550,17 @@ function highlightProjectCard(projectId) {
       card.style.boxShadow = '';
       card.style.transform = '';
     }, 4000);
+  }
+}
+
+function copyPublicShareLink(url) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('Public Share Link copied to clipboard! Share it with anyone.', 'success');
+    }).catch(() => {
+      prompt('Copy your public share link:', url);
+    });
+  } else {
+    prompt('Copy your public share link:', url);
   }
 }

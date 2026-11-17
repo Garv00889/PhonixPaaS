@@ -506,6 +506,32 @@ app.post('/api/tunnel/stop', (req, res) => {
   res.json({ success: true, message: 'Tunnel stopped.' });
 });
 
+app.post('/api/projects/:id/tunnel/start', auth.requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const project = db.getProjectById(id);
+    if (!project) return res.status(404).json({ success: false, error: 'Project not found.' });
+    const result = await tunnel.startProjectTunnel(id, project.port);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.post('/api/projects/:id/tunnel/stop', auth.requireAuth, (req, res) => {
+  try {
+    const { id } = req.params;
+    tunnel.stopProjectTunnel(id);
+    const project = db.getProjectById(id);
+    if (project) {
+      db.saveProject({ ...project, publicUrl: null });
+    }
+    res.json({ success: true, message: 'Project tunnel stopped.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ----------------------------------------------------
 // DEVELOPER TOOLS: INTERACTIVE TERMINAL & WEBHOOKS
 // ----------------------------------------------------
@@ -696,3 +722,12 @@ app.listen(PORT, () => {
   console.log(` 🔋 Battery-Aware Self-Hosted PaaS Engine Active`);
   console.log(`======================================================\n`);
 });
+
+// Graceful Shutdown
+function handleCleanExit() {
+  console.log('\n[Phonix] Stopping server and closing active tunnels...');
+  tunnel.stopAllTunnels();
+  process.exit(0);
+}
+process.on('SIGINT', handleCleanExit);
+process.on('SIGTERM', handleCleanExit);
