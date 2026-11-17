@@ -267,7 +267,7 @@ function switchView(viewName, updateHash = true) {
 // THEME SWITCHER
 // ----------------------------------------------------
 function initTheme() {
-  const savedTheme = localStorage.getItem('phonix_theme') || 'light';
+  const savedTheme = localStorage.getItem('phonix_theme') || 'dark';
   applyTheme(savedTheme);
 
   const toggleBtn = document.getElementById('themeToggleBtn');

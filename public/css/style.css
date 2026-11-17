@@ -37,9 +37,9 @@
   
   --rd-text-main: #141414;
   --rd-text-muted: #272727;
-  --rd-text-sub: #d90429;
+  --rd-text-sub: #d59afc;
   --rd-accent: #000000;
-  --rd-btn-primary-bg: #0d0d0d;
+  --rd-btn-primary-bg: #8a05ff;
   --rd-btn-primary-text: #ffffff;
 
   --rd-border: #e5e7eb;
@@ -47,12 +47,12 @@
   --rd-border-card: #e5e7eb;
   --rd-border-dashed: #e5e7eb;
 
-  --rd-nav-active-bg: #0d0d0d;
+  --rd-nav-active-bg: #8a05ff;
   --rd-nav-active-text: #ffffff;
 
-  --rd-green: #ef233c;
-  --rd-green-bg: rgba(239, 35, 60, 0.1);
-  --rd-green-border: rgba(239, 35, 60, 0.25);
+  --rd-green: #8a05ff;
+  --rd-green-bg: rgba(138, 5, 255, 0.1);
+  --rd-green-border: rgba(138, 5, 255, 0.25);
 
   /* TYPOGRAPHY TOKENS FROM STYLEGUIDE */
   --rd-font-headings: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -77,9 +77,9 @@
   --rd-btn-padding: 12px 16px;
 
   /* BRAND RETRIEVAL ASSETS & COLORS (brand.dev Context Extraction) */
-  --rd-brand-purple: #ef233c;         /* Purple Climax */
-  --rd-brand-thick-purple: #d90429;   /* Thick Purple */
-  --rd-brand-plasma-trail: #ff6b81;   /* Plasma Trail */
+  --rd-brand-purple: #8a05ff;         /* Purple Climax */
+  --rd-brand-thick-purple: #8d3dd8;   /* Thick Purple */
+  --rd-brand-plasma-trail: #d59afc;   /* Plasma Trail */
   --rd-brand-icy-lavender: #e2e2ef;   /* Icy Lavender */
   --rd-brand-armor-wash: #040404;     /* Armor Wash */
   --rd-brand-white: #ffffff;
@@ -96,9 +96,9 @@
   
   --rd-text-main: #ffffff;
   --rd-text-muted: #e2e2ef;
-  --rd-text-sub: #ff6b81;
+  --rd-text-sub: #d59afc;
   --rd-accent: #ffffff;
-  --rd-btn-primary-bg: #ef233c;
+  --rd-btn-primary-bg: #8a05ff;
   --rd-btn-primary-text: #ffffff;
 
   --rd-border: #272727;
@@ -106,12 +106,12 @@
   --rd-border-card: #272727;
   --rd-border-dashed: #272727;
 
-  --rd-nav-active-bg: #ef233c;
+  --rd-nav-active-bg: #8a05ff;
   --rd-nav-active-text: #ffffff;
 
-  --rd-green: #ef233c;
-  --rd-green-bg: rgba(239, 35, 60, 0.12);
-  --rd-green-border: rgba(239, 35, 60, 0.28);
+  --rd-green: #8a05ff;
+  --rd-green-bg: rgba(138, 5, 255, 0.12);
+  --rd-green-border: rgba(138, 5, 255, 0.28);
 }
 
 /* BASE STYLES */
@@ -212,6 +212,7 @@ p {
 .rd-logo {
   display: flex;
   align-items: center;
+  color: var(--rd-brand-purple);
 }
 
 .rd-workspace-selector {
@@ -236,7 +237,7 @@ p {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #ef233c; color: #ffffff;
+  background: #8a05ff; color: #ffffff;
   font-size: 11px;
   font-weight: 700;
   display: flex;
@@ -505,7 +506,7 @@ p {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #ef233c;
+  background: #8a05ff;
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
@@ -592,10 +593,10 @@ p {
 }
 
 .rd-project-card:hover {
-  border-color: #ef233c;
+  border-color: #8a05ff;
 }
 [data-theme="dark"] .rd-project-card:hover {
-  border-color: #d90429;
+  border-color: #8d3dd8;
 }
 
 .rd-card-header-row {
@@ -645,7 +646,7 @@ p {
 .rd-status-banner.error {
   background: rgba(141, 61, 216, 0.12);
   border-color: rgba(141, 61, 216, 0.28);
-  color: #d90429;
+  color: #8d3dd8;
 }
 
 .rd-card-footer-row {
@@ -660,7 +661,7 @@ p {
 .rd-card-port-link {
   font-family: var(--rd-font-mono);
   font-size: 12px;
-  color: #ef233c;
+  color: #8a05ff;
   text-decoration: underline;
 }
 
@@ -709,7 +710,7 @@ p {
 }
 
 .rd-create-project-card:hover {
-  border-color: #ef233c;
+  border-color: #8a05ff;
   background: rgba(0, 0, 0, 0.02);
   color: var(--rd-text-main);
 }
@@ -846,7 +847,7 @@ input:focus {
   border-color: #0d0d0d;
 }
 [data-theme="dark"] input:focus {
-  border-color: #ef233c;
+  border-color: #8a05ff;
 }
 
 .rd-form-hint {
@@ -959,7 +960,7 @@ input:focus {
   font-family: var(--rd-font-mono);
   font-size: 12px;
   line-height: 1.5;
-  color: #ff6b81;
+  color: #d59afc;
   height: 380px;
   overflow-y: auto;
   white-space: pre-wrap;
@@ -1040,10 +1041,10 @@ input:focus {
 }
 
 .rd-stat-card:hover {
-  border-color: #ef233c;
+  border-color: #8a05ff;
 }
 [data-theme="dark"] .rd-stat-card:hover {
-  border-color: #d90429;
+  border-color: #8d3dd8;
 }
 
 .rd-stat-label {
@@ -1093,8 +1094,8 @@ input:focus {
 }
 
 .rd-progress-fill.green { background: var(--rd-green); }
-.rd-progress-fill.amber { background: #ff6b81; }
-.rd-progress-fill.red { background: #d90429; }
+.rd-progress-fill.amber { background: #d59afc; }
+.rd-progress-fill.red { background: #8d3dd8; }
 
 /* 3. TAB CONTROLS & FILTERS */
 .rd-tabs-row {
@@ -1199,13 +1200,13 @@ input:focus {
 
 .rd-badge-warn {
   background: rgba(213, 154, 252, 0.15);
-  color: #ff6b81;
+  color: #d59afc;
   border: 1px solid rgba(213, 154, 252, 0.35);
 }
 
 .rd-badge-error {
   background: rgba(141, 61, 216, 0.15);
-  color: #d90429;
+  color: #8d3dd8;
   border: 1px solid rgba(141, 61, 216, 0.35);
 }
 
@@ -1297,7 +1298,7 @@ input:focus {
   padding: 12px;
   font-size: 12px;
   line-height: 1.5;
-  color: #ff6b81;
+  color: #d59afc;
   white-space: pre-wrap;
   word-break: break-all;
 }
@@ -1311,7 +1312,7 @@ input:focus {
 }
 
 .rd-terminal-prompt {
-  color: #ef233c;
+  color: #8a05ff;
   font-weight: 700;
   margin-right: 8px;
   user-select: none;

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In | PhonixPaaS</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef233c'><path d='M12 2c1.1 0 2 .9 2 2 0 .7-.4 1.4-1 1.7V8h4c1.1 0 2 .9 2 2v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2h-4v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2s-2-.9-2-2c0-.7.4-1.4 1-1.7V18H8c-1.1 0-2-.9-2-2v-2.3c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2h4V5.7c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2z'/></svg>">
+    <title>Sign In — PhonixPaaS</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238a05ff'><path d='M12 2c1.1 0 2 .9 2 2 0 .7-.4 1.4-1 1.7V8h4c1.1 0 2 .9 2 2v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2h-4v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2s-2-.9-2-2c0-.7.4-1.4 1-1.7V18H8c-1.1 0-2-.9-2-2v-2.3c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2h4V5.7c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2z'/></svg>">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,8 +17,8 @@
 
     <style>
         :root {
-            --accent-red: #ef233c;
-            --accent-red-glow: rgba(239, 35, 60, 0.45);
+            --accent-purple: #8a05ff;
+            --accent-purple-glow: rgba(138, 5, 255, 0.45);
         }
 
         @keyframes animStar {
@@ -54,14 +54,14 @@
         .fluid-orb-1 {
             width: 700px;
             height: 700px;
-            background: radial-gradient(circle at center, rgba(239, 35, 60, 0.15) 0%, rgba(217, 4, 41, 0.06) 50%, transparent 72%);
+            background: radial-gradient(circle at center, rgba(138, 5, 255, 0.15) 0%, rgba(141, 61, 216, 0.06) 50%, transparent 72%);
             filter: blur(120px);
             animation: fluid-drift-1 25s ease-in-out infinite;
         }
         .fluid-orb-2 {
             width: 650px;
             height: 650px;
-            background: radial-gradient(circle at center, rgba(141, 8, 1, 0.2) 0%, rgba(74, 5, 5, 0.1) 50%, transparent 75%);
+            background: radial-gradient(circle at center, rgba(141, 61, 216, 0.2) 0%, rgba(74, 5, 120, 0.1) 50%, transparent 75%);
             filter: blur(130px);
             animation: fluid-drift-2 30s ease-in-out infinite;
         }
@@ -91,7 +91,7 @@
         }
 
         .selection-red::selection {
-            background: #ef233c;
+            background: #8a05ff;
             color: #ffffff;
         }
     </style>
@@ -103,7 +103,7 @@
 
     <!-- Global Background Elements (Red Noir Atmosphere) -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-[#1b0505] via-[#090202] to-black"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0e021a] via-[#040404] to-black"></div>
         
         <!-- Fluid Ambient Orbs -->
         <div class="fluid-orb fluid-orb-1 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
@@ -120,12 +120,12 @@
     <header class="relative z-10 w-full pt-8 px-6">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="w-6 h-6 bg-[#ef233c] rounded-sm rotate-45 flex items-center justify-center shadow-[0_0_15px_rgba(239,35,60,0.6)] group-hover:rotate-90 transition-transform duration-300">
-                    <iconify-icon icon="lucide:flame" class="-rotate-45 group-hover:-rotate-90 transition-transform duration-300 text-black text-xs font-bold"></iconify-icon>
+                <div class="w-7 h-7 bg-[#8a05ff] rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(138,5,255,0.7)] group-hover:scale-105 transition-transform duration-300">
+                    <svg width="18" height="18" viewBox="0 0 21 21" fill="white">
+                        <path d="M15.6491 0.00582604C12.9679 -0.120371 10.7133 1.81847 10.3286 4.373C10.3134 4.49154 10.2905 4.60627 10.2715 4.72099C9.67356 7.90268 6.88955 10.3119 3.5457 10.3119C2.35364 10.3119 1.23395 10.006 0.258977 9.47058C0.140914 9.40557 0 9.4897 0 9.62354V10.3081V20.6218H10.2677V12.8894C10.2677 11.4668 11.4178 10.3119 12.8346 10.3119H15.4015C18.3074 10.3119 20.6458 7.89121 20.5315 4.94662C20.4287 2.29649 18.2884 0.132023 15.6491 0.00582604Z"/>
+                    </svg>
                 </div>
-                <span class="text-xl font-bold font-manrope tracking-tight text-white flex items-center gap-1.5">
-                    Phonix<span class="text-[#ef233c]">PaaS</span>
-                </span>
+                <span class="text-xl font-bold font-manrope tracking-tight text-white">Phonix<span class="text-[#8a05ff]">PaaS</span></span>
             </a>
             <a href="/" class="text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-white flex items-center gap-1.5 transition-colors">
                 <iconify-icon icon="lucide:arrow-left" class="w-3.5 h-3.5"></iconify-icon> Back to Overview
@@ -135,7 +135,7 @@
 
     <!-- Main Auth Container -->
     <main class="relative z-10 flex items-center justify-center px-4 py-12">
-        <div class="w-full max-w-md bg-zinc-950/90 border border-white/10 rounded-2xl p-8 backdrop-blur-xl shadow-[0_0_50px_rgba(239,35,60,0.1)] relative">
+        <div class="w-full max-w-md bg-zinc-950/90 border border-white/10 rounded-2xl p-8 backdrop-blur-xl shadow-[0_0_50px_rgba(138, 5, 255,0.1)] relative">
             <div class="text-center mb-8">
                 <h1 class="text-2xl font-bold font-manrope text-white mb-2" id="authTitle">Sign In to PhonixPaaS</h1>
                 <p class="text-xs text-zinc-400 font-mono" id="authSubtitle">Access your battery-aware mobile cloud cluster</p>
@@ -143,7 +143,7 @@
 
             <!-- Tab Switcher -->
             <div class="flex items-center p-1 bg-black/60 border border-white/10 rounded-xl mb-6 text-xs font-semibold font-manrope">
-                <button type="button" onclick="setAuthMode('signin')" id="tabSignIn" class="flex-1 py-2 rounded-lg bg-[#ef233c] text-white shadow-sm transition-all text-center">Sign In</button>
+                <button type="button" onclick="setAuthMode('signin')" id="tabSignIn" class="flex-1 py-2 rounded-lg bg-[#8a05ff] text-white shadow-sm transition-all text-center">Sign In</button>
                 <button type="button" onclick="setAuthMode('signup')" id="tabSignUp" class="flex-1 py-2 rounded-lg text-zinc-400 hover:text-white transition-all text-center">Create Account</button>
             </div>
 
@@ -154,50 +154,83 @@
             <form id="formSignIn" onsubmit="handleSignIn(event)" class="space-y-4">
                 <div>
                     <label class="text-xs font-mono text-zinc-400 block mb-1.5">Email Address</label>
-                    <input type="email" id="signInEmail" required placeholder="admin@phonix.local" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                    <input type="email" id="signInEmail" required placeholder="admin@phonixpaas.io" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#8a05ff] transition-all font-mono">
                 </div>
 
                 <div>
                     <div class="flex justify-between items-center mb-1.5">
                         <label class="text-xs font-mono text-zinc-400">Password</label>
+                        <a href="javascript:void(0)" onclick="setAuthMode('forgot')" class="text-[11px] font-mono text-[#d59afc] hover:underline">Forgot Password?</a>
                     </div>
-                    <input type="password" id="signInPassword" required placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                    <div class="relative">
+                        <input type="password" id="signInPassword" required placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 pr-10 text-sm text-white focus:outline-none focus:border-[#8a05ff] transition-all font-mono">
+                        <button type="button" onclick="togglePasswordVisibility('signInPassword', 'eyeSignInIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1">
+                            <iconify-icon id="eyeSignInIcon" icon="lucide:eye" class="w-4 h-4"></iconify-icon>
+                        </button>
+                    </div>
                 </div>
 
-                <button type="submit" id="btnSignIn" class="w-full py-3 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,35,60,0.4)] mt-2">
+                <button type="submit" id="btnSignIn" class="w-full py-3 rounded-xl bg-[#8a05ff] hover:bg-[#8d3dd8] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(138, 5, 255,0.4)] mt-2">
                     <span id="btnSignInText">Sign In to Console →</span>
                 </button>
 
                 <!-- Quick Demo Fill -->
                 <button type="button" onclick="quickFillAdmin()" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white text-xs font-mono transition-all flex items-center justify-center gap-2">
-                    <iconify-icon icon="lucide:key" class="text-[#ef233c]"></iconify-icon> Autofill Demo Admin Credentials
+                    <iconify-icon icon="lucide:key" class="text-[#8a05ff]"></iconify-icon> Autofill Demo Admin Credentials
                 </button>
             </form>
 
             <!-- SIGN UP FORM -->
-            <form id="formSignUp" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
+            <form id="formSignUp" name="signUpForm" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
                 <div>
                     <label class="text-xs font-mono text-zinc-400 block mb-1.5">Developer / Team Name</label>
-                    <input type="text" id="signUpName" placeholder="Alex Morgan" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                    <input type="text" id="signUpName" placeholder="Alex Morgan" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#8a05ff] transition-all font-mono">
                 </div>
 
                 <div>
                     <label class="text-xs font-mono text-zinc-400 block mb-1.5">Email Address</label>
-                    <input type="email" id="signUpEmail" required placeholder="developer@domain.com" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                    <input type="email" id="signUpEmail" required placeholder="developer@domain.com" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#8a05ff] transition-all font-mono">
                 </div>
 
                 <div>
                     <label class="text-xs font-mono text-zinc-400 block mb-1.5">Password (Min 8 Characters)</label>
-                    <input type="password" id="signUpPassword" required placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                    <div class="relative">
+                        <input type="password" id="signUpPassword" required minlength="8" placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 pr-10 text-sm text-white focus:outline-none focus:border-[#8a05ff] transition-all font-mono">
+                        <button type="button" onclick="togglePasswordVisibility('signUpPassword', 'eyeSignUpIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1">
+                            <iconify-icon id="eyeSignUpIcon" icon="lucide:eye" class="w-4 h-4"></iconify-icon>
+                        </button>
+                    </div>
                 </div>
 
                 <div>
                     <label class="text-xs font-mono text-zinc-400 block mb-1.5">Confirm Password</label>
-                    <input type="password" id="signUpConfirmPassword" required placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ef233c] transition-all font-mono">
+                    <div class="relative">
+                        <input type="password" id="signUpConfirmPassword" required minlength="8" placeholder="••••••••" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 pr-10 text-sm text-white focus:outline-none focus:border-[#8a05ff] transition-all font-mono">
+                        <button type="button" onclick="togglePasswordVisibility('signUpConfirmPassword', 'eyeSignUpConfirmIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1">
+                            <iconify-icon id="eyeSignUpConfirmIcon" icon="lucide:eye" class="w-4 h-4"></iconify-icon>
+                        </button>
+                    </div>
                 </div>
 
-                <button type="submit" id="btnSignUp" class="w-full py-3 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,35,60,0.4)] mt-2">
+                <button type="submit" id="btnSignUp" class="w-full py-3 rounded-xl bg-[#8a05ff] hover:bg-[#8d3dd8] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(138, 5, 255,0.4)] mt-2">
                     <span id="btnSignUpText">Create Developer Account</span>
+                </button>
+            </form>
+
+            <!-- FORGOT PASSWORD FORM -->
+            <form id="forgotForm" name="forgotForm" onsubmit="handleForgot(event)" class="space-y-4 hidden">
+                <div class="text-xs text-zinc-400 mb-2 font-mono">
+                    Enter your registered email address to receive password recovery instructions:
+                </div>
+                <div>
+                    <label class="text-xs font-mono text-zinc-400 block mb-1.5">Email Address</label>
+                    <input type="email" id="forgotEmail" required placeholder="admin@phonixpaas.io" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#8a05ff] transition-all font-mono">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-[#8a05ff] hover:bg-[#8d3dd8] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(138, 5, 255,0.4)] mt-2">
+                    Send Reset Link →
+                </button>
+                <button type="button" onclick="setAuthMode('signin')" class="w-full text-center text-xs text-zinc-400 hover:text-white mt-2 block font-mono">
+                    ← Back to Sign In
                 </button>
             </form>
         </div>
@@ -210,6 +243,18 @@
 
     <!-- Client Script -->
     <script>
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) icon.setAttribute('icon', 'lucide:eye-off');
+            } else {
+                input.type = 'password';
+                if (icon) icon.setAttribute('icon', 'lucide:eye');
+            }
+        }
         const urlParams = new URLSearchParams(window.location.search);
         const rawRedirect = urlParams.get('redirect') || '/dashboard';
         const redirectUrl = (rawRedirect === 'deploy' || rawRedirect === '/deploy') 
@@ -227,47 +272,66 @@
             const tabUp = document.getElementById('tabSignUp');
             const formIn = document.getElementById('formSignIn');
             const formUp = document.getElementById('formSignUp');
+            const formForgot = document.getElementById('forgotForm');
             const title = document.getElementById('authTitle');
             const sub = document.getElementById('authSubtitle');
 
             if (mode === 'signin') {
-                tabIn.classList.add('bg-[#ef233c]', 'text-white');
+                tabIn.classList.add('bg-[#8a05ff]', 'text-white');
                 tabIn.classList.remove('text-zinc-400');
-                tabUp.classList.remove('bg-[#ef233c]', 'text-white');
+                tabUp.classList.remove('bg-[#8a05ff]', 'text-white');
                 tabUp.classList.add('text-zinc-400');
                 formIn.classList.remove('hidden');
                 formUp.classList.add('hidden');
+                if (formForgot) formForgot.classList.add('hidden');
                 title.innerText = 'Sign In to PhonixPaaS';
                 sub.innerText = 'Access your battery-aware mobile cloud cluster';
-            } else {
-                tabUp.classList.add('bg-[#ef233c]', 'text-white');
+            } else if (mode === 'signup') {
+                tabUp.classList.add('bg-[#8a05ff]', 'text-white');
                 tabUp.classList.remove('text-zinc-400');
-                tabIn.classList.remove('bg-[#ef233c]', 'text-white');
+                tabIn.classList.remove('bg-[#8a05ff]', 'text-white');
                 tabIn.classList.add('text-zinc-400');
                 formUp.classList.remove('hidden');
                 formIn.classList.add('hidden');
+                if (formForgot) formForgot.classList.add('hidden');
                 title.innerText = 'Create Developer Account';
                 sub.innerText = 'Deploy limitless edge services on your phone';
+            } else if (mode === 'forgot') {
+                tabIn.classList.remove('bg-[#8a05ff]', 'text-white');
+                tabIn.classList.add('text-zinc-400');
+                tabUp.classList.remove('bg-[#8a05ff]', 'text-white');
+                tabUp.classList.add('text-zinc-400');
+                formIn.classList.add('hidden');
+                formUp.classList.add('hidden');
+                if (formForgot) formForgot.classList.remove('hidden');
+                title.innerText = 'Reset Password';
+                sub.innerText = 'Recover access to your mobile cloud cluster';
             }
             hideAlert();
         }
 
+        function handleForgot(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value.trim();
+            showAlert(`Recovery instructions sent for ${email}. Default admin: admin@phonixpaas.io / AdminPassword2026!`, 'info');
+        }
+
         function quickFillAdmin() {
-            document.getElementById('signInEmail').value = 'admin@phonix.local';
-            document.getElementById('signInPassword').value = 'phonix123';
-            showAlert('Demo credentials filled. Click Sign In to enter.', 'info');
+            document.getElementById('signInEmail').value = 'admin@phonixpaas.io';
+            document.getElementById('signInPassword').value = 'AdminPassword2026!';
+            showAlert('Default credentials filled (admin@phonixpaas.io). Click Sign In to enter.', 'info');
         }
 
         function showAlert(msg, type = 'error') {
             const el = document.getElementById('authAlert');
-            el.classList.remove('hidden', 'border-red-500/30', 'bg-red-950/40', 'text-red-400', 'border-emerald-500/30', 'bg-emerald-950/40', 'text-emerald-400', 'border-blue-500/30', 'bg-blue-950/40', 'text-blue-400');
+            el.classList.remove('hidden', 'border-[#8a05ff]/30', 'bg-[#8a05ff]/15', 'text-[#d59afc]', 'border-emerald-500/30', 'bg-emerald-950/40', 'text-emerald-400', 'border-blue-500/30', 'bg-blue-950/40', 'text-blue-400');
             
             if (type === 'success') {
                 el.classList.add('border-emerald-500/30', 'bg-emerald-950/40', 'text-emerald-400');
             } else if (type === 'info') {
                 el.classList.add('border-blue-500/30', 'bg-blue-950/40', 'text-blue-400');
             } else {
-                el.classList.add('border-red-500/30', 'bg-red-950/40', 'text-red-400');
+                el.classList.add('border-[#8a05ff]/30', 'bg-[#8a05ff]/15', 'text-[#d59afc]');
             }
             el.innerText = msg;
         }
