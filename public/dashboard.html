@@ -1,1024 +1,1224 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhonixPaaS Dashboard — Self-Hosted Mobile PaaS</title>
-  <link rel="icon" type="image/png" href="https://media.brand.dev/aabde5a6-1777-4ee0-9ba3-71d36b608de8.png">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/char-fade-up.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://media.brand.dev" crossorigin>
-  <!-- Neue Montreal Font Preloads (Render Official Typography) -->
-  <link rel="preload" href="https://media.brand.dev/fonts/1a020a0ccc2b29ad091b713864b135d9f7fb6d3114e69620f6d56eeb9abefbcc.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://media.brand.dev/fonts/11a1b227a4f432bdc5587a529d34a46abbed7067b6e1fb913db0c489c7175828.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://media.brand.dev/fonts/dbe3ffb91c68d5dcda6a66581c481a69e96dabe1abc48c9fc8b80d64793589b1.woff2" as="font" type="font/woff2" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
-</head>
-<body class="render-app" data-theme="dark">
-  <!-- FULL WEBSITE BACKGROUND ANIMATION (ThreeUI Signal Particles @ 0.20s) -->
-  <div id="website-animation-bg" class="shader-frame" style="position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden;">
-    <iframe id="globalBgShaderIframe" src="/scene/?mode=dark&speed=0.20" style="width: 100%; height: 100%; border: 0; display: block;" title="ThreeUI Signal Particles Background"></iframe>
-  </div>
-
-  <div class="render-layout" style="position: relative; z-index: 1;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Console | PhonixPaaS</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ef233c'><path d='M12 2c1.1 0 2 .9 2 2 0 .7-.4 1.4-1 1.7V8h4c1.1 0 2 .9 2 2v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2h-4v2.3c.6.3 1 1 1 1.7 0 1.1-.9 2-2 2s-2-.9-2-2c0-.7.4-1.4 1-1.7V18H8c-1.1 0-2-.9-2-2v-2.3c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2h4V5.7c-.6-.3-1-1-1-1.7 0-1.1.9-2 2-2z'/></svg>">
     
-    <!-- LEFT SIDEBAR -->
-    <aside class="rd-sidebar" id="appSidebar">
-      <!-- Top Workspace Selector -->
-      <div class="rd-sidebar-header">
-        <div class="rd-logo" title="Render Design Language">
-          <!-- Official Render organic glyph (brand.dev extraction) -->
-          <svg width="22" height="22" viewBox="0 0 21 21" fill="currentColor">
-            <path d="M15.6491 0.00582604C12.9679 -0.120371 10.7133 1.81847 10.3286 4.373C10.3134 4.49154 10.2905 4.60627 10.2715 4.72099C9.67356 7.90268 6.88955 10.3119 3.5457 10.3119C2.35364 10.3119 1.23395 10.006 0.258977 9.47058C0.140914 9.40557 0 9.4897 0 9.62354V10.3081V20.6218H10.2677V12.8894C10.2677 11.4668 11.4178 10.3119 12.8346 10.3119H15.4015C18.3074 10.3119 20.6458 7.89121 20.5315 4.94662C20.4287 2.29649 18.2884 0.132023 15.6491 0.00582604Z"/>
-          </svg>
-        </div>
-        <div class="rd-workspace-selector" id="workspaceDropdown" onclick="switchView('settings')">
-          <div class="rd-avatar-circle" id="workspaceAvatar">M</div>
-          <span class="rd-workspace-name" id="workspaceTitle">My Workspace</span>
-          <svg class="rd-chevron-updown" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
-          </svg>
-        </div>
-      </div>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              noir: {
+                950: '#030303',
+                900: '#070707',
+                850: '#0c0c0c',
+                800: '#121212',
+                750: '#181818',
+                700: '#202020',
+              },
+              brand: {
+                red: '#ef233c',
+                redhover: '#d90429',
+                reddark: '#8d0801',
+              }
+            }
+          }
+        }
+      }
+    </script>
 
-      <!-- Navigation Links -->
-      <nav class="rd-sidebar-nav">
-        <!-- Section: OVERVIEW -->
-        <div class="rd-nav-group">
-          <a href="#dashboard" class="rd-nav-item active" data-view="dashboard">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-            <span>Dashboard & Health</span>
-          </a>
+    <!-- Iconify CDN -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
-          <a href="#projects" class="rd-nav-item" data-view="projects">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="5" r="3"></circle>
-              <circle cx="5" cy="19" r="3"></circle>
-              <circle cx="19" cy="19" r="3"></circle>
-              <line x1="12" y1="8" x2="5" y2="16"></line>
-              <line x1="12" y1="8" x2="19" y2="16"></line>
-            </svg>
-            <span>Projects & Services</span>
-          </a>
-        </div>
+    <!-- Google Fonts: Manrope, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        <!-- Section: DEPLOYMENTS -->
-        <div class="rd-nav-section-title">DEPLOYMENTS & GIT</div>
-        <div class="rd-nav-group">
-          <a href="#deployments" class="rd-nav-item" data-view="deployments">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
-            </svg>
-            <span>Deployments & Releases</span>
-          </a>
-        </div>
+    <!-- Styles matching main page layout design language -->
+    <style>
+        :root {
+            --accent-red: #ef233c;
+            --accent-red-hover: #d90429;
+            --accent-red-glow: rgba(239, 35, 60, 0.45);
+            --noir-bg: #000000;
+            --rd-border: #272727;
+            --rd-font-mono: 'JetBrains Mono', monospace;
+            --rd-text-main: #ffffff;
+            --rd-text-sub: #a1a1aa;
+        }
 
-        <!-- Section: NETWORKING -->
-        <div class="rd-nav-section-title">NETWORKING</div>
-        <div class="rd-nav-group">
-          <a href="#networking" class="rd-nav-item" data-view="networking">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-            <span>Tunnels, Domains & Ports</span>
-          </a>
-        </div>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        <!-- Section: MONITORING -->
-        <div class="rd-nav-section-title">MONITORING</div>
-        <div class="rd-nav-group">
-          <a href="#monitoring" class="rd-nav-item" data-view="monitoring">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-            </svg>
-            <span>Hardware, Battery & Logs</span>
-          </a>
-        </div>
+        @keyframes border-spin {
+            from { --gradient-angle: 0deg; }
+            to { --gradient-angle: 360deg; }
+        }
 
-        <!-- Section: DEVELOPER TOOLS -->
-        <div class="rd-nav-section-title">DEVELOPER TOOLS</div>
-        <div class="rd-nav-group">
-          <a href="#devtools" class="rd-nav-item" data-view="devtools">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="4 17 10 11 4 5"></polyline>
-              <line x1="12" y1="19" x2="20" y2="19"></line>
-            </svg>
-            <span>Console, Webhooks & Env</span>
-          </a>
-        </div>
+        @keyframes animStar {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-2000px); }
+        }
 
-        <!-- Section: INFRASTRUCTURE -->
-        <div class="rd-nav-section-title">INFRASTRUCTURE</div>
-        <div class="rd-nav-group">
-          <a href="#infrastructure" class="rd-nav-item" data-view="infrastructure">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-              <line x1="6" y1="6" x2="6.01" y2="6"></line>
-              <line x1="6" y1="18" x2="6.01" y2="18"></line>
-            </svg>
-            <span>Node Specs & Power</span>
-          </a>
-        </div>
+        @keyframes fluid-drift-1 {
+            0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate3d(60px, -40px, 0) scale(1.12) rotate(25deg); }
+            66% { transform: translate3d(-50px, 40px, 0) scale(0.94) rotate(-20deg); }
+            100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        }
 
-        <!-- Section: INTEGRATIONS -->
-        <div class="rd-nav-section-title">INTEGRATIONS</div>
-        <div class="rd-nav-group">
-          <a href="#integrations" class="rd-nav-item" data-view="integrations">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.2z"></path>
-            </svg>
-            <span>Cloudflare, Git & DBs</span>
-          </a>
-        </div>
+        @keyframes fluid-drift-2 {
+            0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+            40% { transform: translate3d(-70px, 60px, 0) scale(1.18) rotate(-35deg); }
+            75% { transform: translate3d(60px, -40px, 0) scale(0.9) rotate(25deg); }
+            100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        }
 
-        <!-- Section: WORKSPACE -->
-        <div class="rd-nav-section-title">SETTINGS</div>
-        <div class="rd-nav-group">
-          <a href="#settings" class="rd-nav-item" data-view="settings">
-            <svg class="rd-nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-            <span>Platform Settings</span>
-          </a>
-        </div>
-      </nav>
+        @property --gradient-angle { 
+            syntax: "<angle>"; 
+            initial-value: 0deg; 
+            inherits: false; 
+        }
 
-      <!-- Sidebar Footer -->
-      <div class="rd-sidebar-footer">
-        <a href="/" class="rd-footer-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-          <span>Landing Page ↗</span>
-        </a>
-        <a href="/PHONE_SERVER_GUIDE.md" class="rd-footer-item" target="_blank">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-          </svg>
-          <span>Termux Guide</span>
-        </a>
-        <a href="#" class="rd-footer-item" id="sidebarSleepBtn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="6" y="4" width="4" height="16"></rect>
-            <rect x="14" y="4" width="4" height="16"></rect>
-          </svg>
-          <span>Master Sleep</span>
-        </a>
-        <a href="javascript:void(0)" class="rd-footer-item" id="sidebarSignOutBtn" onclick="handleLogout(event)" style="color: var(--rd-brand-thick-purple);">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-          <span>Sign Out</span>
-        </a>
-      </div>
-    </aside>
+        .font-manrope { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .font-inter { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    <!-- MAIN APP CANVAS -->
-    <div class="rd-main-wrapper">
-      
-      <!-- TOP HEADER BAR -->
-      <header class="rd-topbar">
-        <div class="rd-topbar-left">
-          <button class="rd-btn-icon-only rd-mobile-toggle" id="mobileMenuBtn" style="margin-right: 8px;">☰</button>
-          <div class="rd-topbar-breadcrumb">
-            <span id="breadcrumbSection">Overview</span>
-            <span style="opacity: 0.4;">/</span>
-            <span id="breadcrumbPage" style="font-weight: 500; color: var(--rd-text-main);">Dashboard</span>
-          </div>
-        </div>
+        /* Fluid Ambient Mesh Blobs */
+        .fluid-orb {
+            position: absolute;
+            border-radius: 9999px;
+            pointer-events: none;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        .fluid-orb-1 {
+            width: min(800px, 90vw);
+            height: min(800px, 90vw);
+            background: radial-gradient(circle at center, rgba(239, 35, 60, 0.16) 0%, rgba(217, 4, 41, 0.08) 45%, transparent 72%);
+            filter: blur(100px);
+            animation: fluid-drift-1 26s ease-in-out infinite;
+        }
+        .fluid-orb-2 {
+            width: min(750px, 85vw);
+            height: min(750px, 85vw);
+            background: radial-gradient(circle at center, rgba(141, 8, 1, 0.22) 0%, rgba(74, 5, 5, 0.12) 50%, transparent 75%);
+            filter: blur(110px);
+            animation: fluid-drift-2 32s ease-in-out infinite;
+        }
 
-        <div class="rd-topbar-right">
-          <!-- Global Search box -->
-          <div style="position: relative;">
-            <button class="rd-search-trigger" id="globalSearchBtn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" id="projectSearchInput" placeholder="Search services..." style="background:transparent; border:none; color:inherit; font-size:12px; outline:none; width:120px;">
-              <kbd>^ K</kbd>
-            </button>
-          </div>
+        /* Film Grain Noise Texture Overlay */
+        .noise-grain-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 25;
+            opacity: 0.045;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
 
-          <!-- Hardware Telemetry Live Pill -->
-          <div class="rd-topbar-pill" id="telemetryPill" title="Device Battery, Voltage & CPU Temperature" onclick="switchView('monitoring')" style="cursor: pointer;">
-            <span class="rd-live-dot" id="telemetryDot"></span>
-            <span id="topbarBattery">--%</span>
-            <span class="rd-pill-sep">|</span>
-            <span id="topbarTemp">--°C</span>
-          </div>
+        /* Top Glowing Scroll Progress Bar */
+        #scrollProgressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2.5px;
+            background: linear-gradient(90deg, #ef233c, #ff4d6d, #ef233c);
+            transform-origin: 0% 50%;
+            transform: scaleX(0);
+            z-index: 60;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(239, 35, 60, 0.8), 0 0 5px rgba(255, 77, 109, 0.5);
+            transition: transform 0.06s ease-out;
+            will-change: transform;
+        }
 
-          <!-- Theme Toggle (Light / Dark) -->
-          <button class="rd-theme-toggle" id="themeToggleBtn" title="Switch Theme">
-            <span id="themeToggleIcon">☀️</span>
-            <span id="themeToggleText">Light</span>
-          </button>
+        /* Shiny CTA Button */
+        .shiny-cta {
+            --gradient-angle: 0deg;
+            position: relative;
+            overflow: hidden;
+            border-radius: 9999px;
+            padding: 0.6rem 1.4rem;
+            background: linear-gradient(#000000, #000000) padding-box,
+            conic-gradient(from var(--gradient-angle), transparent 0%, #ef233c 6%, #ef233c 16%, #ef233c 30%, transparent 42%, transparent 100%) border-box;
+            border: 2px solid transparent;
+            cursor: pointer;
+            isolation: isolate;
+            animation: border-spin 3s linear infinite;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-          <!-- + New Button -->
-          <button class="rd-btn-new" id="btnOpenNewProjectModal">
-            + New
-          </button>
+        .shiny-cta:hover {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 0 25px rgba(239, 35, 60, 0.45);
+        }
 
-          <!-- User Profile & Logout -->
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <div class="rd-user-avatar" id="topNavUserAvatar" title="Logged in as Admin" onclick="switchView('settings')" style="cursor: pointer;">A</div>
-            <button class="rd-mini-btn" id="btnDashboardSignOut" onclick="handleLogout()" title="Sign out of PhonixPaaS" style="font-size: 11px; padding: 4px 9px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">
-              <span>Sign Out</span>
-            </button>
-          </div>
-        </div>
-      </header>
+        .stars-1 {
+            box-shadow: 234px 124px #fff, 654px 345px #fff, 876px 12px #fff, 1200px 800px #fff,
+                        400px 1500px #fff, 1800px 200px #fff, 100px 1000px #fff, 900px 1900px #fff;
+            opacity: 0.6;
+        }
+        .stars-2 {
+            box-shadow: 123px 456px #fff, 789px 234px #fff, 456px 890px #fff, 1100px 300px #fff,
+                        200px 1200px #fff, 1500px 500px #fff, 600px 1700px #fff;
+            opacity: 0.45;
+        }
 
-      <!-- CONTENT BODY -->
-      <main class="rd-content-body">
-        
-        <!-- DEPLOYMENT SUCCESS CELEBRATION BANNER -->
-        <div id="deploymentSuccessToast" style="display: none; background: rgba(138, 5, 255, 0.12); border: 1px solid var(--rd-brand-purple); border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; color: var(--rd-brand-plasma-trail); font-size: 13px; font-weight: 500; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 18px;">🚀</span>
-            <span id="deploymentSuccessToastMsg">Project deployed successfully!</span>
-          </div>
-          <button type="button" onclick="document.getElementById('deploymentSuccessToast').style.display='none'" style="background:none; border:none; color:inherit; font-size:18px; cursor:pointer; line-height:1;">&times;</button>
-        </div>
-        
-        <!-- ==============================================================================
-             VIEW 1: DASHBOARD & SYSTEM HEALTH
-             ============================================================================== -->
-        <div class="rd-view active" id="view-dashboard">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Workspace Dashboard</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Real-time system telemetry and production overview on mobile node.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="rd-mini-btn" onclick="handleMasterSleep()">⏸ Master Sleep</button>
-              <button class="rd-btn-new" onclick="openModal('newProjectModal')">+ Create Service</button>
-            </div>
-          </div>
+        .selection-red::selection {
+            background: #ef233c;
+            color: #ffffff;
+        }
 
-          <!-- 4 Stats Cards Grid -->
-          <div class="rd-stats-grid">
-            <!-- Stat 1: Active Services -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>Active Services</span>
-                <span class="rd-badge rd-badge-success">Live</span>
-              </div>
-              <div class="rd-stat-val" id="statActiveServices">-- / --</div>
-              <div class="rd-stat-sub">
-                <span>Total registered projects on node</span>
-              </div>
-            </div>
+        /* Glass Card Styling */
+        .glass-card {
+            background: linear-gradient(180deg, rgba(20, 20, 20, 0.6) 0%, rgba(6, 6, 6, 0.75) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-            <!-- Stat 2: Phone Battery & Power -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>Battery & Power</span>
-                <span class="rd-badge rd-badge-success" id="statBatteryStatusBadge">Charging</span>
-              </div>
-              <div class="rd-stat-val" id="statBatteryVal">--%</div>
-              <div class="rd-stat-sub" id="statBatterySub">
-                <span>Temp: --°C · Voltage: --</span>
-              </div>
-              <div class="rd-progress-bar">
-                <div class="rd-progress-fill green" id="statBatteryBar" style="width: 50%;"></div>
-              </div>
-            </div>
+        .glass-card:hover {
+            border-color: rgba(239, 35, 60, 0.35);
+            box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(239, 35, 60, 0.1);
+        }
 
-            <!-- Stat 3: Memory Utilization -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>RAM Utilization</span>
-                <span id="statRamPercent">--%</span>
-              </div>
-              <div class="rd-stat-val" id="statRamVal">-- MB</div>
-              <div class="rd-stat-sub" id="statRamSub">
-                <span>Free: -- MB of -- MB</span>
-              </div>
-              <div class="rd-progress-bar">
-                <div class="rd-progress-fill" id="statRamBar" style="width: 50%;"></div>
-              </div>
-            </div>
+        /* Dashboard Views Controller */
+        .rd-view {
+            display: none;
+        }
+        .rd-view.active {
+            display: block;
+            animation: fade-in-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
-            <!-- Stat 4: Flash Storage Free -->
-            <div class="rd-stat-card">
-              <div class="rd-stat-label">
-                <span>Storage Space</span>
-                <span id="statStoragePercent">--%</span>
-              </div>
-              <div class="rd-stat-val" id="statStorageVal">-- GB</div>
-              <div class="rd-stat-sub" id="statStorageSub">
-                <span>Free: -- GB of -- GB</span>
-              </div>
-              <div class="rd-progress-bar">
-                <div class="rd-progress-fill green" id="statStorageBar" style="width: 50%;"></div>
-              </div>
-            </div>
-          </div>
+        /* Navigation Tab Pills */
+        .rd-nav-item {
+            padding: 0.45rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #a1a1aa;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            white-space: nowrap;
+        }
 
-          <!-- Quick Actions & Ingress Summary -->
-          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--rd-space-sm); margin-bottom: var(--rd-space-md);">
-            <div class="rd-settings-card" style="margin-bottom: 0;">
-              <h3 class="rd-settings-card-title">Cloudflare Public Ingress</h3>
-              <p class="rd-settings-card-desc">Zero-config encrypted tunnel allowing external HTTPS traffic to your phone without router port-forwarding.</p>
-              <div style="display: flex; align-items: center; justify-content: space-between; background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px 16px;">
-                <div>
-                  <div style="font-size: 11px; text-transform: uppercase; color: var(--rd-text-sub); font-weight: 600;">Edge Ingress URL</div>
-                  <div id="dashTunnelUrl" style="font-family: var(--rd-font-mono); font-size: 13px; font-weight: 500; color: var(--rd-brand-purple); margin-top: 2px;">
-                    Tunnel is Standby
-                  </div>
+        .rd-nav-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .rd-nav-item.active {
+            color: #ffffff;
+            background: #ef233c;
+            border-color: #ef233c;
+            box-shadow: 0 0 20px rgba(239, 35, 60, 0.45);
+        }
+
+        /* Project Filter Pills */
+        .rd-tab-pill {
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #a1a1aa;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rd-tab-pill:hover {
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .rd-tab-pill.active {
+            color: #ffffff;
+            background: #ef233c;
+            border-color: #ef233c;
+            box-shadow: 0 0 15px rgba(239, 35, 60, 0.4);
+        }
+
+        /* Project Card Styling */
+        .rd-project-card {
+            background: linear-gradient(180deg, rgba(20, 20, 20, 0.6) 0%, rgba(6, 6, 6, 0.75) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            backdrop-filter: blur(16px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rd-project-card:hover {
+            border-color: rgba(239, 35, 60, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(239, 35, 60, 0.1);
+        }
+
+        .rd-project-card.highlighted {
+            border-color: #ef233c;
+            box-shadow: 0 0 35px rgba(239, 35, 60, 0.5);
+        }
+
+        /* Modals */
+        .rd-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 70;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .rd-modal-overlay.open {
+            display: flex;
+            animation: fade-in-up 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Mobile Menu Drawer */
+        #mobileMenuDrawer {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+            transform: translateY(-100%);
+        }
+        #mobileMenuDrawer.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020202;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f1f1f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef233c;
+        }
+    </style>
+</head>
+<body class="selection-red bg-black text-white font-inter relative overflow-x-hidden antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Top Glowing Scroll Progress Indicator -->
+    <div id="scrollProgressBar"></div>
+
+    <!-- Film Grain / Gradient Noise Texture -->
+    <div class="noise-grain-overlay"></div>
+
+    <!-- Interactive Fluid Cursor Ambient Spotlight (Desktop Only) -->
+    <div id="fluidMouseGlow" class="fixed pointer-events-none rounded-full w-[600px] h-[600px] bg-red-600/[0.07] blur-[120px] z-10 -translate-x-1/2 -translate-y-1/2 opacity-0 lg:opacity-100 will-change-transform"></div>
+
+    <!-- Global Background Elements (Red Noir Atmosphere) -->
+    <div id="backgroundContainer" class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#1b0505] via-[#090202] to-black"></div>
+        <div class="fluid-orb fluid-orb-1 top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="fluid-orb fluid-orb-2 top-3/4 left-1/3 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute top-0 left-0 w-[1px] h-[1px] bg-transparent stars-1 animate-[animStar_60s_linear_infinite]"></div>
+        <div class="absolute top-0 left-0 w-[2px] h-[2px] bg-transparent stars-2 animate-[animStar_90s_linear_infinite]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(circle_at_center,black_45%,transparent_85%)]"></div>
+    </div>
+
+    <!-- Hidden compatibility iframe for app.js -->
+    <iframe id="globalBgShaderIframe" src="about:blank" style="display:none;" title="bg"></iframe>
+
+    <!-- Floating Responsive Pill Navbar (Consistent with Main Page) -->
+    <header class="fixed top-0 left-0 w-full z-50 pt-3 sm:pt-5 px-3 sm:px-6">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between bg-black/75 backdrop-blur-2xl border border-white/10 rounded-full px-4 sm:px-6 py-2.5 sm:py-3 shadow-[0_10px_35px_rgba(0,0,0,0.6)]">
+            <!-- Brand Logo -->
+            <a href="/" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-7 h-7 sm:w-8 sm:h-8 bg-[#ef233c] rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(239,35,60,0.7)] group-hover:scale-105 transition-transform duration-300">
+                    <svg width="18" height="18" viewBox="0 0 21 21" fill="white">
+                        <path d="M15.6491 0.00582604C12.9679 -0.120371 10.7133 1.81847 10.3286 4.373C10.3134 4.49154 10.2905 4.60627 10.2715 4.72099C9.67356 7.90268 6.88955 10.3119 3.5457 10.3119C2.35364 10.3119 1.23395 10.006 0.258977 9.47058C0.140914 9.40557 0 9.4897 0 9.62354V10.3081V20.6218H10.2677V12.8894C10.2677 11.4668 11.4178 10.3119 12.8346 10.3119H15.4015C18.3074 10.3119 20.6458 7.89121 20.5315 4.94662C20.4287 2.29649 18.2884 0.132023 15.6491 0.00582604Z"/>
+                    </svg>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                  <button class="rd-mini-btn" id="dashTunnelCopyBtn" onclick="copyDashTunnelUrl()">Copy URL</button>
-                  <button class="rd-mini-btn" id="dashTunnelToggleBtn" onclick="toggleTunnelAction()">Start Tunnel</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="rd-settings-card" style="margin-bottom: 0;">
-              <h3 class="rd-settings-card-title">Thermal Safety Guard</h3>
-              <p class="rd-settings-card-desc">Automatic scale-to-zero when device exceeds 43°C to safeguard Lithium-ion battery.</p>
-              <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
-                <span class="rd-badge rd-badge-success" id="thermalGuardStatus">Safety Active</span>
-                <span style="font-size: 12px; color: var(--rd-text-muted);">Threshold: 43°C</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recent Activity Log Section -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-              <h3 class="rd-settings-card-title" style="margin-bottom: 0;">Recent Platform Activity</h3>
-              <button class="rd-mini-btn" onclick="fetchActivity()">Refresh Log</button>
-            </div>
-            <div class="rd-activity-list" id="dashboardActivityList">
-              <p style="color: var(--rd-text-sub); font-size: 12px;">Loading recent events...</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 2: PROJECTS & SERVICES MANAGEMENT
-             ============================================================================== -->
-        <div class="rd-view" id="view-projects">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Projects & Services</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Native ARM64 processes running isolated in user space.</p>
-            </div>
-            <button class="rd-btn-new" onclick="openModal('newProjectModal')">+ New Service</button>
-          </div>
-
-          <!-- Tabs for Filtering Projects -->
-          <div class="rd-tabs-row" id="projectFilterTabs">
-            <button class="rd-tab-pill active" data-filter="all">All Services (<span id="countAll">0</span>)</button>
-            <button class="rd-tab-pill" data-filter="running">Running (<span id="countRunning">0</span>)</button>
-            <button class="rd-tab-pill" data-filter="stopped">Standby (<span id="countStopped">0</span>)</button>
-            <button class="rd-tab-pill" data-filter="web-service">Web Services</button>
-            <button class="rd-tab-pill" data-filter="static-site">Static Sites</button>
-            <button class="rd-tab-pill" data-filter="api">APIs</button>
-          </div>
-
-          <!-- Projects Grid -->
-          <div class="rd-projects-grid" id="projectsGrid">
-            <div class="rd-loading-card">
-              <div class="rd-spinner"></div>
-              <p>Connecting to Phone Node...</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 3: DEPLOYMENTS & RELEASES
-             ============================================================================== -->
-        <div class="rd-view" id="view-deployments">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Deployments & Releases</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Audit trail of git commits, build outputs, and 1-click rollback releases.</p>
-            </div>
-            <button class="rd-mini-btn" onclick="fetchDeployments()">Refresh History</button>
-          </div>
-
-          <!-- Deployments Table -->
-          <div class="rd-table-container">
-            <table class="rd-table">
-              <thead>
-                <tr>
-                  <th class="rd-th">Version</th>
-                  <th class="rd-th">Service</th>
-                  <th class="rd-th">Commit / Message</th>
-                  <th class="rd-th">Status</th>
-                  <th class="rd-th">Duration</th>
-                  <th class="rd-th">Deployed At</th>
-                  <th class="rd-th" style="text-align: right;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="deploymentsTableBody">
-                <tr><td colspan="7" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading deployment history...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 4: NETWORKING, DOMAINS & PORTS
-             ============================================================================== -->
-        <div class="rd-view" id="view-networking">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Tunnels, Domains & Ports</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Public Cloudflare ingress, dedicated TCP/HTTP ports, and custom domains.</p>
-            </div>
-          </div>
-
-          <!-- Tunnel Manager Card -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-              <div>
-                <h3 class="rd-settings-card-title">Cloudflare Tunnel Service</h3>
-                <p class="rd-settings-card-desc">Expose local services securely over the global Cloudflare Anycast edge.</p>
-              </div>
-              <span class="rd-badge rd-badge-neutral" id="netTunnelBadge">Disconnected</span>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-top: 14px;">
-              <div>
-                <label>Tunnel Mode</label>
-                <div style="display: flex; gap: 10px; margin-top: 6px;">
-                  <button class="rd-mini-btn active" id="btnTunnelQuickMode" onclick="selectTunnelMode('quick')">Quick Ingress (trycloudflare)</button>
-                  <button class="rd-mini-btn" id="btnTunnelTokenMode" onclick="selectTunnelMode('token')">Named Tunnel Token</button>
-                </div>
-                <div id="tunnelTokenInputWrap" style="display: none; margin-top: 10px;">
-                  <label for="tunnelTokenInput">Cloudflare Tunnel Token</label>
-                  <input type="password" id="tunnelTokenInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." style="margin-top: 4px;">
-                </div>
-              </div>
-              <div style="display: flex; flex-direction: column; justify-content: flex-end; gap: 6px;">
-                <button class="rd-btn-new" id="btnStartTunnelNet" onclick="toggleTunnelAction()">Start Cloudflare Tunnel</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Dedicated Ports Registry Table -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Dedicated Port Registry</h3>
-            <p class="rd-settings-card-desc">Port allocation table mapped to native ARM64 processes on this node.</p>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">Port</th>
-                    <th class="rd-th">Service Name</th>
-                    <th class="rd-th">Protocol</th>
-                    <th class="rd-th">Status</th>
-                    <th class="rd-th">Local Link</th>
-                  </tr>
-                </thead>
-                <tbody id="portsTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading port allocations...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Custom Domains Manager -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <h3 class="rd-settings-card-title">Custom Domains & Subdomains</h3>
-                <p class="rd-settings-card-desc">Bind your own domains to services running on this node.</p>
-              </div>
-              <button class="rd-mini-btn" onclick="openModal('addDomainModal')">+ Add Domain</button>
-            </div>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">Domain Name</th>
-                    <th class="rd-th">Target Service</th>
-                    <th class="rd-th">Port</th>
-                    <th class="rd-th">SSL Status</th>
-                    <th class="rd-th" style="text-align: right;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="domainsTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">No custom domains configured.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 5: MONITORING, OBSERVABILITY & LOGS
-             ============================================================================== -->
-        <div class="rd-view" id="view-monitoring">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Hardware, Battery & Logs</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Hardware metrics, battery diagnostics, active processes, and log stream.</p>
-            </div>
-            <button class="rd-mini-btn" onclick="fetchTelemetry(); fetchProcesses();">Refresh Telemetry</button>
-          </div>
-
-          <!-- Battery & Physical Health Card -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Battery Chemistry & Physical Protection</h3>
-            <p class="rd-settings-card-desc">Lithium-ion degradation prevention via thermal monitoring and cyclic power management.</p>
+                <span class="text-lg sm:text-xl font-bold font-manrope tracking-tight text-white flex items-center gap-1">
+                    Phonix<span class="text-[#ef233c]">PaaS</span>
+                    <span class="text-[10px] uppercase font-mono tracking-widest px-2 py-0.5 rounded bg-white/5 border border-white/10 text-zinc-400 ml-1.5 hidden md:inline">Console</span>
+                </span>
+            </a>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 14px;">
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Charge Level</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryPct">--%</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Temperature</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryTemp">--°C</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Cell Voltage</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryVolt">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Power State</div>
-                <div style="font-size: 20px; font-weight: 500;" id="monBatteryStatus">--</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Active Processes Table -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Active Process Monitor</h3>
-            <p class="rd-settings-card-desc">Processes spawned directly under the Node control plane in Termux user space.</p>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">PID</th>
-                    <th class="rd-th">Process Name</th>
-                    <th class="rd-th">Port</th>
-                    <th class="rd-th">Uptime</th>
-                    <th class="rd-th">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="processesTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading processes...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 6: DEVELOPER TOOLS (TERMINAL, WEBHOOKS, ENV)
-             ============================================================================== -->
-        <div class="rd-view" id="view-devtools">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Developer Tools</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Interactive command console, continuous Git webhook endpoints, and environment variables studio.</p>
-            </div>
-          </div>
-
-          <!-- Interactive Developer Console -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <h3 class="rd-settings-card-title">Interactive Terminal Console</h3>
-                <p class="rd-settings-card-desc">Run non-interactive diagnostic commands directly on the phone host.</p>
-              </div>
-              <div style="display: flex; gap: 6px;">
-                <button class="rd-mini-btn" onclick="runPresetCommand('node -v')">node -v</button>
-                <button class="rd-mini-btn" onclick="runPresetCommand('uptime')">uptime</button>
-                <button class="rd-mini-btn" onclick="runPresetCommand('free -m')">free -m</button>
-                <button class="rd-mini-btn" onclick="runPresetCommand('git status')">git status</button>
-              </div>
+            <!-- Desktop View Tabs (rd-sidebar-nav container for app.js compatibility) -->
+            <div class="hidden lg:flex items-center gap-1.5 rd-sidebar-nav" id="desktopNavTabs">
+                <a href="#dashboard" class="rd-nav-item active" data-view="dashboard">
+                    <iconify-icon icon="lucide:layout-grid" class="w-3.5 h-3.5"></iconify-icon>
+                    <span>Overview</span>
+                </a>
+                <a href="#projects" class="rd-nav-item" data-view="projects">
+                    <iconify-icon icon="lucide:server" class="w-3.5 h-3.5"></iconify-icon>
+                    <span>Services</span>
+                </a>
+                <a href="#deployments" class="rd-nav-item" data-view="deployments">
+                    <iconify-icon icon="lucide:git-commit" class="w-3.5 h-3.5"></iconify-icon>
+                    <span>Deployments</span>
+                </a>
+                <a href="#networking" class="rd-nav-item" data-view="networking">
+                    <iconify-icon icon="lucide:globe" class="w-3.5 h-3.5"></iconify-icon>
+                    <span>Tunnels</span>
+                </a>
+                <a href="#monitoring" class="rd-nav-item" data-view="monitoring">
+                    <iconify-icon icon="lucide:activity" class="w-3.5 h-3.5"></iconify-icon>
+                    <span>Hardware & Logs</span>
+                </a>
+                <a href="#settings" class="rd-nav-item" data-view="settings">
+                    <iconify-icon icon="lucide:settings" class="w-3.5 h-3.5"></iconify-icon>
+                    <span>Settings</span>
+                </a>
             </div>
 
-            <div class="rd-terminal-box">
-              <div class="rd-terminal-header">
-                <span>sh (Termux User Space)</span>
-                <span id="termExecDuration">Ready</span>
-              </div>
-              <div class="rd-terminal-screen" id="devTerminalOutput">Welcome to PhonixPaaS Interactive Console.
-Type a command below or click a preset above.</div>
-              <form class="rd-terminal-input-row" id="devTerminalForm">
-                <span class="rd-terminal-prompt">$</span>
-                <input type="text" class="rd-terminal-input" id="devTerminalInput" placeholder="e.g. ps, ls -la, git branch..." autocomplete="off">
-                <button type="submit" class="rd-mini-btn" style="border-radius: 0;">Run</button>
-              </form>
-            </div>
-          </div>
-
-          <!-- Continuous Deployment Webhooks -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Continuous Git Deployment Webhooks</h3>
-            <p class="rd-settings-card-desc">Add these webhook URLs to your GitHub repository settings to trigger automated re-deployment on every git push.</p>
-            <div class="rd-table-container" style="margin-bottom: 0; margin-top: 10px;">
-              <table class="rd-table">
-                <thead>
-                  <tr>
-                    <th class="rd-th">Service</th>
-                    <th class="rd-th">Payload URL</th>
-                    <th class="rd-th">Content Type</th>
-                    <th class="rd-th">Trigger Event</th>
-                    <th class="rd-th" style="text-align: right;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="webhooksTableBody">
-                  <tr><td colspan="5" class="rd-td" style="text-align: center; color: var(--rd-text-sub);">Loading webhooks...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 7: INFRASTRUCTURE & HARDWARE DIAGNOSTICS
-             ============================================================================== -->
-        <div class="rd-view" id="view-infrastructure">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Node Specs & Hardware Power</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Hardware diagnostics, Android WakeLock status, and power-saving thresholds.</p>
-            </div>
-          </div>
-
-          <!-- Hardware Diagnostics Spec Table -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Node Diagnostics</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 14px;">
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Architecture</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraArch">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">CPU Cores & Model</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraCpu">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Operating System</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraOs">--</div>
-              </div>
-              <div style="background: var(--rd-bg-sidebar); border: 1px solid var(--rd-border); border-radius: 6px; padding: 12px;">
-                <div class="rd-stat-label">Node Runtime</div>
-                <div style="font-size: 14px; font-weight: 500;" id="infraNode">--</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Android WakeLock Card -->
-          <div class="rd-settings-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <h3 class="rd-settings-card-title">Android CPU WakeLock</h3>
-                <p class="rd-settings-card-desc">Prevents aggressive Android OEM battery savers from putting the CPU into deep sleep when the screen turns off.</p>
-              </div>
-              <label class="rd-switch">
-                <input type="checkbox" id="infraWakeLockToggle" onchange="toggleWakeLockAction(this.checked)">
-                <span class="rd-slider"></span>
-              </label>
-            </div>
-            <div style="font-size: 12px; color: var(--rd-text-sub); margin-top: 10px;">
-              Status: <span id="infraWakeLockText" style="font-weight: 600;">Disabled</span> (Recommended: Keep enabled for 24/7 background hosting).
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 8: INTEGRATIONS & CONNECTORS
-             ============================================================================== -->
-        <div class="rd-view" id="view-integrations">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Integrations & Connectors</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Connect external services, Cloudflare Zero Trust, and external databases.</p>
-            </div>
-          </div>
-
-          <!-- Cloudflare Zero Trust Integration -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Cloudflare Zero Trust & Tunnels</h3>
-            <p class="rd-settings-card-desc">Configure persistent Cloudflare tunnel credentials to attach custom domains with automated SSL renewal.</p>
-            <div class="rd-form-group" style="margin-top: 12px;">
-              <label for="integCloudflareToken">Cloudflare Tunnel Token</label>
-              <input type="password" id="integCloudflareToken" placeholder="Paste Tunnel Token from Cloudflare Zero Trust Dashboard">
-            </div>
-            <button class="rd-btn-new" onclick="saveCloudflareToken()">Save Tunnel Token</button>
-          </div>
-
-          <!-- External Database Connectors -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Database Integrations</h3>
-            <p class="rd-settings-card-desc">PhonixPaaS supports embedded JSON atomic databases, native Termux SQLite, or external remote databases.</p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 12px;">
-              <div style="border: 1px solid var(--rd-border); border-radius: 6px; padding: 14px; background: var(--rd-bg-sidebar);">
-                <div style="font-weight: 600; font-size: 14px;">Atomic JSON Engine</div>
-                <div style="font-size: 12px; color: var(--rd-text-muted); margin-top: 4px;">Zero RAM overhead, safe write-ahead atomic swaps for low-power operation.</div>
-                <span class="rd-badge rd-badge-success" style="margin-top: 8px;">Active Default</span>
-              </div>
-              <div style="border: 1px solid var(--rd-border); border-radius: 6px; padding: 14px; background: var(--rd-bg-sidebar);">
-                <div style="font-weight: 600; font-size: 14px;">SQLite Native Engine</div>
-                <div style="font-size: 12px; color: var(--rd-text-muted); margin-top: 4px;">Full ACID transactional database without background server daemons. Run <code>pkg install sqlite</code>.</div>
-                <span class="rd-badge rd-badge-neutral" style="margin-top: 8px;">Supported</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ==============================================================================
-             VIEW 9: PLATFORM SETTINGS & DISASTER RECOVERY
-             ============================================================================== -->
-        <div class="rd-view" id="view-settings">
-          <div class="rd-page-header">
-            <div>
-              <h1 class="rd-page-title">Platform Settings & Security</h1>
-              <p style="color: var(--rd-text-muted); font-size: 13px; margin-top: 4px;">Workspace configuration, administrative security, and database backup restoration.</p>
-            </div>
-          </div>
-
-          <!-- General Workspace Settings -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Workspace Preferences</h3>
-            <form id="settingsGeneralForm" onsubmit="handleSaveGeneralSettings(event)">
-              <div class="rd-form-row">
-                <div class="rd-form-group">
-                  <label for="setWorkspaceName">Workspace Name</label>
-                  <input type="text" id="setWorkspaceName" value="My Workspace" required>
+            <!-- Action Controls (Right Side) -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Telemetry Live Pill -->
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 cursor-pointer hover:border-[#ef233c]/50 transition-colors" id="telemetryPill" title="Device Battery & Temperature">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="telemetryDot"></span>
+                    <span id="topbarBattery">--%</span>
+                    <span class="text-zinc-600">|</span>
+                    <span id="topbarTemp" class="text-zinc-400">--°C</span>
                 </div>
-                <div class="rd-form-group">
-                  <label for="setDashboardPort">Control Plane Port</label>
-                  <input type="number" id="setDashboardPort" value="4000" required>
+
+                <!-- + New Deploy Shiny Button -->
+                <button id="btnOpenNewProjectModal" class="shiny-cta text-xs font-bold uppercase tracking-wider text-white">
+                    <span class="relative z-10 flex items-center gap-1.5">
+                        <iconify-icon icon="lucide:plus" class="w-3.5 h-3.5 text-[#ef233c]"></iconify-icon>
+                        <span class="hidden sm:inline">New Deploy</span>
+                        <span class="sm:hidden">Deploy</span>
+                    </span>
+                </button>
+
+                <!-- User Avatar Pill -->
+                <div class="w-8 h-8 rounded-full bg-[#ef233c] text-white flex items-center justify-center font-bold text-xs shadow-[0_0_15px_rgba(239,35,60,0.5)] cursor-pointer" id="topNavUserAvatar" title="User Profile" onclick="switchView('settings')">
+                    A
                 </div>
-              </div>
-              <button type="submit" class="rd-btn-new">Save Workspace Settings</button>
+
+                <!-- Sign Out Button (Desktop) -->
+                <button id="btnDashboardSignOut" onclick="handleLogout()" class="hidden md:flex p-2 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors" title="Sign Out">
+                    <iconify-icon icon="lucide:log-out" class="w-4 h-4"></iconify-icon>
+                </button>
+
+                <!-- Mobile Hamburger Menu Button (< 1024px) -->
+                <button id="mobileMenuBtn" onclick="toggleMobileMenu(true)" class="p-2 rounded-full bg-white/5 border border-white/10 text-zinc-300 hover:text-white lg:hidden" aria-label="Open mobile navigation menu">
+                    <iconify-icon icon="lucide:menu" class="w-5 h-5 block"></iconify-icon>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Drawer Navigation -->
+    <div id="mobileMenuDrawer" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl opacity-0 pointer-events-none flex flex-col justify-between p-6 overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 bg-[#ef233c] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(239,35,60,0.7)]">
+                    <svg width="16" height="16" viewBox="0 0 21 21" fill="white">
+                        <path d="M15.6491 0.00582604C12.9679 -0.120371 10.7133 1.81847 10.3286 4.373C10.3134 4.49154 10.2905 4.60627 10.2715 4.72099C9.67356 7.90268 6.88955 10.3119 3.5457 10.3119C2.35364 10.3119 1.23395 10.006 0.258977 9.47058C0.140914 9.40557 0 9.4897 0 9.62354V10.3081V20.6218H10.2677V12.8894C10.2677 11.4668 11.4178 10.3119 12.8346 10.3119H15.4015C18.3074 10.3119 20.6458 7.89121 20.5315 4.94662C20.4287 2.29649 18.2884 0.132023 15.6491 0.00582604Z"/>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold font-manrope text-white">Phonix<span class="text-[#ef233c]">PaaS</span> Console</span>
+            </div>
+            <button onclick="toggleMobileMenu(false)" class="p-2 rounded-full bg-white/5 border border-white/10 text-zinc-300 hover:text-white">
+                <iconify-icon icon="lucide:x" class="w-6 h-6"></iconify-icon>
+            </button>
+        </div>
+
+        <div class="flex flex-col gap-2 py-6 text-base font-medium font-manrope rd-sidebar-nav">
+            <a href="#dashboard" onclick="toggleMobileMenu(false); switchView('dashboard');" class="rd-nav-item px-4 py-3 rounded-xl hover:bg-white/5 text-zinc-300 hover:text-white transition-colors flex items-center justify-between" data-view="dashboard">
+                <span class="flex items-center gap-3"><iconify-icon icon="lucide:layout-grid" class="w-4 h-4"></iconify-icon> Overview & Health</span>
+                <iconify-icon icon="lucide:chevron-right" class="text-zinc-600"></iconify-icon>
+            </a>
+            <a href="#projects" onclick="toggleMobileMenu(false); switchView('projects');" class="rd-nav-item px-4 py-3 rounded-xl hover:bg-white/5 text-zinc-300 hover:text-white transition-colors flex items-center justify-between" data-view="projects">
+                <span class="flex items-center gap-3"><iconify-icon icon="lucide:server" class="w-4 h-4"></iconify-icon> Projects & Services</span>
+                <iconify-icon icon="lucide:chevron-right" class="text-zinc-600"></iconify-icon>
+            </a>
+            <a href="#deployments" onclick="toggleMobileMenu(false); switchView('deployments');" class="rd-nav-item px-4 py-3 rounded-xl hover:bg-white/5 text-zinc-300 hover:text-white transition-colors flex items-center justify-between" data-view="deployments">
+                <span class="flex items-center gap-3"><iconify-icon icon="lucide:git-commit" class="w-4 h-4"></iconify-icon> Deployments & Releases</span>
+                <iconify-icon icon="lucide:chevron-right" class="text-zinc-600"></iconify-icon>
+            </a>
+            <a href="#networking" onclick="toggleMobileMenu(false); switchView('networking');" class="rd-nav-item px-4 py-3 rounded-xl hover:bg-white/5 text-zinc-300 hover:text-white transition-colors flex items-center justify-between" data-view="networking">
+                <span class="flex items-center gap-3"><iconify-icon icon="lucide:globe" class="w-4 h-4"></iconify-icon> Tunnels, Domains & Ports</span>
+                <iconify-icon icon="lucide:chevron-right" class="text-zinc-600"></iconify-icon>
+            </a>
+            <a href="#monitoring" onclick="toggleMobileMenu(false); switchView('monitoring');" class="rd-nav-item px-4 py-3 rounded-xl hover:bg-white/5 text-zinc-300 hover:text-white transition-colors flex items-center justify-between" data-view="monitoring">
+                <span class="flex items-center gap-3"><iconify-icon icon="lucide:activity" class="w-4 h-4"></iconify-icon> Hardware Diagnostics & Logs</span>
+                <iconify-icon icon="lucide:chevron-right" class="text-zinc-600"></iconify-icon>
+            </a>
+            <a href="#settings" onclick="toggleMobileMenu(false); switchView('settings');" class="rd-nav-item px-4 py-3 rounded-xl hover:bg-white/5 text-zinc-300 hover:text-white transition-colors flex items-center justify-between" data-view="settings">
+                <span class="flex items-center gap-3"><iconify-icon icon="lucide:settings" class="w-4 h-4"></iconify-icon> Platform Settings & Cluster</span>
+                <iconify-icon icon="lucide:chevron-right" class="text-zinc-600"></iconify-icon>
+            </a>
+        </div>
+
+        <div class="flex flex-col gap-3 pt-4 border-t border-white/10">
+            <button onclick="toggleMobileMenu(false); openModal('newProjectModal');" class="w-full py-3.5 rounded-full bg-[#ef233c] hover:bg-[#d90429] text-white font-bold font-manrope text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(239,35,60,0.5)] flex items-center justify-center gap-2">
+                <span>+ Deploy New Service</span>
+            </button>
+            <button onclick="handleLogout()" class="w-full py-3 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white font-semibold font-manrope text-sm text-center">
+                Sign Out
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-16">
+        
+        <!-- Top Context Header Bar (Breadcrumb & Search) -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div class="flex items-center gap-2 text-xs font-mono">
+                <span class="text-zinc-500 uppercase tracking-wider" id="breadcrumbSection">Overview</span>
+                <span class="text-zinc-700">/</span>
+                <span class="text-white font-semibold" id="breadcrumbPage">Dashboard & Health</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase font-mono ml-2">Node Online</span>
+            </div>
+
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <!-- Search Box -->
+                <div class="relative flex-1 sm:w-64">
+                    <iconify-icon icon="lucide:search" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4"></iconify-icon>
+                    <input type="text" id="projectSearchInput" placeholder="Search services..." class="w-full bg-black/60 border border-white/10 rounded-full pl-9 pr-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#ef233c] font-mono transition-colors">
+                </div>
+
+                <!-- Master Sleep Toggle -->
+                <button id="sidebarSleepBtn" class="px-3.5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-zinc-300 hover:text-white transition-all flex items-center gap-1.5 shrink-0" title="Scale-to-Zero Standby Mode">
+                    <iconify-icon icon="lucide:moon" class="w-3.5 h-3.5 text-yellow-400"></iconify-icon>
+                    <span class="hidden sm:inline">Standby Sleep</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 1: DASHBOARD & HEALTH OVERVIEW (#view-dashboard) -->
+        <!-- ============================================================== -->
+        <div id="view-dashboard" class="rd-view active space-y-6">
+            
+            <!-- Hardware HUD Card (Exact match with Main Page HUD) -->
+            <div class="w-full border border-white/10 bg-gradient-to-b from-zinc-950/85 to-black/90 rounded-2xl p-4 sm:p-6 md:p-8 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(239,35,60,0.08)] relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-60 h-60 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 sm:pb-6 border-b border-white/5 gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="relative flex h-3 w-3 shrink-0">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        </div>
+                        <div>
+                            <div class="text-xs sm:text-sm font-semibold font-manrope text-white flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                <span id="workspaceTitle">Termux Edge Node #1</span>
+                                <span class="text-zinc-400 font-mono text-[11px]">(Snapdragon 865)</span>
+                                <span class="text-[9px] sm:text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono" id="statBatteryStatusBadge">CHARGING</span>
+                            </div>
+                            <div class="text-[10px] sm:text-xs text-zinc-500 font-mono">Battery-Aware Kernel Supervised Process Tree • Port 4000</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Ingress / Tunnel Pill -->
+                    <div class="flex items-center gap-2">
+                        <div id="dashTunnelUrl" class="text-xs font-mono text-zinc-400 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-[#ef233c]"></span>
+                            <span class="truncate max-w-[200px]">Tunnel: inactive</span>
+                        </div>
+                        <button id="dashTunnelToggleBtn" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white transition-colors">Start</button>
+                    </div>
+                </div>
+
+                <!-- Telemetry 4-Metric Grid (Responsive 2x2 on Mobile, 4x1 on Tablet/Desktop) -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6">
+                    <!-- Metric 1: Battery -->
+                    <div class="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+                        <div class="flex items-center justify-between text-[11px] sm:text-xs text-zinc-400 mb-1.5">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:battery-charging" class="text-emerald-400"></iconify-icon> Battery</span>
+                            <span class="text-emerald-400 font-mono text-[10px]" id="statBatterySub">88%</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-bold font-manrope text-white" id="statBatteryVal">88%</div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div id="statBatteryBar" class="bg-gradient-to-r from-emerald-500 to-[#ef233c] h-full rounded-full transition-all duration-500" style="width: 88%;"></div>
+                        </div>
+                        <div class="text-[9px] sm:text-[10px] text-zinc-500 font-mono mt-1.5">Trickle Guard: 20%-80%</div>
+                    </div>
+
+                    <!-- Metric 2: RAM -->
+                    <div class="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+                        <div class="flex items-center justify-between text-[11px] sm:text-xs text-zinc-400 mb-1.5">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:cpu" class="text-blue-400"></iconify-icon> RAM Usage</span>
+                            <span class="text-blue-400 font-mono text-[10px]" id="statRamPercent">12%</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-bold font-manrope text-white" id="statRamVal">26.8 <span class="text-xs font-normal text-zinc-500 font-mono">MB</span></div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div id="statRamBar" class="bg-blue-400 h-full rounded-full transition-all duration-500" style="width: 12%;"></div>
+                        </div>
+                        <div class="text-[9px] sm:text-[10px] text-zinc-500 font-mono mt-1.5" id="statRamSub">3.97 GB Free</div>
+                    </div>
+
+                    <!-- Metric 3: Storage -->
+                    <div class="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+                        <div class="flex items-center justify-between text-[11px] sm:text-xs text-zinc-400 mb-1.5">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:hard-drive" class="text-purple-400"></iconify-icon> Flash Disk</span>
+                            <span class="text-purple-400 font-mono text-[10px]" id="statStoragePercent">24%</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-bold font-manrope text-white" id="statStorageVal">32.4 <span class="text-xs font-normal text-zinc-500 font-mono">GB</span></div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div id="statStorageBar" class="bg-purple-400 h-full rounded-full transition-all duration-500" style="width: 24%;"></div>
+                        </div>
+                        <div class="text-[9px] sm:text-[10px] text-zinc-500 font-mono mt-1.5" id="statStorageSub">96 GB Free for User Apps</div>
+                    </div>
+
+                    <!-- Metric 4: Services -->
+                    <div class="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+                        <div class="flex items-center justify-between text-[11px] sm:text-xs text-zinc-400 mb-1.5">
+                            <span class="flex items-center gap-1.5"><iconify-icon icon="lucide:activity" class="text-yellow-400"></iconify-icon> Services</span>
+                            <span class="text-yellow-400 font-mono text-[10px]" id="statActiveServices">3 Live</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-bold font-manrope text-white"><span id="countRunning">3</span> <span class="text-xs font-normal text-zinc-500 font-mono">Live</span> / <span id="countStopped">0</span> <span class="text-xs font-normal text-zinc-500 font-mono">Idle</span></div>
+                        <div class="w-full bg-zinc-800/80 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-yellow-400 h-full rounded-full transition-all duration-500" style="width: 100%;"></div>
+                        </div>
+                        <div class="text-[9px] sm:text-[10px] text-zinc-500 font-mono mt-1.5">Total Services: <span id="countAll">3</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-Column Layout: Live Services + Activity Feed -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left 2 Cols: Running Services Quick View -->
+                <div class="lg:col-span-2 glass-card rounded-2xl p-5 sm:p-6">
+                    <div class="flex items-center justify-between pb-4 border-b border-white/5 mb-4">
+                        <h3 class="text-base font-bold font-manrope text-white flex items-center gap-2">
+                            <iconify-icon icon="lucide:server" class="text-[#ef233c]"></iconify-icon>
+                            Active Edge Services
+                        </h3>
+                        <a href="javascript:void(0)" onclick="switchView('projects')" class="text-xs font-mono text-[#ef233c] hover:underline">View All Services →</a>
+                    </div>
+                    <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        <!-- Populated by app.js -->
+                    </div>
+                </div>
+
+                <!-- Right 1 Col: Audit & Activity Stream -->
+                <div class="glass-card rounded-2xl p-5 sm:p-6">
+                    <div class="flex items-center justify-between pb-4 border-b border-white/5 mb-4">
+                        <h3 class="text-base font-bold font-manrope text-white flex items-center gap-2">
+                            <iconify-icon icon="lucide:clock" class="text-yellow-400"></iconify-icon>
+                            Recent Activity
+                        </h3>
+                    </div>
+                    <div id="dashboardActivityList" class="space-y-3 font-mono text-xs text-zinc-400 max-h-[380px] overflow-y-auto">
+                        <!-- Populated by app.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 2: PROJECTS & SERVICES (#view-projects) -->
+        <!-- ============================================================== -->
+        <div id="view-projects" class="rd-view space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold font-manrope text-white">Edge Projects & Microservices</h2>
+                    <p class="text-xs text-zinc-400 font-mono mt-1">Supervised process trees running natively without Docker bloat</p>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="flex flex-wrap items-center gap-2" id="projectFilterTabs">
+                    <button class="rd-tab-pill active" data-filter="all">All Services</button>
+                    <button class="rd-tab-pill" data-filter="running">Running</button>
+                    <button class="rd-tab-pill" data-filter="stopped">Stopped</button>
+                    <button class="rd-tab-pill" data-filter="api">APIs</button>
+                    <button class="rd-tab-pill" data-filter="static-site">Static</button>
+                </div>
+            </div>
+
+            <!-- Full Projects Container -->
+            <div id="projectsGridContainer" class="glass-card rounded-2xl p-5 sm:p-6">
+                <!-- Projects Grid (shared with view-dashboard) -->
+                <div class="text-xs text-zinc-500 font-mono mb-4">Click any service to inspect stdout logs, inject environment secrets, or configure Cloudflare tunnels.</div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 3: DEPLOYMENTS & RELEASES (#view-deployments) -->
+        <!-- ============================================================== -->
+        <div id="view-deployments" class="rd-view space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold font-manrope text-white">Deployments & Releases</h2>
+                    <p class="text-xs text-zinc-400 font-mono mt-1">Git commit triggers, build history and lifecycle records</p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 sm:p-6 overflow-hidden">
+                <div class="overflow-x-auto -mx-2 px-2">
+                    <table class="w-full min-w-[550px] text-left border-collapse text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-white/10 text-zinc-400 uppercase tracking-wider text-[11px]">
+                                <th class="p-3">Service</th>
+                                <th class="p-3">Commit / Ref</th>
+                                <th class="p-3">Trigger</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3">Duration</th>
+                                <th class="p-3">Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deploymentsTableBody" class="divide-y divide-white/5 text-zinc-300">
+                            <!-- Populated by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 4: NETWORKING & TUNNELS (#view-networking) -->
+        <!-- ============================================================== -->
+        <div id="view-networking" class="rd-view space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold font-manrope text-white">Cloudflare Tunnels, Domains & Ports</h2>
+                <p class="text-xs text-zinc-400 font-mono mt-1">Zero-Trust edge tunnels exposing local phone ports to global HTTPS</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left 2 Cols: Tunnels & Active Domains -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-card rounded-2xl p-5 sm:p-6">
+                        <div class="flex items-center justify-between pb-4 border-b border-white/5 mb-4">
+                            <h3 class="text-base font-bold font-manrope text-white flex items-center gap-2">
+                                <iconify-icon icon="lucide:globe" class="text-[#ef233c]"></iconify-icon>
+                                Cloudflare Tunnel Connection
+                            </h3>
+                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-zinc-400" id="netTunnelBadge">INACTIVE</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2">
+                                <button type="button" class="rd-tab-pill active" id="btnTunnelQuickMode">Quick Ephemeral Mode</button>
+                                <button type="button" class="rd-tab-pill" id="btnTunnelTokenMode">Named Zero-Trust Token</button>
+                            </div>
+                            <div id="tunnelTokenInputWrap" style="display: none;">
+                                <label class="text-xs font-mono text-zinc-400 block mb-1">Cloudflare Tunnel Secret Token</label>
+                                <input type="text" id="tunnelTokenInput" placeholder="eyJhIjoi..." class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2 text-xs text-white font-mono focus:border-[#ef233c] outline-none">
+                            </div>
+                            <button id="btnStartTunnelNet" class="px-5 py-2.5 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider transition-colors">Start Global Tunnel →</button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Domains Table -->
+                    <div class="glass-card rounded-2xl p-5 sm:p-6">
+                        <h3 class="text-base font-bold font-manrope text-white mb-4">Configured Domains</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs font-mono">
+                                <thead>
+                                    <tr class="border-b border-white/10 text-zinc-400 uppercase text-[10px]">
+                                        <th class="p-2.5">Domain</th>
+                                        <th class="p-2.5">Target Service</th>
+                                        <th class="p-2.5">Port</th>
+                                        <th class="p-2.5">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="domainsTableBody" class="divide-y divide-white/5 text-zinc-300">
+                                    <!-- Populated by app.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 1 Col: Add Domain & Ports -->
+                <div class="space-y-6">
+                    <!-- Add Custom Domain Card -->
+                    <div class="glass-card rounded-2xl p-5 sm:p-6">
+                        <h3 class="text-base font-bold font-manrope text-white mb-4">Route Custom Domain</h3>
+                        <form id="addDomainForm" class="space-y-3">
+                            <div>
+                                <label class="text-xs font-mono text-zinc-400 block mb-1">Domain Name</label>
+                                <input type="text" id="newDomainName" placeholder="api.myserver.dev" required class="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-[#ef233c] outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-mono text-zinc-400 block mb-1">Route to Service</label>
+                                <select id="newDomainService" class="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-[#ef233c] outline-none">
+                                    <!-- Populated by app.js -->
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold uppercase tracking-wider transition-colors">Add Domain Route</button>
+                        </form>
+                    </div>
+
+                    <!-- Open Ports Card -->
+                    <div class="glass-card rounded-2xl p-5 sm:p-6">
+                        <h3 class="text-base font-bold font-manrope text-white mb-4">Allocated Local Ports</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs font-mono">
+                                <thead>
+                                    <tr class="border-b border-white/10 text-zinc-400 uppercase text-[10px]">
+                                        <th class="p-2">Port</th>
+                                        <th class="p-2">Service</th>
+                                        <th class="p-2">State</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="portsTableBody" class="divide-y divide-white/5 text-zinc-300">
+                                    <!-- Populated by app.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 5: MONITORING & HARDWARE DIAGNOSTICS (#view-monitoring) -->
+        <!-- ============================================================== -->
+        <div id="view-monitoring" class="rd-view space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold font-manrope text-white">Hardware Diagnostics & Live Terminal</h2>
+                <p class="text-xs text-zinc-400 font-mono mt-1">Direct Linux sysfs battery voltage, thermal probes, and real-time process monitoring</p>
+            </div>
+
+            <!-- Sysfs Hardware Diagnostics Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="glass-card rounded-2xl p-4">
+                    <span class="text-xs font-mono text-zinc-500 uppercase">Battery State</span>
+                    <div class="text-xl font-bold font-manrope text-white mt-1" id="monBatteryStatus">Smart Trickle</div>
+                    <div class="text-[10px] text-emerald-400 font-mono mt-0.5">80% Protection Cap</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4">
+                    <span class="text-xs font-mono text-zinc-500 uppercase">Capacity Level</span>
+                    <div class="text-xl font-bold font-manrope text-white mt-1" id="monBatteryPct">88%</div>
+                    <div class="text-[10px] text-zinc-500 font-mono mt-0.5">Health: GOOD</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4">
+                    <span class="text-xs font-mono text-zinc-500 uppercase">Core Temperature</span>
+                    <div class="text-xl font-bold font-manrope text-white mt-1" id="monBatteryTemp">32.4°C</div>
+                    <div class="text-[10px] text-[#ef233c] font-mono mt-0.5">Throttle at 42.0°C</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4">
+                    <span class="text-xs font-mono text-zinc-500 uppercase">Battery Voltage</span>
+                    <div class="text-xl font-bold font-manrope text-white mt-1" id="monBatteryVolt">4.18 V</div>
+                    <div class="text-[10px] text-zinc-500 font-mono mt-0.5">Nominal 4.2V</div>
+                </div>
+            </div>
+
+            <!-- Interactive Terminal stdout / stderr Stream (Styled Matching Main Page Quickstart) -->
+            <div class="rounded-2xl border border-white/10 bg-zinc-950/90 shadow-2xl backdrop-blur-xl overflow-hidden font-mono text-xs">
+                <div class="flex items-center justify-between px-4 py-3 bg-zinc-900/80 border-b border-white/5">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                        <span class="text-xs text-zinc-400 ml-2">daemon@termux: stdout/stderr stream</span>
+                    </div>
+                    <span class="text-[10px] text-zinc-500" id="termExecDuration">Live WebSocket Feed</span>
+                </div>
+                <div id="terminalOutput" class="p-4 sm:p-6 space-y-2 text-zinc-300 h-80 overflow-y-auto leading-relaxed">
+                    <!-- Populated by app.js -->
+                </div>
+            </div>
+
+            <!-- Processes Table -->
+            <div class="glass-card rounded-2xl p-5 sm:p-6">
+                <h3 class="text-base font-bold font-manrope text-white mb-4">Supervised Operating System Processes</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-white/10 text-zinc-400 uppercase text-[10px]">
+                                <th class="p-2.5">PID</th>
+                                <th class="p-2.5">Service Name</th>
+                                <th class="p-2.5">Command</th>
+                                <th class="p-2.5">Memory (RSS)</th>
+                                <th class="p-2.5">CPU %</th>
+                                <th class="p-2.5">Uptime</th>
+                            </tr>
+                        </thead>
+                        <tbody id="processesTableBody" class="divide-y divide-white/5 text-zinc-300">
+                            <!-- Populated by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 6: DEVELOPER TOOLS & CONSOLE (#view-devtools) -->
+        <!-- ============================================================== -->
+        <div id="view-devtools" class="rd-view space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold font-manrope text-white">Developer Interactive Console</h2>
+                <p class="text-xs text-zinc-400 font-mono mt-1">Execute safe edge scripts, inspect webhooks and trigger manual lifecycle events</p>
+            </div>
+
+            <div class="rounded-2xl border border-white/10 bg-zinc-950/90 p-4 font-mono text-xs">
+                <div id="devTerminalOutput" class="h-64 overflow-y-auto text-zinc-300 space-y-1 mb-3">
+                    <div class="text-zinc-500">PhonixPaaS Interactive Command Prompt ready. Type "help" for commands.</div>
+                </div>
+                <form id="devTerminalForm" class="flex items-center gap-2 border-t border-white/10 pt-3">
+                    <span class="text-[#ef233c] font-bold">$</span>
+                    <input type="text" id="devTerminalInput" placeholder="status, ps, ping, clear..." class="flex-1 bg-transparent text-white outline-none">
+                    <button type="submit" class="px-4 py-1.5 rounded-lg bg-[#ef233c] hover:bg-[#d90429] text-white font-bold text-xs">Run</button>
+                </form>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 sm:p-6">
+                <h3 class="text-base font-bold font-manrope text-white mb-4">Webhook Deliveries</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-white/10 text-zinc-400 uppercase text-[10px]">
+                                <th class="p-2.5">Event</th>
+                                <th class="p-2.5">Source</th>
+                                <th class="p-2.5">Status</th>
+                                <th class="p-2.5">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="webhooksTableBody" class="divide-y divide-white/5 text-zinc-300">
+                            <!-- Populated by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 7: INFRASTRUCTURE & POWER (#view-infrastructure) -->
+        <!-- ============================================================== -->
+        <div id="view-infrastructure" class="rd-view space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold font-manrope text-white">Hardware Specifications & Power WakeLock</h2>
+                <p class="text-xs text-zinc-400 font-mono mt-1">Host Android device system specifications and battery optimization controls</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-3 font-mono text-xs">
+                    <h3 class="text-base font-bold font-manrope text-white mb-3">Android Device Profile</h3>
+                    <div class="flex justify-between py-2 border-b border-white/5">
+                        <span class="text-zinc-500">Host Hardware:</span>
+                        <span class="text-white font-semibold" id="infraNode">Qualcomm Snapdragon 865</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-white/5">
+                        <span class="text-zinc-500">CPU Architecture:</span>
+                        <span class="text-white" id="infraArch">aarch64 (ARM64)</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-white/5">
+                        <span class="text-zinc-500">Operating System:</span>
+                        <span class="text-white" id="infraOs">Android 12 (Linux 4.19.157)</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-zinc-500">CPU Cores:</span>
+                        <span class="text-emerald-400" id="infraCpu">8 Cores (1x 2.84GHz, 3x 2.42GHz, 4x 1.80GHz)</span>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
+                    <h3 class="text-base font-bold font-manrope text-white">Power Management & Sleep</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed font-mono">
+                        Android aggressive Doze mode throttles CPU execution when screen is locked. PhonixPaaS utilizes a non-intrusive partial WakeLock daemon.
+                    </p>
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                        <div>
+                            <div class="text-xs font-bold text-white font-manrope">CPU WakeLock Active</div>
+                            <div class="text-[10px] text-zinc-500 font-mono" id="infraWakeLockText">Keep phone CPU awake 24/7 without screen on</div>
+                        </div>
+                        <input type="checkbox" id="infraWakeLockToggle" checked class="w-4 h-4 accent-[#ef233c]">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 8: INTEGRATIONS (#view-integrations) -->
+        <!-- ============================================================== -->
+        <div id="view-integrations" class="rd-view space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold font-manrope text-white">Platform Integrations</h2>
+                <p class="text-xs text-zinc-400 font-mono mt-1">Connect GitHub auto-deployment hooks, Cloudflare DNS, and PostgreSQL</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-5 sm:p-6 max-w-xl">
+                <h3 class="text-base font-bold font-manrope text-white mb-2">Cloudflare Zero-Trust Integration</h3>
+                <p class="text-xs text-zinc-400 font-mono mb-4">Paste your Cloudflare Tunnel Token below to route persistent domains through your Cloudflare account:</p>
+                <input type="password" id="integCloudflareToken" placeholder="Paste Cloudflare Tunnel Token..." class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:border-[#ef233c] outline-none mb-3">
+                <button type="button" class="px-5 py-2 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider transition-colors">Save Token</button>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- VIEW 9: SETTINGS & BACKUP (#view-settings) -->
+        <!-- ============================================================== -->
+        <div id="view-settings" class="rd-view space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold font-manrope text-white">Platform Settings & Backups</h2>
+                <p class="text-xs text-zinc-400 font-mono mt-1">Manage workspace cluster metadata, API credentials and disaster recovery</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-4 font-mono text-xs">
+                    <h3 class="text-base font-bold font-manrope text-white mb-2">Cluster Metadata</h3>
+                    <div>
+                        <label class="text-zinc-500 block mb-1">Workspace Cluster Name</label>
+                        <input type="text" id="setWorkspaceName" value="Termux Node #1" class="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-white outline-none focus:border-[#ef233c]">
+                    </div>
+                    <div>
+                        <label class="text-zinc-500 block mb-1">Dashboard HTTP Port</label>
+                        <input type="number" id="setDashboardPort" value="4000" class="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-white outline-none focus:border-[#ef233c]">
+                    </div>
+                    <div>
+                        <label class="text-zinc-500 block mb-1">Admin API Secret Key</label>
+                        <input type="password" id="setAdminApiKey" value="phonix_live_sec_key_2026" class="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-white outline-none focus:border-[#ef233c]">
+                    </div>
+                    <button type="button" class="px-5 py-2.5 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white font-bold uppercase tracking-wider text-xs">Save Settings</button>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-4 font-mono text-xs">
+                    <h3 class="text-base font-bold font-manrope text-white mb-2">Disaster Recovery & Export</h3>
+                    <p class="text-zinc-400">Download a full JSON archive of your hosted projects, environment variables, and tunnel definitions:</p>
+                    <a href="/api/backup/export" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold uppercase tracking-wider text-xs transition-colors">
+                        <iconify-icon icon="lucide:download" class="w-4 h-4 text-[#ef233c]"></iconify-icon>
+                        Export Cluster Backup (JSON)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Consistent with Main Page -->
+    <footer class="relative z-10 bg-black border-t border-zinc-900 pt-10 pb-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between text-zinc-600 text-[11px] uppercase tracking-wider font-mono gap-3 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+                <span class="text-white font-bold font-manrope">Phonix<span class="text-[#ef233c]">PaaS</span></span>
+                <span>• Live Termux Daemon :4000</span>
+            </div>
+            <p>&copy; 2026 PhonixPaaS. Free & Open-Source under MIT License.</p>
+        </div>
+    </footer>
+
+    <!-- Hidden compatibility elements for app.js -->
+    <div style="display: none;">
+        <button id="themeToggleBtn"><span id="themeToggleIcon"></span><span id="themeToggleText"></span></button>
+        <span id="workspaceAvatar"></span>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODALS (Red Noir Design Language) -->
+    <!-- ============================================================== -->
+
+    <!-- 1. New Project Modal -->
+    <div id="newProjectModal" class="rd-modal-overlay">
+        <div class="glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 max-w-xl w-[94vw] max-h-[90vh] overflow-y-auto border border-white/15 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                <h3 class="text-lg font-bold font-manrope text-white flex items-center gap-2">
+                    <iconify-icon icon="lucide:plus" class="text-[#ef233c]"></iconify-icon>
+                    Deploy New Edge Service
+                </h3>
+                <button type="button" onclick="closeModal('newProjectModal')" class="text-zinc-400 hover:text-white p-1">
+                    <iconify-icon icon="lucide:x" class="w-5 h-5"></iconify-icon>
+                </button>
+            </div>
+
+            <form id="newProjectForm" class="space-y-4 text-xs font-mono">
+                <div>
+                    <label class="text-zinc-400 block mb-1">Service Name</label>
+                    <input type="text" id="projectName" placeholder="my-api-service" required class="w-full bg-black/60 border border-white/10 rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-[#ef233c]">
+                </div>
+                <div>
+                    <label class="text-zinc-400 block mb-1">Service Category</label>
+                    <select id="projectCategory" class="w-full bg-zinc-900 border border-white/10 rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-[#ef233c]">
+                        <option value="api">Web Service / API</option>
+                        <option value="static-site">Static Frontend</option>
+                        <option value="worker">Background Worker</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-zinc-400 block mb-1">Git Repository URL</label>
+                    <input type="url" id="gitUrl" placeholder="https://github.com/render-examples/express-hello-world" required class="w-full bg-black/60 border border-white/10 rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-[#ef233c]">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-zinc-400 block mb-1">Git Branch</label>
+                        <input type="text" id="gitBranch" value="main" class="w-full bg-black/60 border border-white/10 rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-[#ef233c]">
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 block mb-1">Internal Port (Optional)</label>
+                        <input type="number" id="projectPort" placeholder="3000" class="w-full bg-black/60 border border-white/10 rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-[#ef233c]">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-zinc-400 block mb-1">Build Command</label>
+                        <input type="text" id="buildCmd" value="npm install" class="w-full bg-black/60 border border-white/10 rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-[#ef233c]">
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 block mb-1">Start Command</label>
+                        <input type="text" id="startCmd" value="node app.js" required class="w-full bg-black/60 border border-white/10 rounded-xl px-3.5 py-2.5 text-white outline-none focus:border-[#ef233c]">
+                    </div>
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+                    <button type="button" onclick="closeModal('newProjectModal')" class="px-4 py-2 rounded-xl border border-white/10 text-zinc-400 hover:text-white uppercase font-bold text-xs">Cancel</button>
+                    <button type="submit" id="btnSubmitProject" class="px-5 py-2.5 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white uppercase font-bold text-xs shadow-[0_0_20px_rgba(239,35,60,0.4)]">Launch Service →</button>
+                </div>
             </form>
-          </div>
+        </div>
+    </div>
 
-          <!-- Admin Security & API Keys -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Administrative Security</h3>
-            <p class="rd-settings-card-desc">Require an API Key for remote administrative actions (POST, PUT, DELETE) when managing your phone over the web.</p>
-            <div class="rd-form-group">
-              <label for="setAdminApiKey">Admin Secret Key (Leave blank to disable auth)</label>
-              <input type="password" id="setAdminApiKey" placeholder="Set a secret token...">
+    <!-- 2. Live Deployment Overlay Modal -->
+    <div id="liveDeployOverlay" class="rd-modal-overlay">
+        <div class="glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 max-w-2xl w-[94vw] border border-white/15 shadow-2xl space-y-5">
+            <div class="text-center py-2">
+                <div class="w-12 h-12 bg-[#ef233c]/10 border border-[#ef233c]/30 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
+                    <iconify-icon icon="lucide:loader-2" class="w-6 h-6 text-[#ef233c] animate-spin" id="overlayDeploySpinner"></iconify-icon>
+                </div>
+                <h4 class="text-lg font-bold font-manrope text-white" id="overlayDeployTitle">Deploying Service to Phone...</h4>
+                <p class="text-xs text-zinc-400 font-mono mt-0.5" id="overlayDeploySubtitle">Executing build on native Termux daemon</p>
+                <div class="flex items-center justify-center gap-2 mt-2">
+                    <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" id="overlayDeployBadge">BUILDING</span>
+                    <span class="text-[10px] text-zinc-500 font-mono" id="overlayDeployCommit">commit main</span>
+                </div>
             </div>
-            <button class="rd-btn-new" onclick="handleSaveSecuritySettings()">Update Security Key</button>
-          </div>
 
-          <!-- Backup & Disaster Recovery -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">Backup & Disaster Recovery</h3>
-            <p class="rd-settings-card-desc">Download a snapshot of all services, deployments, and configurations, or reset to factory defaults.</p>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
-              <a href="/api/backup/export" class="rd-btn-new" download style="text-decoration: none;">Export Backup (JSON)</a>
-              <button class="rd-mini-btn" onclick="document.getElementById('importBackupFile').click()">Restore From Backup</button>
-              <input type="file" id="importBackupFile" accept=".json" style="display: none;" onchange="handleImportBackup(event)">
-              <button class="rd-mini-btn" style="color: var(--rd-brand-thick-purple);" onclick="handleFactoryReset()">Factory Reset Database</button>
+            <!-- Terminal stdout log screen -->
+            <div class="rounded-xl bg-black border border-white/10 p-4 font-mono text-xs text-zinc-300 h-56 overflow-y-auto" id="overlayTerminalLogs">
+                <div class="text-zinc-500">Connecting to Phone Node: :4000...</div>
             </div>
-          </div>
 
-          <!-- About Card -->
-          <div class="rd-settings-card">
-            <h3 class="rd-settings-card-title">About PhonixPaaS</h3>
-            <p style="font-size: 13px; color: var(--rd-text-muted); line-height: 1.6;">
-              PhonixPaaS transforms recycled smartphones and low-power ARM64 devices into self-hosted cloud hosting nodes.<br>
-              Architecture: Dockerless POSIX user space · Memory footprint: &lt;35MB RAM · Native process isolation.
-            </p>
-          </div>
+            <div class="flex items-center justify-between border-t border-white/10 pt-4">
+                <button type="button" id="btnOverlayCancel" onclick="closeLiveDeployOverlay()" class="text-xs text-zinc-400 hover:text-white font-mono">Cancel</button>
+                <div class="space-x-3">
+                    <button type="button" id="btnOverlayRetry" onclick="retryLiveDeploy()" style="display: none;" class="px-4 py-2 rounded-xl bg-zinc-800 text-white text-xs font-bold uppercase">Retry</button>
+                    <button type="button" id="btnOverlaySuccess" onclick="closeLiveDeployOverlay()" style="display: none;" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-black text-xs font-bold uppercase">View Service ↗</button>
+                </div>
+            </div>
         </div>
-
-      </main>
-
-      <!-- FLOATING FEEDBACK BUTTON -->
-      <div class="rd-feedback-btn" onclick="switchView('settings')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span>Phonix Node</span>
-      </div>
-
     </div>
-  </div>
 
-  <!-- MODAL: CREATE NEW PROJECT -->
-  <div class="rd-modal-backdrop" id="newProjectModal">
-    <div class="rd-modal">
-      <div class="rd-modal-header">
-        <div>
-          <h3>Create a New Service</h3>
-          <p class="rd-modal-subtitle">Deploy a web service or static site directly onto this phone.</p>
+    <!-- 3. Real-Time Logs Modal -->
+    <div id="logsModal" class="rd-modal-overlay">
+        <div class="glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 max-w-3xl w-[94vw] border border-white/15 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold font-manrope text-white flex items-center gap-2">
+                    <iconify-icon icon="lucide:terminal" class="text-[#ef233c]"></iconify-icon>
+                    <span id="logsModalTitle">Service Logs</span>
+                </h3>
+                <button type="button" onclick="closeModal('logsModal')" class="text-zinc-400 hover:text-white p-1">
+                    <iconify-icon icon="lucide:x" class="w-5 h-5"></iconify-icon>
+                </button>
+            </div>
+            <div class="rounded-xl bg-black border border-white/10 p-4 font-mono text-xs text-zinc-300 h-72 overflow-y-auto" id="modalLogsContainer">
+                <div class="text-zinc-500">Fetching live process stream...</div>
+            </div>
         </div>
-        <button class="rd-modal-close" onclick="closeModal('newProjectModal')">&times;</button>
-      </div>
-
-      <form id="newProjectForm">
-        <div class="rd-form-group">
-          <label for="projectName">Service Name *</label>
-          <input type="text" id="projectName" placeholder="e.g. portfolio-api" required>
-        </div>
-
-        <div class="rd-form-group">
-          <label for="projectCategory">Service Type</label>
-          <select id="projectCategory" style="width: 100%; padding: 8px 10px; background: var(--rd-bg-root); border: 1px solid var(--rd-border); border-radius: var(--rd-btn-radius); color: var(--rd-text-main); font-family: var(--rd-font-body); font-size: 13px;">
-            <option value="web-service">Web Service (Node.js / Express / Fastify)</option>
-            <option value="static-site">Static Site (HTML / CSS / JS)</option>
-            <option value="api">Backend REST / GraphQL API</option>
-            <option value="worker">Background Worker</option>
-          </select>
-        </div>
-
-        <div class="rd-form-group">
-          <label for="gitUrl">Git Repository URL (Optional)</label>
-          <input type="url" id="gitUrl" placeholder="https://github.com/username/project.git">
-          <span class="rd-form-hint">Leave blank to create a clean template.</span>
-        </div>
-
-        <div class="rd-form-row">
-          <div class="rd-form-group">
-            <label for="gitBranch">Branch</label>
-            <input type="text" id="gitBranch" value="main">
-          </div>
-          <div class="rd-form-group">
-            <label for="projectPort">Port (Auto-assigned if empty)</label>
-            <input type="number" id="projectPort" placeholder="e.g. 3001">
-          </div>
-        </div>
-
-        <div class="rd-form-group">
-          <label for="buildCmd">Build Command</label>
-          <input type="text" id="buildCmd" placeholder="npm install">
-        </div>
-
-        <div class="rd-form-group">
-          <label for="startCmd">Start Command</label>
-          <input type="text" id="startCmd" value="npm start">
-        </div>
-
-        <div class="rd-modal-footer">
-          <button type="button" class="rd-btn-modal-cancel" onclick="closeModal('newProjectModal')">Cancel</button>
-          <button type="submit" class="rd-btn-modal-submit" id="btnSubmitProject">Create Service</button>
-        </div>
-      </form>
     </div>
-  </div>
 
-  <!-- MODAL: ADD CUSTOM DOMAIN -->
-  <div class="rd-modal-backdrop" id="addDomainModal">
-    <div class="rd-modal">
-      <div class="rd-modal-header">
-        <div>
-          <h3>Add Custom Domain</h3>
-          <p class="rd-modal-subtitle">Route a public hostname to a local port or service.</p>
+    <!-- 4. Environment Variables Modal -->
+    <div id="envModal" class="rd-modal-overlay">
+        <div class="glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 max-w-2xl w-[94vw] border border-white/15 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <h3 class="text-base font-bold font-manrope text-white flex items-center gap-2">
+                    <iconify-icon icon="lucide:key" class="text-emerald-400"></iconify-icon>
+                    <span id="envModalTitle">Environment Variables (.env)</span>
+                </h3>
+                <button type="button" onclick="closeModal('envModal')" class="text-zinc-400 hover:text-white p-1">
+                    <iconify-icon icon="lucide:x" class="w-5 h-5"></iconify-icon>
+                </button>
+            </div>
+            <div id="envRowsContainer" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+                <!-- Populated by app.js -->
+            </div>
+            <div class="flex items-center justify-between border-t border-white/10 pt-3">
+                <button type="button" onclick="addEnvRow()" class="px-3.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 hover:text-white">+ Add Variable</button>
+                <button type="button" onclick="saveEnvVars()" class="px-5 py-2 rounded-xl bg-[#ef233c] hover:bg-[#d90429] text-white text-xs font-bold uppercase tracking-wider">Save Changes</button>
+            </div>
         </div>
-        <button class="rd-modal-close" onclick="closeModal('addDomainModal')">&times;</button>
-      </div>
-
-      <form id="addDomainForm" onsubmit="handleAddDomainSubmit(event)">
-        <div class="rd-form-group">
-          <label for="newDomainName">Domain / Subdomain *</label>
-          <input type="text" id="newDomainName" placeholder="e.g. api.mydomain.com" required>
-        </div>
-
-        <div class="rd-form-group">
-          <label for="newDomainService">Target Service *</label>
-          <select id="newDomainService" style="width: 100%; padding: 8px 10px; background: var(--rd-bg-root); border: 1px solid var(--rd-border); border-radius: var(--rd-btn-radius); color: var(--rd-text-main); font-family: var(--rd-font-body); font-size: 13px;" required>
-            <!-- Injected dynamically -->
-          </select>
-        </div>
-
-        <div class="rd-modal-footer">
-          <button type="button" class="rd-btn-modal-cancel" onclick="closeModal('addDomainModal')">Cancel</button>
-          <button type="submit" class="rd-btn-modal-submit">Bind Domain</button>
-        </div>
-      </form>
     </div>
-  </div>
 
-  <!-- MODAL: LOGS VIEWER -->
-  <div class="rd-modal-backdrop" id="logsModal">
-    <div class="rd-modal rd-modal-lg">
-      <div class="rd-modal-header">
-        <div>
-          <h3 id="logsModalTitle">Service Logs</h3>
-          <p class="rd-modal-subtitle" id="logsModalSubtitle">Streaming standard output...</p>
-        </div>
-        <div class="rd-modal-header-actions" style="display: flex; gap: 8px; align-items: center;">
-          <button class="rd-mini-btn" onclick="copyModalLogs()">Copy Logs</button>
-          <button class="rd-mini-btn" onclick="refreshCurrentLogs()">Refresh</button>
-          <button class="rd-modal-close" onclick="closeModal('logsModal')">&times;</button>
-        </div>
-      </div>
-      <div class="rd-terminal-body" id="terminalOutput">
-        <!-- Terminal lines -->
-      </div>
+    <!-- 5. Toast Notification -->
+    <div id="deploymentSuccessToast" class="fixed bottom-6 right-6 z-50 p-4 rounded-2xl bg-zinc-950 border border-[#ef233c] shadow-[0_0_30px_rgba(239,35,60,0.3)] text-xs font-mono text-white flex items-center gap-3 transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none">
+        <iconify-icon icon="lucide:check-circle" class="w-5 h-5 text-emerald-400 shrink-0"></iconify-icon>
+        <span id="deploymentSuccessToastMsg">Operation completed successfully.</span>
     </div>
-  </div>
 
-  <!-- MODAL: ENV VARIABLES -->
-  <div class="rd-modal-backdrop" id="envModal">
-    <div class="rd-modal">
-      <div class="rd-modal-header">
-        <div>
-          <h3 id="envModalTitle">Environment Variables</h3>
-          <p class="rd-modal-subtitle">Variables injected into process.env on boot</p>
-        </div>
-        <button class="rd-modal-close" onclick="closeModal('envModal')">&times;</button>
-      </div>
-      <div class="rd-env-editor">
-        <div id="envRowsContainer">
-          <!-- Dynamic key-values -->
-        </div>
-        <button type="button" class="rd-btn-modal-cancel" style="margin-top: 0.5rem;" onclick="addEnvRow()">
-          + Add Variable
-        </button>
-      </div>
-      <div class="rd-modal-footer">
-        <button type="button" class="rd-btn-modal-cancel" onclick="closeModal('envModal')">Cancel</button>
-        <button type="button" class="rd-btn-modal-submit" onclick="saveCurrentEnv()">Save Variables</button>
-      </div>
-    </div>
-  </div>
+    <!-- Core App Controller Script (Unchanged API & State Mechanics) -->
+    <script src="js/app.js"></script>
 
-  <!-- MODAL: LIVE CONTINUOUS DEPLOYMENT OVERLAY -->
-  <div class="rd-modal-backdrop" id="liveDeployOverlay" style="display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); background: rgba(4, 4, 4, 0.88); z-index: 9999;">
-    <div class="rd-modal rd-modal-lg" style="max-width: 720px; width: 94%; border: 1px solid rgba(138, 5, 255, 0.35); box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 40px rgba(138, 5, 255, 0.18);">
-      
-      <div class="rd-modal-header" style="border-bottom: 1px solid var(--rd-border); padding-bottom: 14px;">
-        <div>
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-            <span class="rd-badge rd-badge-warn" id="overlayDeployBadge" style="font-size: 10px; font-weight: 700; letter-spacing: 0.04em;">BUILDING DEPLOYMENT</span>
-            <span id="overlayDeployCommit" style="font-family: var(--rd-font-mono); font-size: 11px; color: var(--rd-brand-purple);">dep_init</span>
-          </div>
-          <h3 id="overlayDeployTitle" style="font-size: 19px; font-weight: 700; margin: 0;">Deploying Service...</h3>
-          <p class="rd-modal-subtitle" id="overlayDeploySubtitle" style="margin-top: 3px; font-size: 12px;">Allocating isolated workspace & executing containerless build pipeline</p>
-        </div>
-      </div>
+    <!-- UI Enhancements for Layout Parity -->
+    <script>
+        function toggleMobileMenu(open) {
+            const drawer = document.getElementById('mobileMenuDrawer');
+            if (!drawer) return;
+            if (open) {
+                drawer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                drawer.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
 
-      <!-- Stepper / Pipeline Progress Checklist -->
-      <div style="padding: 14px 20px; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--rd-border);">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;" id="overlayStepsList">
-          <div class="rd-deploy-step" id="step-auth" style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
-            <span class="step-icon" id="step-icon-auth">🟢</span>
-            <span style="font-weight: 500;">Auth Verified</span>
-          </div>
-          <div class="rd-deploy-step" id="step-scaffold" style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
-            <span class="step-icon" id="step-icon-scaffold">⏳</span>
-            <span style="font-weight: 500;">Scaffold / Git</span>
-          </div>
-          <div class="rd-deploy-step" id="step-port" style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
-            <span class="step-icon" id="step-icon-port">⏳</span>
-            <span style="font-weight: 500;">Port Binding</span>
-          </div>
-          <div class="rd-deploy-step" id="step-boot" style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
-            <span class="step-icon" id="step-icon-boot">⏳</span>
-            <span style="font-weight: 500;">Process Boot</span>
-          </div>
-          <div class="rd-deploy-step" id="step-health" style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
-            <span class="step-icon" id="step-icon-health">⏳</span>
-            <span style="font-weight: 500;">Health Check</span>
-          </div>
-        </div>
-      </div>
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const scrollBar = document.getElementById('scrollProgressBar');
+            if (scrollBar) {
+                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = height > 0 ? (winScroll / height) : 0;
+                scrollBar.style.transform = `scaleX(${scrolled})`;
+            }
+        }, { passive: true });
 
-      <!-- Real-time Terminal Log Stream -->
-      <div class="rd-terminal-body" id="overlayTerminalLogs" style="height: 260px; max-height: 260px; font-family: var(--rd-font-mono); font-size: 12px; line-height: 1.6; background: #000000; border: none; border-radius: 0; padding: 14px; overflow-y: auto;">
-        <!-- Streaming logs injected here -->
-      </div>
+        // Mouse follower
+        const fluidGlow = document.getElementById('fluidMouseGlow');
+        if (fluidGlow && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            let targetX = window.innerWidth / 2, targetY = window.innerHeight / 3;
+            let currentX = targetX, currentY = targetY;
+            window.addEventListener('mousemove', (e) => {
+                targetX = e.clientX;
+                targetY = e.clientY;
+            }, { passive: true });
+            function renderFluidGlow() {
+                currentX += (targetX - currentX) * 0.075;
+                currentY += (targetY - currentY) * 0.075;
+                fluidGlow.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+                requestAnimationFrame(renderFluidGlow);
+            }
+            requestAnimationFrame(renderFluidGlow);
+        }
 
-      <!-- Modal Footer -->
-      <div class="rd-modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-top: 1px solid var(--rd-border); background: var(--rd-surface);">
-        <div id="overlayFooterStatus" style="font-size: 12px; color: var(--rd-text-muted); display: flex; align-items: center; gap: 8px;">
-          <span class="rd-spinner" id="overlayDeploySpinner" style="width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--rd-brand-purple); border-radius: 50%; display: inline-block; animation: rd-spin 0.8s linear infinite;"></span>
-          <span id="overlayDeployStatusText">Executing deployment pipeline...</span>
-        </div>
-        <div style="display: flex; gap: 8px;">
-          <button type="button" class="rd-btn-modal-cancel" id="btnOverlayCancel" onclick="closeLiveDeployOverlay()" style="display: none;">Dismiss</button>
-          <button type="button" class="rd-btn-modal-submit" id="btnOverlayRetry" onclick="retryLiveDeploy()" style="display: none; background: #8a05ff;">Retry Deployment</button>
-          <button type="button" class="rd-btn-modal-submit" id="btnOverlaySuccess" onclick="finishLiveDeployAndShowService()" style="display: none; background: var(--rd-brand-purple);">View Service in Dashboard →</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="js/app.js"></script>
+        // Helper modal triggers for modal-overlay class toggling
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('open');
+        }
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('open');
+        }
+    </script>
 </body>
 </html>

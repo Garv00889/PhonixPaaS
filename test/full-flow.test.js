@@ -105,7 +105,7 @@ async function testFullFlow() {
   });
   assert.strictEqual(dashAuthRes.status, 200, 'Authenticated dashboard must return 200');
   const dashHtml = await dashAuthRes.text();
-  assert(dashHtml.includes('PhonixPaaS Dashboard'), 'Dashboard should have correct branding');
+  assert(dashHtml.includes('PhonixPaaS'), 'Dashboard should have correct branding');
   assert(dashHtml.includes('deploymentSuccessToast'), 'Dashboard should include deployment success toast');
   console.log('   ✅ Authenticated user access granted to Dashboard.\n');
 

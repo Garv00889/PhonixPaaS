@@ -340,7 +340,7 @@ async function fetchTelemetry() {
 
     const dot = document.getElementById('telemetryDot');
     if (dot) {
-      dot.style.background = batt.temperature > 42 ? '#8d3dd8' : (batt.temperature > 38 ? '#d59afc' : '#8a05ff');
+      dot.style.background = batt.temperature > 42 ? '#ef233c' : (batt.temperature > 38 ? '#f59e0b' : '#10b981');
     }
 
     // Dashboard 4 Metric Cards
@@ -525,8 +525,8 @@ function renderProjects(projects) {
               <button class="rd-mini-btn" onclick="openLogsModal('${p.id}', '${p.name}')">Logs</button>
               <button class="rd-mini-btn" onclick="openEnvModal('${p.id}', '${p.name}')">Env</button>
               <button class="rd-mini-btn" onclick="redeployProject('${p.id}')">Deploy</button>
-              <button class="rd-mini-btn" style="color: #8d3dd8;" onclick="deleteProject('${p.id}', '${p.name}')">✕</button>
-              <button class="rd-mini-btn" style="${p.isRunning ? 'color:#8a05ff;' : 'color:var(--rd-text-sub);'}" onclick="toggleProjectPower('${p.id}', ${!p.isRunning})">
+              <button class="rd-mini-btn" style="color: #ef233c;" onclick="deleteProject('${p.id}', '${p.name}')">✕</button>
+              <button class="rd-mini-btn" style="${p.isRunning ? 'color:#ef233c; font-weight:600;' : 'color:var(--rd-text-sub);'}" onclick="toggleProjectPower('${p.id}', ${!p.isRunning})">
                 ${p.isRunning ? '🟢 Active' : '⏸ Sleep'}
               </button>
             </div>
@@ -636,7 +636,7 @@ async function fetchNetworking() {
               <td class="rd-td" style="font-family: monospace;">:${d.port}</td>
               <td class="rd-td"><span class="rd-badge rd-badge-success">${d.sslStatus || 'ACTIVE'}</span></td>
               <td class="rd-td" style="text-align: right;">
-                <button class="rd-mini-btn" style="color: #8d3dd8;" onclick="deleteDomain('${d.id}')">Remove</button>
+                <button class="rd-mini-btn" style="color: #d90429;" onclick="deleteDomain('${d.id}')">Remove</button>
               </td>
             </tr>
           `).join('');
@@ -1269,7 +1269,7 @@ function addEnvRow(key = '', val = '') {
   div.innerHTML = `
     <input type="text" placeholder="KEY" value="${key}" class="env-key">
     <input type="text" placeholder="VALUE" value="${val}" class="env-val">
-    <button type="button" class="rd-mini-btn" style="color:#8d3dd8;" onclick="this.parentElement.remove()">✕</button>
+    <button type="button" class="rd-mini-btn" style="color:#d90429;" onclick="this.parentElement.remove()">✕</button>
   `;
   container.appendChild(div);
 }
@@ -1525,7 +1525,7 @@ function highlightProjectCard(projectId) {
   if (card) {
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     card.style.transition = 'all 0.4s ease';
-    card.style.boxShadow = '0 0 0 2px #8a05ff, 0 10px 30px rgba(138, 5, 255, 0.35)';
+    card.style.boxShadow = '0 0 0 2px #ef233c, 0 10px 30px rgba(239, 35, 60, 0.45)';
     card.style.transform = 'translateY(-2px)';
     setTimeout(() => {
       card.style.boxShadow = '';
